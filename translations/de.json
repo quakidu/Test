@@ -1,0 +1,165 @@
+{
+  "meta": {
+    "lang": "de",
+    "title": "Spiraldynamik Praxis – Therapie & Kurse für gesunde Bewegung",
+    "description": "Praxis für Spiraldynamik: Physiotherapie, Bewegungsanalyse und Kurse für Füße, Rücken und Gelenke. Bewegung, die dem Körper entspricht.",
+    "skip_link": "Zum Inhalt springen"
+  },
+  "brand": {
+    "name": "Spiraldynamik",
+    "suffix": "Praxis",
+    "tagline": "Bewegung mit Konzept"
+  },
+  "nav": {
+    "about": "Konzept",
+    "offer": "Angebot",
+    "courses": "Kurse",
+    "approach": "Ablauf",
+    "contact": "Kontakt",
+    "cta": "Termin vereinbaren",
+    "menu_open": "Menü öffnen",
+    "menu_close": "Menü schließen",
+    "language": "Sprache wählen"
+  },
+  "hero": {
+    "eyebrow": "Praxis für Spiraldynamik",
+    "title_line1": "Bewegung,",
+    "title_line2": "die gut tut.",
+    "lead": "Schmerzen entstehen selten zufällig. Wir analysieren Ihre Bewegung, erklären die Zusammenhänge und üben mit Ihnen ein Bewegungsmuster ein, das Ihre Gelenke entlastet – Schritt für Schritt, alltagstauglich und nachhaltig.",
+    "cta_primary": "Termin vereinbaren",
+    "cta_secondary": "Angebot ansehen",
+    "scroll": "Mehr entdecken",
+    "card_title": "Ihr Weg in Kürze",
+    "card_steps": [
+      "Bewegungsanalyse & Befund",
+      "Individueller Übungsplan",
+      "Begleitung im Alltag"
+    ],
+    "stats": [
+      { "value": "15+", "label": "Jahre Erfahrung" },
+      { "value": "3000+", "label": "Behandlungen" },
+      { "value": "12", "label": "Kurse pro Jahr" }
+    ]
+  },
+  "about": {
+    "eyebrow": "Das Konzept",
+    "title": "Spiraldynamik – die Anatomie in Bewegung verstehen",
+    "lead": "Spiraldynamik ist ein Bewegungs- und Therapiekonzept, das den menschlichen Körper als dreidimensionale Spirale begreift. Wer versteht, wie Fuß, Becken und Wirbelsäule zusammenspielen, kann Fehlbelastungen gezielt korrigieren – statt nur Symptome zu behandeln.",
+    "features": [
+      {
+        "title": "Ursache statt Symptom",
+        "text": "Wir suchen dort, wo der Schmerz entsteht: in Haltung, Gang und Gewohnheit. Die Behandlung setzt an der Bewegungsqualität an."
+      },
+      {
+        "title": "Verständlich erklärt",
+        "text": "Sie erfahren anhand von Modellen und Bildern, was in Ihrem Körper passiert. Verstehen ist der erste Schritt zur Veränderung."
+      },
+      {
+        "title": "Übungen für den Alltag",
+        "text": "Kurze, präzise Übungen, die sich in den Tag einbauen lassen – beim Gehen, Sitzen und Arbeiten."
+      },
+      {
+        "title": "Nachhaltig wirksam",
+        "text": "Ziel ist nicht die nächste Sitzung, sondern Ihre Selbstständigkeit. Sie sollen Ihre Bewegung dauerhaft selbst steuern können."
+      }
+    ]
+  },
+  "offer": {
+    "eyebrow": "Angebot",
+    "title": "Therapie und Kurse",
+    "lead": "Einzeltherapie für konkrete Beschwerden, Kurse für alle, die ihre Bewegung grundsätzlich verbessern möchten.",
+    "therapy_label": "Therapie",
+    "course_label": "Kurs",
+    "detail_link": "Mehr erfahren",
+    "filters": {
+      "all": "Alles zeigen",
+      "therapy": "Therapien",
+      "course": "Kurse"
+    },
+    "empty": "Für diese Auswahl ist derzeit nichts hinterlegt.",
+    "items": [
+      {
+        "type": "therapy",
+        "title": "Bewegungsanalyse & Erstbefund",
+        "text": "Ausführliche Anamnese, Ganganalyse und Funktionstest. Wir klären gemeinsam Ziel und Therapieweg.",
+        "meta": "60 Min. · Einzeltermin"
+      },
+      {
+        "type": "therapy",
+        "title": "Physiotherapie nach Spiraldynamik",
+        "text": "Manuelle Techniken kombiniert mit aktivem Bewegungslernen bei Rücken-, Knie- und Schulterbeschwerden.",
+        "meta": "45 Min. · Einzeltermin"
+      },
+      {
+        "type": "therapy",
+        "title": "Fuß- & Ganganalyse",
+        "text": "Hallux valgus, Senk- und Spreizfuß, Fersensporn: Wir bauen das Fußgewölbe funktionell wieder auf.",
+        "meta": "45 Min. · Einzeltermin"
+      },
+      {
+        "type": "course",
+        "title": "Gesunde Füße",
+        "text": "Sechs Abende rund um Fußgewölbe, Abrollen und Schuhwahl. Mit Übungsprogramm für zu Hause.",
+        "meta": "6 × 60 Min. · Kleingruppe"
+      },
+      {
+        "type": "course",
+        "title": "Rücken in Balance",
+        "text": "Aufrichtung ohne Anstrengung: Wirbelsäule, Becken und Atmung im Zusammenspiel.",
+        "meta": "8 × 75 Min. · Kleingruppe"
+      },
+      {
+        "type": "course",
+        "title": "Bewegt im Büro",
+        "text": "Kompaktkurs für den Arbeitsalltag – Sitzen, Stehen, Bildschirmarbeit. Auch als Firmenkurs buchbar.",
+        "meta": "4 × 60 Min. · Gruppe"
+      }
+    ]
+  },
+  "approach": {
+    "eyebrow": "Ablauf",
+    "title": "So arbeiten wir zusammen",
+    "lead": "Ein klarer Weg vom ersten Gespräch bis zur eigenständigen Übungspraxis.",
+    "steps": [
+      {
+        "title": "Kennenlernen",
+        "text": "Im Erstgespräch klären wir Ihre Beschwerden, Ihre Ziele und Ihren Alltag."
+      },
+      {
+        "title": "Analysieren",
+        "text": "Gang, Haltung und Beweglichkeit werden untersucht und verständlich ausgewertet."
+      },
+      {
+        "title": "Üben",
+        "text": "Sie erhalten einen individuellen Übungsplan und lernen die Bewegungen präzise auszuführen."
+      },
+      {
+        "title": "Festigen",
+        "text": "In Folgeterminen oder im Kurs verankern wir das neue Muster im Alltag."
+      }
+    ]
+  },
+  "contact": {
+    "eyebrow": "Kontakt",
+    "title": "Termin vereinbaren",
+    "lead": "Schreiben Sie uns oder rufen Sie an – wir melden uns in der Regel innerhalb eines Werktags.",
+    "address_label": "Adresse",
+    "address": "Bahnhofstrasse 12\n8001 Zürich",
+    "phone_label": "Telefon",
+    "phone": "+41 44 123 45 67",
+    "email_label": "E-Mail",
+    "email": "praxis@spiraldynamik-beispiel.ch",
+    "hours_label": "Öffnungszeiten",
+    "hours": "Mo–Fr 08:00–19:00\nSa nach Vereinbarung",
+    "cta": "E-Mail schreiben"
+  },
+  "footer": {
+    "tagline": "Praxis für Spiraldynamik – Therapie und Kurse für gesunde Bewegung.",
+    "nav_title": "Navigation",
+    "legal_title": "Rechtliches",
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "copyright": "Alle Rechte vorbehalten.",
+    "note": "Beispielseite – Inhalte und Kontaktdaten sind Platzhalter."
+  }
+}

@@ -1,0 +1,46 @@
+<footer class="site-footer">
+  <div class="container footer__inner">
+
+    <div class="footer__brand">
+      <a class="brand brand--footer" href="{{ url_for('home') if lang == default_language else url_for('home_localized', lang_code=lang) }}">
+        <img class="brand__mark" src="{{ url_for('static', filename='img/logo.svg') }}"
+             alt="" width="40" height="40" aria-hidden="true">
+        <span class="brand__name">{{ t('brand.name') }}</span>
+      </a>
+      <p class="footer__tagline">{{ t('footer.tagline') }}</p>
+    </div>
+
+    <nav class="footer__col" aria-label="{{ t('footer.nav_title') }}">
+      <h2 class="footer__title">{{ t('footer.nav_title') }}</h2>
+      <ul class="footer__list">
+        <li><a href="#concept">{{ t('nav.about') }}</a></li>
+        <li><a href="#offer">{{ t('nav.offer') }}</a></li>
+        <li><a href="#approach">{{ t('nav.approach') }}</a></li>
+        <li><a href="#contact">{{ t('nav.contact') }}</a></li>
+      </ul>
+    </nav>
+
+    <div class="footer__col">
+      <h2 class="footer__title">{{ t('nav.contact') }}</h2>
+      <ul class="footer__list">
+        <li><a href="tel:{{ t('contact.phone') | replace(' ', '') }}">{{ t('contact.phone') }}</a></li>
+        <li><a href="mailto:{{ t('contact.email') }}">{{ t('contact.email') }}</a></li>
+        <li>{{ t('contact.address') | replace('\n', ', ') }}</li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h2 class="footer__title">{{ t('footer.legal_title') }}</h2>
+      <ul class="footer__list">
+        <li><a href="#">{{ t('footer.imprint') }}</a></li>
+        <li><a href="#">{{ t('footer.privacy') }}</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="container footer__bottom">
+    <p>&copy; <span id="year">2026</span> {{ t('brand.name') }} {{ t('brand.suffix') }}. {{ t('footer.copyright') }}</p>
+    <p class="footer__note">{{ t('footer.note') }}</p>
+  </div>
+</footer>

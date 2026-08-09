@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- ── Hero ───────────────────────────────────────────────────────────── -->
+<section class="hero" id="hero">
+  <div class="hero__glow" aria-hidden="true">
+    <span class="blob blob--1"></span>
+    <span class="blob blob--2"></span>
+    <span class="blob blob--3"></span>
+  </div>
+
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <p class="eyebrow reveal">{{ t('hero.eyebrow') }}</p>
+      <h1 class="hero__title reveal" data-reveal-delay="1">
+        <span class="hero__title-line">{{ t('hero.title_line1') }}</span>
+        <span class="hero__title-line hero__title-line--accent">{{ t('hero.title_line2') }}</span>
+      </h1>
+      <p class="hero__lead reveal" data-reveal-delay="2">{{ t('hero.lead') }}</p>
+
+      <div class="hero__actions reveal" data-reveal-delay="3">
+        <a class="btn btn--primary" href="#contact">{{ t('hero.cta_primary') }}</a>
+        <a class="btn btn--ghost" href="#offer">{{ t('hero.cta_secondary') }}</a>
+      </div>
+
+      <dl class="stats reveal" data-reveal-delay="4">
+        {% for stat in s.hero.stats %}
+        <div class="stats__item">
+          <dt class="stats__value" data-count="{{ stat.value }}">{{ stat.value }}</dt>
+          <dd class="stats__label">{{ stat.label }}</dd>
+        </div>
+        {% endfor %}
+      </dl>
+    </div>
+
+    <aside class="hero__card reveal" data-reveal-delay="3" aria-label="{{ t('hero.card_title') }}">
+      <div class="hero__card-visual" aria-hidden="true">
+        <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="" width="120" height="120">
+      </div>
+      <h2 class="hero__card-title">{{ t('hero.card_title') }}</h2>
+      <ol class="hero__card-steps">
+        {% for step in s.hero.card_steps %}
+        <li>{{ step }}</li>
+        {% endfor %}
+      </ol>
+    </aside>
+  </div>
+
+  <a class="hero__scroll" href="#concept">
+    <span>{{ t('hero.scroll') }}</span>
+    <span class="hero__scroll-line" aria-hidden="true"></span>
+  </a>
+</section>
+
+<!-- ── Konzept ────────────────────────────────────────────────────────── -->
+<section class="section" id="concept">
+  <div class="container">
+    <header class="section__head">
+      <p class="eyebrow reveal">{{ t('about.eyebrow') }}</p>
+      <h2 class="section__title reveal" data-reveal-delay="1">{{ t('about.title') }}</h2>
+      <p class="section__lead reveal" data-reveal-delay="2">{{ t('about.lead') }}</p>
+    </header>
+
+    <div class="features">
+      {% for feature in s.about.features %}
+      <article class="feature reveal" data-reveal-delay="{{ loop.index0 }}">
+        <span class="feature__index" aria-hidden="true">{{ '%02d' % loop.index }}</span>
+        <h3 class="feature__title">{{ feature.title }}</h3>
+        <p class="feature__text">{{ feature.text }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── Angebot ────────────────────────────────────────────────────────── -->
+<section class="section section--tinted" id="offer">
+  <div class="container">
+    <header class="section__head">
+      <p class="eyebrow reveal">{{ t('offer.eyebrow') }}</p>
+      <h2 class="section__title reveal" data-reveal-delay="1">{{ t('offer.title') }}</h2>
+      <p class="section__lead reveal" data-reveal-delay="2">{{ t('offer.lead') }}</p>
+    </header>
+
+    <div class="filters reveal" data-reveal-delay="2" role="tablist" aria-label="{{ t('offer.title') }}">
+      <button class="filters__btn is-active" type="button" role="tab" aria-selected="true" data-filter="all">
+        {{ t('offer.filters.all') }}
+      </button>
+      <button class="filters__btn" type="button" role="tab" aria-selected="false" data-filter="therapy">
+        {{ t('offer.filters.therapy') }}
+      </button>
+      <button class="filters__btn" type="button" role="tab" aria-selected="false" data-filter="course">
+        {{ t('offer.filters.course') }}
+      </button>
+    </div>
+
+    <div class="cards" id="offer-cards">
+      {% for item in s.offer['items'] %}
+      <article class="card reveal" data-type="{{ item.type }}" data-reveal-delay="{{ loop.index0 % 3 }}">
+        <span class="card__badge card__badge--{{ item.type }}">
+          {{ t('offer.therapy_label') if item.type == 'therapy' else t('offer.course_label') }}
+        </span>
+        <h3 class="card__title">{{ item.title }}</h3>
+        <p class="card__text">{{ item.text }}</p>
+        <p class="card__meta">{{ item.meta }}</p>
+        <a class="card__link" href="#contact">
+          {{ t('offer.detail_link') }}
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </article>
+      {% endfor %}
+    </div>
+
+    <p class="cards__empty" id="offer-empty" hidden>{{ t('offer.empty') }}</p>
+  </div>
+</section>
+
+<!-- ── Ablauf ─────────────────────────────────────────────────────────── -->
+<section class="section" id="approach">
+  <div class="container">
+    <header class="section__head">
+      <p class="eyebrow reveal">{{ t('approach.eyebrow') }}</p>
+      <h2 class="section__title reveal" data-reveal-delay="1">{{ t('approach.title') }}</h2>
+      <p class="section__lead reveal" data-reveal-delay="2">{{ t('approach.lead') }}</p>
+    </header>
+
+    <ol class="steps">
+      {% for step in s.approach.steps %}
+      <li class="step reveal" data-reveal-delay="{{ loop.index0 }}">
+        <span class="step__dot" aria-hidden="true"></span>
+        <span class="step__num">{{ loop.index }}</span>
+        <h3 class="step__title">{{ step.title }}</h3>
+        <p class="step__text">{{ step.text }}</p>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+<!-- ── Kontakt ────────────────────────────────────────────────────────── -->
+<section class="section section--contact" id="contact">
+  <div class="container">
+    <div class="contact">
+      <div class="contact__copy">
+        <p class="eyebrow reveal">{{ t('contact.eyebrow') }}</p>
+        <h2 class="section__title reveal" data-reveal-delay="1">{{ t('contact.title') }}</h2>
+        <p class="section__lead reveal" data-reveal-delay="2">{{ t('contact.lead') }}</p>
+        <a class="btn btn--primary reveal" data-reveal-delay="3" href="mailto:{{ t('contact.email') }}">
+          {{ t('contact.cta') }}
+        </a>
+      </div>
+
+      <dl class="contact__details reveal" data-reveal-delay="2">
+        <div class="contact__row">
+          <dt>{{ t('contact.address_label') }}</dt>
+          <dd>{{ t('contact.address') | replace('\n', '<br>') | safe }}</dd>
+        </div>
+        <div class="contact__row">
+          <dt>{{ t('contact.phone_label') }}</dt>
+          <dd><a href="tel:{{ t('contact.phone') | replace(' ', '') }}">{{ t('contact.phone') }}</a></dd>
+        </div>
+        <div class="contact__row">
+          <dt>{{ t('contact.email_label') }}</dt>
+          <dd><a href="mailto:{{ t('contact.email') }}">{{ t('contact.email') }}</a></dd>
+        </div>
+        <div class="contact__row">
+          <dt>{{ t('contact.hours_label') }}</dt>
+          <dd>{{ t('contact.hours') | replace('\n', '<br>') | safe }}</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

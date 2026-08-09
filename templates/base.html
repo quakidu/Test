@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ t('meta.title') }}{% endblock %}</title>
+  <meta name="description" content="{{ t('meta.description') }}">
+  <meta name="theme-color" content="#3F7D5F">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ t('meta.title') }}">
+  <meta property="og:description" content="{{ t('meta.description') }}">
+  <meta property="og:locale" content="{{ 'de_DE' if lang == 'de' else 'en_GB' }}">
+
+  {% for code in languages %}
+  <link rel="alternate" hreflang="{{ code }}"
+        href="{{ url_for('home', _external=True) if code == default_language else url_for('home_localized', lang_code=code, _external=True) }}">
+  {% endfor %}
+
+  <link rel="icon" href="{{ url_for('static', filename='img/logo.svg') }}" type="image/svg+xml">
+  <!-- Ohne JavaScript bleiben die Reveal-Animationen aus und alle Inhalte sichtbar. -->
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="preload" as="style" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body data-lang="{{ lang }}">
+  <a class="skip-link" href="#main">{{ t('meta.skip_link') }}</a>
+
+  {% include 'partials/header.html' %}
+
+  <main id="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include 'partials/footer.html' %}
+
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</body>
+</html>

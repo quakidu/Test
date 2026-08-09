@@ -1,0 +1,46 @@
+<header class="site-header" id="site-header">
+  <div class="container header__inner">
+
+    <a class="brand" href="{{ url_for('home') if lang == default_language else url_for('home_localized', lang_code=lang) }}">
+      <img class="brand__mark" src="{{ url_for('static', filename='img/logo.svg') }}"
+           alt="{{ t('brand.name') }}" width="48" height="48">
+      <span class="brand__text">
+        <span class="brand__name">{{ t('brand.name') }}</span>
+        <span class="brand__tagline">{{ t('brand.tagline') }}</span>
+      </span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="{{ t('brand.name') }}">
+      <ul class="nav__list">
+        <li><a class="nav__link" href="#concept">{{ t('nav.about') }}</a></li>
+        <li><a class="nav__link" href="#offer">{{ t('nav.offer') }}</a></li>
+        <li><a class="nav__link" href="#approach">{{ t('nav.approach') }}</a></li>
+        <li><a class="nav__link" href="#contact">{{ t('nav.contact') }}</a></li>
+      </ul>
+
+      <div class="nav__actions">
+        <div class="langswitch" role="group" aria-label="{{ t('nav.language') }}">
+          {% for code, meta in languages.items() %}
+          <a class="langswitch__item {{ 'is-active' if code == lang }}"
+             href="{{ url_for('home') if code == default_language else url_for('home_localized', lang_code=code) }}"
+             lang="{{ code }}"
+             hreflang="{{ code }}"
+             title="{{ meta.label }}"
+             {{ 'aria-current=true' if code == lang }}>{{ meta.short }}</a>
+          {% endfor %}
+        </div>
+        <a class="btn btn--primary btn--sm" href="#contact">{{ t('nav.cta') }}</a>
+      </div>
+    </nav>
+
+    <button class="burger" id="burger" type="button"
+            aria-expanded="false" aria-controls="nav" aria-label="{{ t('nav.menu_open') }}"
+            data-label-open="{{ t('nav.menu_open') }}" data-label-close="{{ t('nav.menu_close') }}">
+      <span class="burger__bar"></span>
+      <span class="burger__bar"></span>
+      <span class="burger__bar"></span>
+    </button>
+
+  </div>
+</header>
+<div class="nav-backdrop" id="nav-backdrop" hidden></div>

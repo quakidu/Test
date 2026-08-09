@@ -1,0 +1,165 @@
+{
+  "meta": {
+    "lang": "en",
+    "title": "Spiraldynamik Practice – Therapy & Courses for Healthy Movement",
+    "description": "Spiraldynamik practice: physiotherapy, movement analysis and courses for feet, back and joints. Movement that fits the human body.",
+    "skip_link": "Skip to content"
+  },
+  "brand": {
+    "name": "Spiraldynamik",
+    "suffix": "Practice",
+    "tagline": "Movement with a concept"
+  },
+  "nav": {
+    "about": "Concept",
+    "offer": "Services",
+    "courses": "Courses",
+    "approach": "Process",
+    "contact": "Contact",
+    "cta": "Book an appointment",
+    "menu_open": "Open menu",
+    "menu_close": "Close menu",
+    "language": "Choose language"
+  },
+  "hero": {
+    "eyebrow": "Practice for Spiraldynamik",
+    "title_line1": "Movement",
+    "title_line2": "that feels right.",
+    "lead": "Pain rarely appears by chance. We analyse how you move, explain what we find and train a movement pattern that takes the load off your joints – step by step, practical and lasting.",
+    "cta_primary": "Book an appointment",
+    "cta_secondary": "See our services",
+    "scroll": "Discover more",
+    "card_title": "Your path in short",
+    "card_steps": [
+      "Movement analysis & assessment",
+      "Personal exercise plan",
+      "Guidance in everyday life"
+    ],
+    "stats": [
+      { "value": "15+", "label": "Years of experience" },
+      { "value": "3000+", "label": "Treatments" },
+      { "value": "12", "label": "Courses per year" }
+    ]
+  },
+  "about": {
+    "eyebrow": "The concept",
+    "title": "Spiraldynamik – understanding anatomy in motion",
+    "lead": "Spiraldynamik is a movement and therapy concept that reads the human body as a three-dimensional spiral. Once you understand how foot, pelvis and spine work together, you can correct harmful loading patterns instead of treating symptoms alone.",
+    "features": [
+      {
+        "title": "Cause, not symptom",
+        "text": "We look where the pain originates: in posture, gait and habit. Treatment starts with the quality of your movement."
+      },
+      {
+        "title": "Explained clearly",
+        "text": "Models and images show you what happens inside your body. Understanding is the first step towards change."
+      },
+      {
+        "title": "Exercises for everyday life",
+        "text": "Short, precise exercises that fit into your day – while walking, sitting and working."
+      },
+      {
+        "title": "Lasting results",
+        "text": "The goal is not the next session but your independence. You should be able to steer your own movement long term."
+      }
+    ]
+  },
+  "offer": {
+    "eyebrow": "Services",
+    "title": "Therapy and courses",
+    "lead": "One-to-one therapy for specific complaints, courses for everyone who wants to improve the way they move.",
+    "therapy_label": "Therapy",
+    "course_label": "Course",
+    "detail_link": "Learn more",
+    "filters": {
+      "all": "Show all",
+      "therapy": "Therapies",
+      "course": "Courses"
+    },
+    "empty": "Nothing is listed for this selection at the moment.",
+    "items": [
+      {
+        "type": "therapy",
+        "title": "Movement analysis & first assessment",
+        "text": "Detailed history, gait analysis and functional testing. Together we define your goal and the way there.",
+        "meta": "60 min · individual session"
+      },
+      {
+        "type": "therapy",
+        "title": "Physiotherapy based on Spiraldynamik",
+        "text": "Manual techniques combined with active movement learning for back, knee and shoulder complaints.",
+        "meta": "45 min · individual session"
+      },
+      {
+        "type": "therapy",
+        "title": "Foot & gait analysis",
+        "text": "Hallux valgus, flat and splay feet, heel spur: we rebuild the arch of your foot functionally.",
+        "meta": "45 min · individual session"
+      },
+      {
+        "type": "course",
+        "title": "Healthy feet",
+        "text": "Six evenings on arches, rolling motion and choosing footwear. Includes a home exercise programme.",
+        "meta": "6 × 60 min · small group"
+      },
+      {
+        "type": "course",
+        "title": "Back in balance",
+        "text": "Upright without effort: spine, pelvis and breathing working together.",
+        "meta": "8 × 75 min · small group"
+      },
+      {
+        "type": "course",
+        "title": "Active at the office",
+        "text": "Compact course for working days – sitting, standing, screen work. Also available for companies.",
+        "meta": "4 × 60 min · group"
+      }
+    ]
+  },
+  "approach": {
+    "eyebrow": "Process",
+    "title": "How we work together",
+    "lead": "A clear path from the first conversation to your own independent practice.",
+    "steps": [
+      {
+        "title": "Getting to know",
+        "text": "In the first conversation we clarify your complaints, your goals and your daily routine."
+      },
+      {
+        "title": "Analysing",
+        "text": "Gait, posture and mobility are examined and explained in plain language."
+      },
+      {
+        "title": "Practising",
+        "text": "You receive a personal exercise plan and learn to perform the movements precisely."
+      },
+      {
+        "title": "Consolidating",
+        "text": "In follow-up sessions or in a course we anchor the new pattern in your everyday life."
+      }
+    ]
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Book an appointment",
+    "lead": "Send us a message or give us a call – we usually reply within one working day.",
+    "address_label": "Address",
+    "address": "Bahnhofstrasse 12\n8001 Zurich, Switzerland",
+    "phone_label": "Phone",
+    "phone": "+41 44 123 45 67",
+    "email_label": "Email",
+    "email": "praxis@spiraldynamik-beispiel.ch",
+    "hours_label": "Opening hours",
+    "hours": "Mon–Fri 08:00–19:00\nSat by arrangement",
+    "cta": "Write an email"
+  },
+  "footer": {
+    "tagline": "Practice for Spiraldynamik – therapy and courses for healthy movement.",
+    "nav_title": "Navigation",
+    "legal_title": "Legal",
+    "imprint": "Imprint",
+    "privacy": "Privacy",
+    "copyright": "All rights reserved.",
+    "note": "Demo site – content and contact details are placeholders."
+  }
+}
