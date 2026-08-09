@@ -84,9 +84,6 @@
     --shadow-lg: 0 28px 60px -30px rgba(0, 0, 0, 0.9);
   }
 
-  /* Das Logo ist eine externe SVG-Datei – auf dunklem Grund leicht aufhellen. */
-  .brand__mark,
-  .hero__card-visual img { filter: brightness(1.28) saturate(1.05); }
 }
 
 /* ── 2. Reset & Basis ─────────────────────────────────────────────────── */
@@ -291,12 +288,24 @@ button { font: inherit; color: inherit; }
   gap: 0.7rem;
   flex-shrink: 0;
 }
+/*
+ * Das Logo ist ein JPEG und damit nicht freigestellt. Es wird deshalb
+ * bewusst als abgerundete Kachel gesetzt, damit der feste Bildhintergrund
+ * auf getönten Flächen als Gestaltungselement wirkt und nicht als Kante.
+ */
+.logo { display: block; line-height: 0; }
+
 .brand__mark {
   width: 44px;
   height: 44px;
-  transition: transform 0.6s var(--ease);
+  border-radius: 11px;
+  border: 1px solid var(--border);
+  transition: transform 0.6s var(--ease), box-shadow 0.3s var(--ease);
 }
-.brand:hover .brand__mark { transform: rotate(-40deg) scale(1.06); }
+.brand:hover .brand__mark {
+  transform: rotate(-8deg) scale(1.06);
+  box-shadow: var(--shadow-md);
+}
 
 .brand__text { display: flex; flex-direction: column; line-height: 1.15; }
 .brand__name {
@@ -531,10 +540,12 @@ button { font: inherit; color: inherit; }
   place-items: center;
   margin-bottom: 1.5rem;
 }
-.hero__card-visual img {
+.hero__card-logo {
   width: clamp(88px, 14vw, 118px);
   height: auto;
-  animation: spin-slow 46s linear infinite;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
 }
 .hero__card-title {
   font-size: 1.15rem;
@@ -868,10 +879,6 @@ button { font: inherit; color: inherit; }
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-10px); }
-}
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
 }
 @keyframes pulse-line {
   0%, 100% { opacity: 0.3; transform: scaleY(0.7); }

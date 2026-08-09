@@ -32,9 +32,12 @@ templates/
 static/
   css/style.css
   js/main.js
-  img/logo.svg          Logo (Spirale, dezentes Grün)
+  img/logo.jpg          Logo (Spirale, dezentes Grün)
+  img/logo-dark.jpg     Logo für das dunkle Farbschema
 translations/
   de.json  en.json
+tools/
+  export-logo.mjs       erzeugt die beiden Logo-JPEGs neu
 ```
 
 ## Starten
@@ -88,7 +91,15 @@ python3 build.py --site-url https://ihre-domain.ch
   richtet sich danach.
 * **Farben:** die Design-Tokens ganz oben in `static/css/style.css`
   (`--green-*`). Das dunkle Farbschema nutzt dieselben Tokens.
-* **Logo:** `static/img/logo.svg` ersetzen.
+* **Logo:** `static/img/logo.jpg` und `static/img/logo-dark.jpg` ersetzen –
+  am besten quadratisch und mindestens 256 px. JPEG kennt keine
+  Transparenz, deshalb gibt es zwei Dateien: eine mit hellem Hintergrund
+  für das helle Farbschema und eine mit dunklem für das dunkle. Die Seite
+  wählt über `<picture>` und `prefers-color-scheme` automatisch aus und
+  stellt das Bild als abgerundete Kachel dar.
+  Die mitgelieferte Spirale lässt sich mit `node tools/export-logo.mjs`
+  in anderer Größe oder Farbe neu erzeugen (benötigt einen headless Chrome
+  mit offenem DevTools-Port).
 
 ## Umgesetzte Details
 

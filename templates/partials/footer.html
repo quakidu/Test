@@ -1,10 +1,10 @@
+{% from 'partials/logo.html' import logo with context %}
 <footer class="site-footer">
   <div class="container footer__inner">
 
     <div class="footer__brand">
       <a class="brand brand--footer" href="{{ url_for('home') if lang == default_language else url_for('home_localized', lang_code=lang) }}">
-        <img class="brand__mark" src="{{ url_for('static', filename='img/logo.svg') }}"
-             alt="" width="40" height="40" aria-hidden="true">
+        {{ logo(40) }}
         <span class="brand__name">{{ t('brand.name') }}</span>
       </a>
       <p class="footer__tagline">{{ t('footer.tagline') }}</p>
