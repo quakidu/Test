@@ -102,6 +102,7 @@ def render_home(lang: str):
             s=strings,
             languages=LANGUAGES,
             default_language=DEFAULT_LANGUAGE,
+            anchor_base="",
         )
     )
     response.set_cookie(

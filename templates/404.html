@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ t('error.title') }} – {{ t('brand.name') }}{% endblock %}
+
+{% block content %}
+<section class="section section--error">
+  <div class="container error">
+    <p class="eyebrow">{{ t('error.code') }}</p>
+    <h1 class="section__title">{{ t('error.title') }}</h1>
+    <p class="section__lead">{{ t('error.text') }}</p>
+
+    <div class="error__actions">
+      <a class="btn btn--primary"
+         href="{{ url_for('home') if lang == default_language else url_for('home_localized', lang_code=lang) }}">
+        {{ t('error.home') }}
+      </a>
+      <a class="btn btn--ghost" href="mailto:{{ t('contact.email') }}">{{ t('error.contact') }}</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

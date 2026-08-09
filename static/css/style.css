@@ -804,6 +804,23 @@ button { font: inherit; color: inherit; }
 .contact__row dd { margin: 0; font-size: 1rem; }
 .contact__row a:hover { color: var(--accent-ink); text-decoration: underline; }
 
+/* Fehlerseite */
+.section--error {
+  display: grid;
+  place-items: center;
+  min-height: calc(100vh - var(--header-h) - 240px);
+  text-align: center;
+}
+.error { max-width: 46rem; }
+.error .eyebrow::before { display: none; }
+.error__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
 /* ── 8. Footer ────────────────────────────────────────────────────────── */
 .site-footer {
   padding-top: clamp(3rem, 6vw, 4.5rem);

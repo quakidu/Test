@@ -21,12 +21,15 @@ JSON-Datei plus einen Eintrag in `LANGUAGES`.
 ## Projektstruktur
 
 ```
-app.py                  Flask-Server (dynamisch)
+app.py                  Flask-Server (nur für die lokale Arbeit)
 build.py                Statischer Build nach dist/
+deploy.py               lädt dist/ per FTPS auf den Webspace
+deploy.ini.example      Vorlage für Domain und FTP-Zugang
 requirements.txt        Abhängigkeiten
 templates/
   base.html             Grundgerüst (Head, Meta, hreflang)
   index.html            Startseite
+  404.html              Fehlerseite
   partials/header.html  Kopfbereich mit Logo links oben
   partials/footer.html  Fußbereich
 static/
@@ -38,13 +41,15 @@ static/
   img/logo-mark-dark.png
 translations/
   de.json  en.json
+webroot/
+  .htaccess             Apache-Konfiguration, kommt unverändert nach dist/
 tools/
   prepare-logo.py       leitet die Logo-Varianten aus logo.png ab
 ```
 
 ## Starten
 
-### Variante 1 – Flask (dynamisch)
+### Variante 1 – Flask (nur lokal)
 
 ```bash
 python3 -m venv .venv
@@ -67,21 +72,95 @@ Die zuletzt gewählte Sprache wird in einem Cookie (`lang`) gespeichert.
 Soll beim ersten Besuch zusätzlich die Browsersprache ausgewertet werden,
 in `app.py` `AUTO_DETECT_BROWSER_LANGUAGE = True` setzen.
 
-### Variante 2 – statischer Build (nur Jinja2 nötig)
+### Variante 2 – statischer Build (das, was veröffentlicht wird)
 
 ```bash
 python3 build.py --serve
 ```
 
-Erzeugt `dist/index.html` (Deutsch), `dist/en/index.html` (Englisch) und
-`dist/static/` und liefert das Ergebnis unter <http://127.0.0.1:8000/> aus.
-Der Ordner `dist/` lässt sich unverändert auf jeden Webspace kopieren.
+Erzeugt den kompletten Ordner `dist/` und liefert ihn unter
+<http://127.0.0.1:8000/> aus. Genau dieser Ordner geht später auf den
+Webspace – siehe „Veröffentlichen bei Alfahosting“.
 
-Für korrekte `hreflang`-Angaben die eigene Domain mitgeben:
+Die Domain wird aus `deploy.ini` gelesen. Ohne diese Datei oder für einen
+einzelnen Lauf lässt sie sich auch direkt angeben:
 
 ```bash
-python3 build.py --site-url https://ihre-domain.ch
+python3 build.py --site-url https://www.ihre-domain.de
 ```
+
+## Veröffentlichen bei Alfahosting
+
+Auf dem normalen Webspace von Alfahosting läuft **kein Python**. Der
+Flask-Server aus `app.py` ist deshalb nur für die Arbeit am eigenen Rechner
+gedacht. Ins Netz geht der statische Build: reine HTML-, CSS-, JavaScript-
+und Bilddateien, die jeder Webspace ausliefern kann.
+
+### Einmalig einrichten
+
+```bash
+cp deploy.ini.example deploy.ini
+```
+
+Dann `deploy.ini` ausfüllen. Die Werte stehen im Kundenmenü von
+Alfahosting:
+
+| Eintrag              | Wo zu finden                                              |
+| -------------------- | --------------------------------------------------------- |
+| `[site] url`         | die eigene Domain, mit `https://`, ohne Schrägstrich am Ende |
+| `[ftp] host`         | Kundenmenü → FTP-Zugänge                                   |
+| `[ftp] user`         | ebenda, meist in der Art `web123`                          |
+| `[ftp] remote_dir`   | Kundenmenü → Domains: das Verzeichnis, auf das die Domain zeigt |
+
+`deploy.ini` steht in `.gitignore` und landet nicht im Repository. Das
+Passwort gehört auch nicht in die Datei – es wird beim Hochladen abgefragt
+oder aus der Umgebungsvariable `DEPLOY_FTP_PASSWORD` gelesen.
+
+### Hochladen
+
+```bash
+python3 deploy.py --dry-run    # zeigt nur, was übertragen würde
+python3 deploy.py              # baut und lädt hoch
+```
+
+`deploy.py` baut die Seite zuerst neu und spiegelt dann `dist/` auf den
+Server. Die Verbindung läuft über FTPS, also verschlüsselt. Weitere
+Schalter:
+
+| Schalter      | Wirkung                                                     |
+| ------------- | ----------------------------------------------------------- |
+| `--dry-run`   | überträgt nichts, listet nur auf                            |
+| `--no-build`  | lädt das vorhandene `dist/` hoch, ohne neu zu bauen         |
+| `--delete`    | entfernt auf dem Server Dateien, die es lokal nicht mehr gibt |
+| `--plain-ftp` | unverschlüsseltes FTP, nur falls FTPS nicht zustande kommt  |
+
+Wer lieber ein FTP-Programm wie FileZilla nutzt: `python3 build.py`
+ausführen und den **Inhalt** von `dist/` in das Domain-Verzeichnis laden –
+also `index.html`, `en/`, `static/` und die versteckte Datei `.htaccess`.
+In FileZilla müssen versteckte Dateien dafür eingeblendet sein
+(Server → Versteckte Dateien anzeigen).
+
+### Was mitgeliefert wird
+
+* `.htaccess` – leitet auf HTTPS um, setzt die Fehlerseite, schaltet
+  Komprimierung und Browser-Cache ein und ergänzt Sicherheits-Header.
+  Jeder Block ist gegen fehlende Apache-Module abgesichert.
+* `404.html` – eigene Fehlerseite im Design der Website
+* `robots.txt` und `sitemap.xml` – mit der Domain aus `deploy.ini`
+
+### Nach dem ersten Hochladen prüfen
+
+1. Läuft die Seite über `https://`? Falls das Zertifikat noch fehlt, im
+   Kundenmenü ein kostenloses anlegen – die Weiterleitung in der
+   `.htaccess` setzt es voraus.
+2. Führt eine erfundene Adresse wie `ihre-domain.de/gibtsnicht` zur
+   eigenen Fehlerseite?
+3. Erscheint die englische Fassung unter `ihre-domain.de/en/`?
+
+CSS, JavaScript und Bilder werden mit einem Versionsstempel verlinkt
+(`style.css?v=7392bb8c`), der sich bei jeder Änderung mitändert. Deshalb
+dürfen sie lange im Browser-Cache liegen, ohne dass Besucher nach einer
+Aktualisierung eine veraltete Fassung sehen.
 
 ## Inhalte anpassen
 

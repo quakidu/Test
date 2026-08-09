@@ -1,0 +1,35 @@
+; Vorlage für die Veröffentlichung auf dem Webspace.
+;
+;   cp deploy.ini.example deploy.ini
+;
+; Danach deploy.ini ausfüllen. Die Datei ist in .gitignore eingetragen und
+; landet nicht im Repository. Das Passwort gehört bewusst nicht hier hinein –
+; es kommt aus der Umgebungsvariable DEPLOY_FTP_PASSWORD oder wird beim
+; Hochladen abgefragt.
+
+[site]
+; Die Domain, unter der die Seite später läuft – mit https und ohne
+; Schrägstrich am Ende. Sie steckt in den hreflang-Angaben, in der
+; sitemap.xml und in der robots.txt.
+url = https://www.ihre-domain.de
+
+; Unterverzeichnis, falls die Seite nicht direkt unter der Domain liegt.
+; In aller Regel bleibt hier der einzelne Schrägstrich stehen.
+base_path = /
+
+[ftp]
+; Alle drei Werte stehen im Kundenmenü von Alfahosting unter
+; "FTP-Zugänge". Der Benutzername sieht meist aus wie web123 oder ftp1234.
+host = ftp.ihre-domain.de
+user = web123
+port = 21
+
+; Verzeichnis auf dem Server, in dem die Seite liegen soll.
+; Bei Alfahosting zeigt die Domain je nach Paket auf ein eigenes
+; Verzeichnis. Bitte im Kundenmenü unter "Domains" nachsehen, welcher
+; Pfad der Domain zugeordnet ist, und ihn hier eintragen –
+; zum Beispiel /  oder  /html  oder  /ihre-domain.de
+remote_dir = /
+
+; Passiver Modus funktioniert hinter fast allen Routern und Firewalls.
+passive = yes

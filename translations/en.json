@@ -35,9 +35,18 @@
       "Guidance in everyday life"
     ],
     "stats": [
-      { "value": "15+", "label": "Years of experience" },
-      { "value": "3000+", "label": "Treatments" },
-      { "value": "12", "label": "Courses per year" }
+      {
+        "value": "15+",
+        "label": "Years of experience"
+      },
+      {
+        "value": "3000+",
+        "label": "Treatments"
+      },
+      {
+        "value": "12",
+        "label": "Courses per year"
+      }
     ]
   },
   "about": {
@@ -160,5 +169,12 @@
     "privacy": "Privacy",
     "copyright": "All rights reserved.",
     "note": "Demo site – content and contact details are placeholders."
+  },
+  "error": {
+    "title": "Page not found",
+    "code": "Error 404",
+    "text": "This page does not exist, or no longer does. The home page will get you back on track.",
+    "home": "Go to home page",
+    "contact": "Get in touch"
   }
 }

@@ -1,0 +1,84 @@
+# ==========================================================================
+# Konfiguration für den Apache-Webserver von Alfahosting.
+#
+# Diese Datei landet beim Build im Wurzelverzeichnis von dist/ und wird
+# zusammen mit der Seite hochgeladen. Alle Blöcke sind in <IfModule>
+# gekapselt: Fehlt ein Modul auf dem Paket, wird der Block übersprungen,
+# statt einen Fehler 500 auszulösen.
+# ==========================================================================
+
+AddDefaultCharset UTF-8
+DirectoryIndex index.html
+
+# Kein Verzeichnislisting, falls einmal eine index.html fehlt.
+Options -Indexes
+
+# Eigene Fehlerseite statt der Apache-Standardmeldung.
+ErrorDocument 404 /404.html
+
+
+# ── HTTPS erzwingen ─────────────────────────────────────────────────────
+# Alfahosting stellt kostenlose Zertifikate bereit. Erst aktiv schalten,
+# wenn das Zertifikat für die Domain im Kundenmenü eingerichtet ist –
+# sonst laufen Besucher in eine Zertifikatswarnung.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+  # Eine der beiden Zeilen einkommentieren, wenn die Domain immer mit
+  # oder immer ohne "www." erreichbar sein soll. Nicht beide zugleich.
+  #
+  # RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  # RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+  #
+  # RewriteCond %{HTTP_HOST} !^www\. [NC]
+  # RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
+</IfModule>
+
+
+# ── Komprimierung ───────────────────────────────────────────────────────
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE application/xml image/svg+xml
+</IfModule>
+
+
+# ── Browser-Cache ───────────────────────────────────────────────────────
+# CSS, JavaScript und Bilder werden mit einem Versionsstempel (?v=…)
+# verlinkt, der sich bei jeder Änderung ändert. Deshalb dürfen sie lange
+# im Cache bleiben; HTML bleibt kurz, damit Änderungen schnell ankommen.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault                      "access plus 1 month"
+  ExpiresByType text/html             "access plus 10 minutes"
+  ExpiresByType text/css              "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/png             "access plus 1 year"
+  ExpiresByType image/jpeg            "access plus 1 year"
+  ExpiresByType image/svg+xml         "access plus 1 year"
+</IfModule>
+
+
+# ── Sicherheits-Header ──────────────────────────────────────────────────
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+  # HSTS zwingt Browser für ein Jahr auf HTTPS. Erst einschalten, wenn
+  # HTTPS zuverlässig läuft – ein Rückweg ist danach kaum möglich.
+  # Header always set Strict-Transport-Security "max-age=31536000"
+</IfModule>
+
+
+# ── Versteckte Dateien schützen ─────────────────────────────────────────
+<IfModule mod_authz_core.c>
+  <FilesMatch "^\.">
+    Require all denied
+  </FilesMatch>
+</IfModule>

@@ -9,10 +9,10 @@
 
     <nav class="nav" id="nav" aria-label="{{ t('brand.name') }}">
       <ul class="nav__list">
-        <li><a class="nav__link" href="#concept">{{ t('nav.about') }}</a></li>
-        <li><a class="nav__link" href="#offer">{{ t('nav.offer') }}</a></li>
-        <li><a class="nav__link" href="#approach">{{ t('nav.approach') }}</a></li>
-        <li><a class="nav__link" href="#contact">{{ t('nav.contact') }}</a></li>
+        <li><a class="nav__link" href="{{ anchor_base }}#concept">{{ t('nav.about') }}</a></li>
+        <li><a class="nav__link" href="{{ anchor_base }}#offer">{{ t('nav.offer') }}</a></li>
+        <li><a class="nav__link" href="{{ anchor_base }}#approach">{{ t('nav.approach') }}</a></li>
+        <li><a class="nav__link" href="{{ anchor_base }}#contact">{{ t('nav.contact') }}</a></li>
       </ul>
 
       <div class="nav__actions">
@@ -26,7 +26,7 @@
              {{ 'aria-current=true' if code == lang }}>{{ meta.short }}</a>
           {% endfor %}
         </div>
-        <a class="btn btn--primary btn--sm" href="#contact">{{ t('nav.cta') }}</a>
+        <a class="btn btn--primary btn--sm" href="{{ anchor_base }}#contact">{{ t('nav.cta') }}</a>
       </div>
     </nav>
 

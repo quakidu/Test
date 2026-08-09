@@ -35,9 +35,18 @@
       "Begleitung im Alltag"
     ],
     "stats": [
-      { "value": "15+", "label": "Jahre Erfahrung" },
-      { "value": "3000+", "label": "Behandlungen" },
-      { "value": "12", "label": "Kurse pro Jahr" }
+      {
+        "value": "15+",
+        "label": "Jahre Erfahrung"
+      },
+      {
+        "value": "3000+",
+        "label": "Behandlungen"
+      },
+      {
+        "value": "12",
+        "label": "Kurse pro Jahr"
+      }
     ]
   },
   "about": {
@@ -160,5 +169,12 @@
     "privacy": "Datenschutz",
     "copyright": "Alle Rechte vorbehalten.",
     "note": "Beispielseite – Inhalte und Kontaktdaten sind Platzhalter."
+  },
+  "error": {
+    "title": "Seite nicht gefunden",
+    "code": "Fehler 404",
+    "text": "Diese Seite gibt es nicht oder nicht mehr. Über die Startseite finden Sie alles Weitere.",
+    "home": "Zur Startseite",
+    "contact": "Kontakt aufnehmen"
   }
 }
