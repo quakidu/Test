@@ -1,14 +1,14 @@
 {#
-  Logo als JPEG. Da JPEG keine Transparenz kennt, gibt es zwei Dateien
-  mit passendem Hintergrund; das Farbschema entscheidet über die Variante.
-  Beide Dateien werden mit tools/export-logo.mjs erzeugt.
+  Logo als freigestelltes PNG. Zwei Farbvarianten sorgen für genügend
+  Kontrast im hellen wie im dunklen Farbschema; die Auswahl trifft der
+  Browser. Beide Dateien werden mit tools/export-logo.mjs erzeugt.
 #}
 {% macro logo(size, css_class='brand__mark', alt='') -%}
 <picture class="logo">
-  <source srcset="{{ url_for('static', filename='img/logo-dark.jpg') }}"
-          media="(prefers-color-scheme: dark)" type="image/jpeg">
+  <source srcset="{{ url_for('static', filename='img/logo-dark.png') }}"
+          media="(prefers-color-scheme: dark)" type="image/png">
   <img class="{{ css_class }}"
-       src="{{ url_for('static', filename='img/logo.jpg') }}"
+       src="{{ url_for('static', filename='img/logo.png') }}"
        alt="{{ alt }}"
        width="{{ size }}" height="{{ size }}"
        {% if not alt %}aria-hidden="true"{% endif %}

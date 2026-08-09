@@ -1,12 +1,13 @@
 /**
- * Erzeugt die Logo-Dateien der Startseite als JPEG.
+ * Erzeugt die Logo-Dateien der Startseite als PNG mit transparentem Grund.
  *
- *   static/img/logo.jpg       – helle Variante
- *   static/img/logo-dark.jpg  – Variante für das dunkle Farbschema
+ *   static/img/logo.png       – helle Variante (dunkles Grün)
+ *   static/img/logo-dark.png  – Variante für das dunkle Farbschema
  *
  * Das Logo wird aus der Spiral-Geometrie berechnet und über einen
- * headless Chrome gerendert. JPEG kennt keine Transparenz, deshalb
- * bekommt jede Variante den Hintergrund ihrer Zielfläche.
+ * headless Chrome gerendert. Der Hintergrund bleibt transparent, damit
+ * das Logo auf jeder Fläche freigestellt sitzt; die zweite Variante
+ * sorgt für ausreichenden Kontrast auf dunklem Grund.
  *
  * Voraussetzung: ein laufender Chrome mit offenem DevTools-Port.
  *
@@ -22,8 +23,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const SIZE = 512;           // Kantenlänge der Bilddatei in Pixeln
-const QUALITY = 90;
+const SIZE = 384;           // Kantenlänge der Bilddatei in Pixeln
 const DEBUG_PORT = process.env.CDP_PORT || 9222;
 
 // Geometrie der Spirale: Startradius, Zuwachs pro Windung, Anzahl Windungen.
@@ -46,20 +46,18 @@ function spiralPath({ turns = GEO.turns, a = GEO.a, b = GEO.b, steps = 200, cx =
 
 const VARIANTS = [
   {
-    file: 'static/img/logo.jpg',
-    background: '#FFFFFF',
+    file: 'static/img/logo.png',
     stops: ['#6FA98A', '#3F7D5F', '#2C5C46'],
     dot: '#2C5C46',
   },
   {
-    file: 'static/img/logo-dark.jpg',
-    background: '#16211B',
+    file: 'static/img/logo-dark.png',
     stops: ['#C3D8C9', '#9CBFA7', '#6FA98A'],
     dot: '#C3D8C9',
   },
 ];
 
-function page({ background, stops, dot }) {
+function page({ stops, dot }) {
   const inner = spiralPath();
   const outer = spiralPath({ phase: Math.PI });
 
@@ -69,7 +67,7 @@ function page({ background, stops, dot }) {
 
   return `<!doctype html><meta charset="utf-8">
 <style>
-  html, body { margin: 0; width: ${SIZE}px; height: ${SIZE}px; background: ${background}; }
+  html, body { margin: 0; width: ${SIZE}px; height: ${SIZE}px; background: transparent; }
   svg { display: block; width: 100%; height: 100%; }
 </style>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="${view}">
@@ -126,9 +124,13 @@ for (const variant of VARIANTS) {
   await cdp.send('Emulation.setDeviceMetricsOverride', {
     width: SIZE, height: SIZE, deviceScaleFactor: 1, mobile: false,
   });
+  // Ohne diesen Override rendert Chrome eine weiße Seitenfläche mit.
+  await cdp.send('Emulation.setDefaultBackgroundColorOverride', {
+    color: { r: 0, g: 0, b: 0, a: 0 },
+  });
   await new Promise((done) => setTimeout(done, 500));
 
-  const shot = await cdp.send('Page.captureScreenshot', { format: 'jpeg', quality: QUALITY });
+  const shot = await cdp.send('Page.captureScreenshot', { format: 'png' });
   const path = resolve(ROOT, variant.file);
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, Buffer.from(shot.data, 'base64'));
