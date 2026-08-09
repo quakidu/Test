@@ -1,5 +1,5 @@
 /**
- * Spiraldynamik Praxis – Interaktion der Startseite.
+ * Körper im Einklang – Interaktion der Startseite.
  *
  * Enthält: mobiles Menü, Sticky-Header, Scroll-Reveal, Scrollspy,
  * Angebotsfilter und animierte Kennzahlen.

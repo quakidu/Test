@@ -17,8 +17,9 @@
         href="{{ url_for('home', _external=True) if code == default_language else url_for('home_localized', lang_code=code, _external=True) }}">
   {% endfor %}
 
-  <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/png">
-  <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/logo.png') }}">
+  {# Als Favicon dient das Signet – der breite Schriftzug wäre nicht lesbar. #}
+  <link rel="icon" href="{{ url_for('static', filename='img/logo-mark.png') }}" type="image/png">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/logo-mark.png') }}">
   <!-- Ohne JavaScript bleiben die Reveal-Animationen aus und alle Inhalte sichtbar. -->
   <script>document.documentElement.classList.add('js');</script>
   <link rel="preload" as="style" href="{{ url_for('static', filename='css/style.css') }}">

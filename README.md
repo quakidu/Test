@@ -1,8 +1,8 @@
-# Spiraldynamik Praxis – Homepage
+# Körper im Einklang – Homepage
 
-Startseite für eine Praxis für Spiraldynamik: Therapieangebot und Kurse,
-zweisprachig (Deutsch als Standard, Englisch zur Auswahl), optimiert für
-Desktop und mobile Geräte.
+Startseite der Praxis für ganzheitliche Therapie: Therapieangebot und Kurse
+nach dem Konzept der Spiraldynamik, zweisprachig (Deutsch als Standard,
+Englisch zur Auswahl), optimiert für Desktop und mobile Geräte.
 
 ## Technik
 
@@ -32,12 +32,14 @@ templates/
 static/
   css/style.css
   js/main.js
-  img/logo.png          Logo (Spirale, dezentes Grün, transparent)
-  img/logo-dark.png     Logo für das dunkle Farbschema
+  img/logo.png          Logo der Praxis (Original, transparent)
+  img/logo-dark.png     aufgehellte Fassung für das dunkle Farbschema
+  img/logo-mark.png     quadratisches Signet (Favicon)
+  img/logo-mark-dark.png
 translations/
   de.json  en.json
 tools/
-  export-logo.mjs       erzeugt die beiden Logo-PNGs neu
+  prepare-logo.py       leitet die Logo-Varianten aus logo.png ab
 ```
 
 ## Starten
@@ -91,16 +93,17 @@ python3 build.py --site-url https://ihre-domain.ch
   richtet sich danach.
 * **Farben:** die Design-Tokens ganz oben in `static/css/style.css`
   (`--green-*`). Das dunkle Farbschema nutzt dieselben Tokens.
-* **Logo:** `static/img/logo.png` und `static/img/logo-dark.png` ersetzen –
-  quadratisch, mit transparentem Hintergrund und mindestens 256 px Kantenlänge.
-  Zwei Dateien deshalb, weil ein dunkelgrünes Logo auf dunklem Grund zu wenig
-  Kontrast hätte: `logo.png` gilt für das helle Farbschema, `logo-dark.png`
-  für das dunkle. Die Auswahl trifft der Browser über `<picture>` und
-  `prefers-color-scheme` – wer nur eine Datei einsetzen möchte, trägt in
-  `templates/partials/logo.html` schlicht zweimal dieselbe ein.
-  Die mitgelieferte Spirale lässt sich mit `node tools/export-logo.mjs`
-  in anderer Größe oder Farbe neu erzeugen (benötigt einen headless Chrome
-  mit offenem DevTools-Port).
+* **Logo:** `static/img/logo.png` austauschen (PNG mit transparentem
+  Hintergrund) und danach einmal
+
+  ```bash
+  python3 tools/prepare-logo.py
+  ```
+
+  ausführen. Das Skript leitet daraus die aufgehellte Fassung für das dunkle
+  Farbschema sowie das quadratische Signet fürs Favicon ab. Es kommt ohne
+  Zusatzpakete aus. Der Schriftzug steckt in der Bilddatei – im Kopfbereich
+  steht deshalb bewusst kein zusätzlicher Text daneben.
 
 ## Umgesetzte Details
 
@@ -118,3 +121,10 @@ python3 build.py --site-url https://ihre-domain.ch
 
 Adresse, Telefonnummer, E-Mail und Kennzahlen sind Platzhalter und vor dem
 Veröffentlichen zu ersetzen. Impressum und Datenschutz sind noch leere Links.
+
+Das gelieferte Logo ist 200 × 42 Pixel groß. Im Kopfbereich wird es 32 Pixel
+hoch dargestellt, was der Auflösung entspricht – auf Bildschirmen mit hoher
+Pixeldichte wirkt es dadurch leicht weich. Eine größere Fassung (etwa
+600 Pixel Breite) oder das Original als Vektordatei würde das beheben: Datei
+als `static/img/logo.png` ablegen, `python3 tools/prepare-logo.py` ausführen,
+fertig.

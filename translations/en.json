@@ -1,14 +1,13 @@
 {
   "meta": {
     "lang": "en",
-    "title": "Spiraldynamik Practice – Therapy & Courses for Healthy Movement",
-    "description": "Spiraldynamik practice: physiotherapy, movement analysis and courses for feet, back and joints. Movement that fits the human body.",
+    "title": "Körper im Einklang – Practice for Holistic Therapy",
+    "description": "Körper im Einklang – practice for holistic therapy: Spiraldynamik, movement analysis and courses for feet, back and joints.",
     "skip_link": "Skip to content"
   },
   "brand": {
-    "name": "Spiraldynamik",
-    "suffix": "Practice",
-    "tagline": "Movement with a concept"
+    "name": "Körper im Einklang",
+    "tagline": "Practice for holistic therapy"
   },
   "nav": {
     "about": "Concept",
@@ -154,7 +153,7 @@
     "cta": "Write an email"
   },
   "footer": {
-    "tagline": "Practice for Spiraldynamik – therapy and courses for healthy movement.",
+    "tagline": "Holistic therapy and courses – movement based on the Spiraldynamik concept.",
     "nav_title": "Navigation",
     "legal_title": "Legal",
     "imprint": "Imprint",

@@ -4,8 +4,7 @@
 
     <div class="footer__brand">
       <a class="brand brand--footer" href="{{ url_for('home') if lang == default_language else url_for('home_localized', lang_code=lang) }}">
-        {{ logo(40) }}
-        <span class="brand__name">{{ t('brand.name') }}</span>
+        {{ logo('full', css_class='brand__logo brand__logo--footer', alt=t('brand.name')) }}
       </a>
       <p class="footer__tagline">{{ t('footer.tagline') }}</p>
     </div>
@@ -40,7 +39,7 @@
   </div>
 
   <div class="container footer__bottom">
-    <p>&copy; <span id="year">2026</span> {{ t('brand.name') }} {{ t('brand.suffix') }}. {{ t('footer.copyright') }}</p>
+    <p>&copy; <span id="year">2026</span> {{ t('brand.name') }}. {{ t('footer.copyright') }}</p>
     <p class="footer__note">{{ t('footer.note') }}</p>
   </div>
 </footer>

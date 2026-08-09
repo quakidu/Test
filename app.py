@@ -1,4 +1,4 @@
-"""Spiraldynamik Praxis – Webserver.
+"""Körper im Einklang – Webserver.
 
 Kleiner Flask-Server, der die Startseite ausliefert und die
 Internationalisierung (Deutsch als Standard, Englisch zur Auswahl)

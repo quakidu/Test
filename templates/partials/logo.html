@@ -1,16 +1,24 @@
 {#
-  Logo als freigestelltes PNG. Zwei Farbvarianten sorgen für genügend
-  Kontrast im hellen wie im dunklen Farbschema; die Auswahl trifft der
-  Browser. Beide Dateien werden mit tools/export-logo.mjs erzeugt.
+  Logo der Praxis als freigestelltes PNG.
+
+  variant='full'  vollständiges Logo mit Schriftzug (Kopfbereich, Footer, Hero)
+  variant='mark'  nur das Signet, quadratisch (Favicon)
+
+  Zu jeder Datei gibt es eine aufgehellte Fassung für das dunkle Farbschema;
+  die Auswahl trifft der Browser. Erzeugt werden sie mit
+  tools/prepare-logo.py aus static/img/logo.png.
 #}
-{% macro logo(size, css_class='brand__mark', alt='') -%}
+{% macro logo(variant='full', css_class='brand__logo', alt='') -%}
+{%- set base = 'logo' if variant == 'full' else 'logo-mark' -%}
+{%- set width = 200 if variant == 'full' else 44 -%}
+{%- set height = 42 if variant == 'full' else 44 -%}
 <picture class="logo">
-  <source srcset="{{ url_for('static', filename='img/logo-dark.png') }}"
+  <source srcset="{{ url_for('static', filename='img/' ~ base ~ '-dark.png') }}"
           media="(prefers-color-scheme: dark)" type="image/png">
   <img class="{{ css_class }}"
-       src="{{ url_for('static', filename='img/logo.png') }}"
+       src="{{ url_for('static', filename='img/' ~ base ~ '.png') }}"
        alt="{{ alt }}"
-       width="{{ size }}" height="{{ size }}"
+       width="{{ width }}" height="{{ height }}"
        {% if not alt %}aria-hidden="true"{% endif %}
        decoding="async">
 </picture>

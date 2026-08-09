@@ -1,14 +1,13 @@
 {
   "meta": {
     "lang": "de",
-    "title": "Spiraldynamik Praxis – Therapie & Kurse für gesunde Bewegung",
-    "description": "Praxis für Spiraldynamik: Physiotherapie, Bewegungsanalyse und Kurse für Füße, Rücken und Gelenke. Bewegung, die dem Körper entspricht.",
+    "title": "Körper im Einklang – Praxis für ganzheitliche Therapie",
+    "description": "Körper im Einklang – Praxis für ganzheitliche Therapie: Spiraldynamik, Bewegungsanalyse und Kurse für Füße, Rücken und Gelenke.",
     "skip_link": "Zum Inhalt springen"
   },
   "brand": {
-    "name": "Spiraldynamik",
-    "suffix": "Praxis",
-    "tagline": "Bewegung mit Konzept"
+    "name": "Körper im Einklang",
+    "tagline": "Praxis für ganzheitliche Therapie"
   },
   "nav": {
     "about": "Konzept",
@@ -154,7 +153,7 @@
     "cta": "E-Mail schreiben"
   },
   "footer": {
-    "tagline": "Praxis für Spiraldynamik – Therapie und Kurse für gesunde Bewegung.",
+    "tagline": "Ganzheitliche Therapie und Kurse – Bewegung nach dem Konzept der Spiraldynamik.",
     "nav_title": "Navigation",
     "legal_title": "Rechtliches",
     "imprint": "Impressum",

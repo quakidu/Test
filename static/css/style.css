@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Spiraldynamik Praxis – Stylesheet
+   Körper im Einklang – Stylesheet
    1. Design-Tokens
    2. Reset & Basis
    3. Layout-Bausteine
@@ -288,29 +288,21 @@ button { font: inherit; color: inherit; }
   gap: 0.7rem;
   flex-shrink: 0;
 }
-/* Das Logo ist ein freigestelltes PNG und sitzt ohne Fläche auf dem Grund. */
+/*
+ * Das Logo ist ein freigestelltes PNG im Querformat und enthält den
+ * Schriftzug bereits – daneben steht deshalb kein weiterer Text.
+ * Die Höhe steuert die Größe, die Breite ergibt sich aus dem Seitenverhältnis.
+ */
 .logo { display: block; line-height: 0; }
 
-.brand__mark {
-  width: 44px;
-  height: 44px;
-  transition: transform 0.6s var(--ease);
+.brand__logo {
+  height: 32px;
+  width: auto;
+  transition: opacity 0.25s var(--ease);
 }
-.brand:hover .brand__mark { transform: rotate(-40deg) scale(1.06); }
+.brand:hover .brand__logo { opacity: 0.72; }
 
-.brand__text { display: flex; flex-direction: column; line-height: 1.15; }
-.brand__name {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-.brand__tagline {
-  font-size: 0.7rem;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
+.brand__logo--footer { height: 30px; }
 
 .nav {
   display: flex;
@@ -532,9 +524,8 @@ button { font: inherit; color: inherit; }
   margin-bottom: 1.5rem;
 }
 .hero__card-logo {
-  width: clamp(88px, 14vw, 118px);
+  width: min(190px, 90%);
   height: auto;
-  animation: spin-slow 46s linear infinite;
 }
 .hero__card-title {
   font-size: 1.15rem;
@@ -817,7 +808,6 @@ button { font: inherit; color: inherit; }
   padding-bottom: clamp(2.5rem, 5vw, 3.5rem);
 }
 .brand--footer { margin-bottom: 1rem; }
-.brand--footer .brand__mark { width: 38px; height: 38px; }
 .footer__tagline {
   max-width: 38ch;
   color: var(--text-muted);
@@ -868,10 +858,6 @@ button { font: inherit; color: inherit; }
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-10px); }
-}
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
 }
 @keyframes pulse-line {
   0%, 100% { opacity: 0.3; transform: scaleY(0.7); }
@@ -949,8 +935,7 @@ button { font: inherit; color: inherit; }
 }
 
 @media (max-width: 560px) {
-  .brand__tagline { display: none; }
-  .brand__mark { width: 38px; height: 38px; }
+  .brand__logo { height: 27px; }
   .hero__actions .btn { width: 100%; }
   .stats { gap: 1.25rem 2rem; }
   .footer__inner { grid-template-columns: 1fr 1fr; }
