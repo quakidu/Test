@@ -14,40 +14,44 @@
 
 /* ── 1. Design-Tokens ─────────────────────────────────────────────────── */
 :root {
-  /* Dezentes Grün als Leitfarbe */
-  --green-50:  #F1F6F2;
-  --green-100: #DFEAE2;
-  --green-200: #C3D8C9;
-  --green-300: #9CBFA7;
-  --green-400: #6FA98A;
-  --green-500: #4F8E6C;
-  --green-600: #3F7D5F;
-  --green-700: #2C5C46;
-  --green-800: #1F4333;
+  /*
+   * Leitfarbe ist das Blau aus dem Logo (--blue-600 = #314F6F, die Farbe
+   * der Unterzeile). --ink-900 entspricht der Schriftfarbe des Logos.
+   * Die übrigen Stufen sind daraus abgeleitet.
+   */
+  --blue-50:  #F2F5F9;
+  --blue-100: #E0E8F1;
+  --blue-200: #C3D2E2;
+  --blue-300: #9BB2CB;
+  --blue-400: #6E8EB0;
+  --blue-500: #4A6C91;
+  --blue-600: #314F6F;
+  --blue-700: #263F59;
+  --blue-800: #1B2D40;
 
-  --sand-50: #FAFAF7;
-  --sand-100: #F3F3EE;
+  --neutral-50:  #FAFBFC;
+  --neutral-100: #F2F4F7;
 
-  --ink-900: #16211B;
-  --ink-700: #2B3A32;
-  --ink-500: #55645C;
-  --ink-300: #8A968F;
+  --ink-900: #191E28;
+  --ink-700: #2E3644;
+  --ink-500: #566173;
+  --ink-300: #8A94A5;
 
-  --bg:            var(--sand-50);
+  --bg:            var(--neutral-50);
   --bg-elevated:   #FFFFFF;
-  --bg-tinted:     var(--green-50);
+  --bg-tinted:     var(--blue-50);
   --text:          var(--ink-900);
   --text-muted:    var(--ink-500);
-  --border:        rgba(28, 55, 42, 0.12);
-  --border-strong: rgba(28, 55, 42, 0.22);
-  --accent:        var(--green-600);
-  --accent-soft:   var(--green-400);
-  --accent-ink:    var(--green-700);
+  --border:        rgba(25, 30, 40, 0.12);
+  --border-strong: rgba(25, 30, 40, 0.22);
+  --accent:        var(--blue-600);
+  --accent-soft:   var(--blue-400);
+  --accent-ink:    var(--blue-700);
   --on-accent:     #FFFFFF;
 
-  --shadow-sm: 0 1px 2px rgba(22, 33, 27, 0.05);
-  --shadow-md: 0 8px 24px -12px rgba(22, 33, 27, 0.22);
-  --shadow-lg: 0 28px 60px -30px rgba(22, 33, 27, 0.35);
+  --shadow-sm: 0 1px 2px rgba(25, 30, 40, 0.05);
+  --shadow-md: 0 8px 24px -12px rgba(25, 30, 40, 0.22);
+  --shadow-lg: 0 28px 60px -30px rgba(25, 30, 40, 0.35);
 
   --radius-sm: 8px;
   --radius-md: 14px;
@@ -68,17 +72,17 @@
 /* Dunkles Farbschema – gleiche Tokens, andere Werte */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg:            #101713;
-    --bg-elevated:   #16211B;
-    --bg-tinted:     #131E18;
-    --text:          #E9F0EB;
-    --text-muted:    #A3B3AA;
-    --border:        rgba(196, 219, 205, 0.14);
-    --border-strong: rgba(196, 219, 205, 0.26);
-    --accent:        var(--green-400);
-    --accent-soft:   var(--green-300);
-    --accent-ink:    var(--green-200);
-    --on-accent:     #0E1712;
+    --bg:            #0E131A;
+    --bg-elevated:   #151C25;
+    --bg-tinted:     #121821;
+    --text:          #E7ECF3;
+    --text-muted:    #A0AABA;
+    --border:        rgba(199, 215, 235, 0.14);
+    --border-strong: rgba(199, 215, 235, 0.26);
+    --accent:        var(--blue-400);
+    --accent-soft:   var(--blue-300);
+    --accent-ink:    var(--blue-200);
+    --on-accent:     #0D121A;
 
     --shadow-md: 0 8px 24px -12px rgba(0, 0, 0, 0.7);
     --shadow-lg: 0 28px 60px -30px rgba(0, 0, 0, 0.9);
@@ -136,7 +140,7 @@ button { font: inherit; color: inherit; }
 }
 
 ::selection {
-  background: var(--green-200);
+  background: var(--blue-200);
   color: var(--ink-900);
 }
 
@@ -402,7 +406,7 @@ button { font: inherit; color: inherit; }
   position: fixed;
   inset: 0;
   z-index: 90;
-  background: rgba(10, 20, 15, 0.45);
+  background: rgba(12, 17, 26, 0.45);
   backdrop-filter: blur(2px);
   opacity: 0;
   transition: opacity 0.25s var(--ease);
@@ -434,19 +438,19 @@ button { font: inherit; color: inherit; }
 .blob--1 {
   width: 46vw; height: 46vw; max-width: 620px; max-height: 620px;
   top: -8%; right: -6%;
-  background: radial-gradient(circle at 30% 30%, var(--green-300), transparent 70%);
+  background: radial-gradient(circle at 30% 30%, var(--blue-300), transparent 70%);
   animation: drift 22s var(--ease) infinite alternate;
 }
 .blob--2 {
   width: 34vw; height: 34vw; max-width: 460px; max-height: 460px;
   top: 34%; left: -8%;
-  background: radial-gradient(circle at 60% 40%, var(--green-200), transparent 70%);
+  background: radial-gradient(circle at 60% 40%, var(--blue-200), transparent 70%);
   animation: drift 28s var(--ease) infinite alternate-reverse;
 }
 .blob--3 {
   width: 26vw; height: 26vw; max-width: 360px; max-height: 360px;
   bottom: 2%; left: 42%;
-  background: radial-gradient(circle at 50% 50%, var(--green-400), transparent 72%);
+  background: radial-gradient(circle at 50% 50%, var(--blue-400), transparent 72%);
   opacity: 0.28;
   animation: drift 34s var(--ease) infinite alternate;
 }
@@ -464,7 +468,7 @@ button { font: inherit; color: inherit; }
 }
 .hero__title-line { display: block; }
 .hero__title-line--accent {
-  background: linear-gradient(100deg, var(--accent) 0%, var(--accent-soft) 60%, var(--green-300) 100%);
+  background: linear-gradient(100deg, var(--accent) 0%, var(--accent-soft) 60%, var(--blue-300) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -682,13 +686,18 @@ button { font: inherit; color: inherit; }
   letter-spacing: 0.09em;
   text-transform: uppercase;
 }
+/*
+ * Die Palette ist einfarbig, deshalb unterscheiden sich die beiden Arten
+ * über die Form: Therapie gefüllt, Kurs als Kontur.
+ */
 .card__badge--therapy {
   background: color-mix(in srgb, var(--accent) 14%, transparent);
   color: var(--accent-ink);
 }
 .card__badge--course {
-  background: color-mix(in srgb, var(--green-300) 26%, transparent);
+  background: transparent;
   color: var(--accent-ink);
+  box-shadow: inset 0 0 0 1px var(--border-strong);
 }
 
 .card__title { font-size: 1.2rem; }

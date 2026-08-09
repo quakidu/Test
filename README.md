@@ -92,7 +92,10 @@ python3 build.py --site-url https://ihre-domain.ch
   `"type"` auf `"therapy"` oder `"course"` setzen – der Filter auf der Seite
   richtet sich danach.
 * **Farben:** die Design-Tokens ganz oben in `static/css/style.css`
-  (`--green-*`). Das dunkle Farbschema nutzt dieselben Tokens.
+  (`--blue-*`). Die Leitfarbe `--blue-600` (`#314F6F`) ist das Blau aus der
+  Unterzeile des Logos, `--ink-900` die Schriftfarbe des Logos; die übrigen
+  Stufen sind daraus abgeleitet. Das dunkle Farbschema nutzt dieselben Tokens.
+  Alle Text-Hintergrund-Kombinationen liegen über dem Kontrastwert 4.5:1.
 * **Logo:** `static/img/logo.png` austauschen (PNG mit transparentem
   Hintergrund) und danach einmal
 
@@ -108,7 +111,7 @@ python3 build.py --site-url https://ihre-domain.ch
 ## Umgesetzte Details
 
 * Logo links oben, mit der Startseite verlinkt
-* Dezentes Grün als Leitfarbe, helles und dunkles Farbschema
+* Leitfarbe aus dem Logo abgeleitet, helles und dunkles Farbschema
 * Responsiv ab ca. 320 px: Burger-Menü, gestapelte Raster, flexible Typografie
 * Sprachumschalter im Kopfbereich, `hreflang`-Verweise im `<head>`
 * Sticky Header, Scroll-Reveal, Scrollspy, animierte Kennzahlen,
