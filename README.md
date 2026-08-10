@@ -25,6 +25,7 @@ app.py                  Flask-Server (nur für die lokale Arbeit)
 build.py                Statischer Build nach dist/
 deploy.py               lädt dist/ per FTPS auf den Webspace
 deploy.ini.example      Vorlage für Domain und FTP-Zugang
+content.py              Kursauswahl und Datumsformate
 requirements.txt        Abhängigkeiten
 templates/
   base.html             Grundgerüst (Head, Meta, hreflang)
@@ -167,12 +168,28 @@ Aktualisierung eine veraltete Fassung sehen.
 * **Texte, Adresse, Angebote:** `translations/de.json` und
   `translations/en.json`. Beide Dateien haben dieselbe Struktur; fehlt ein
   Schlüssel im Englischen, greift automatisch der deutsche Text.
-* **Kurse pflegen:** `courses.items` in beiden Sprachdateien. Jeder Eintrag
-  hat `title`, `text`, `start`, `scope`, `spots` und `price`. Genau ein
-  Eintrag sollte `"featured": true` tragen – dieser Kurs wird im
-  Kursbereich hervorgehoben. Der Hinweis im Kopfbereich der Seite steht
-  getrennt davon unter `hero.course_teaser` und muss beim Wechsel des
-  nächsten Kurses mitgeändert werden.
+* **Kurse pflegen:** `courses.items` in beiden Sprachdateien – das ist die
+  einzige Stelle. Jeder Eintrag hat `title`, `text`, `start_date`, `scope`,
+  `spots` und `price`. Das Startdatum steht als `JJJJ-MM-TT` dort, alles
+  Weitere ergibt sich daraus beim Bauen:
+
+  * die **Reihenfolge** der Kurse (nach Datum, unabhängig davon, wie sie in
+    der Datei stehen),
+  * welcher Kurs **hervorgehoben** wird – immer der nächste,
+  * das **angezeigte Datum** in der jeweiligen Sprache („14. September“ /
+    „14 September“); das Jahr erscheint nur, wenn der Termin nicht im
+    laufenden Jahr liegt,
+  * der **Hinweis im Kopfbereich** der Seite.
+
+  **Abgelaufene Kurse verschwinden von selbst.** Ab dem Tag nach dem Start
+  fällt ein Kurs beim nächsten Bauen heraus und der Hinweis oben rückt auf
+  den folgenden Termin. Steht gar kein Kurs mehr an, entfällt der Hinweis
+  und im Kursbereich erscheint der Text aus `courses.empty`.
+
+  Anzupassen sind also nur noch Datum, freie Plätze und Preis – danach
+  `python3 deploy.py`. Die Formulierungen drumherum stehen in
+  `hero.course_teaser` (mit den Platzhaltern `{title}` und `{date}`) und in
+  `formats` (Monatsnamen und Datumsmuster).
 * **Therapien ergänzen:** einen weiteren Eintrag in `offer.items` anlegen
   (`title`, `text`, `meta`).
 * **Farben:** die Design-Tokens ganz oben in `static/css/style.css`
@@ -200,7 +217,8 @@ Aktualisierung eine veraltete Fassung sehen.
 * Sprachumschalter im Kopfbereich, `hreflang`-Verweise im `<head>`
 * Kurse in einem eigenen, farblich abgesetzten Abschnitt mit Startdatum,
   freien Plätzen und Preis; Hinweis auf den nächsten Kurs bereits im
-  Kopfbereich
+  Kopfbereich – beides aus derselben Liste erzeugt
+* abgelaufene Kurstermine fallen automatisch heraus
 * Sticky Header, Scroll-Reveal, Scrollspy, animierte Kennzahlen
 * Ohne JavaScript bleiben alle Inhalte sichtbar und lesbar
 * `prefers-reduced-motion` schaltet Animationen ab
@@ -209,7 +227,10 @@ Aktualisierung eine veraltete Fassung sehen.
 ## Hinweis
 
 Adresse, Telefonnummer, E-Mail, Kennzahlen sowie die Kurstermine, Preise
-und freien Plätze sind Platzhalter und vor dem Veröffentlichen zu ersetzen. Impressum und Datenschutz sind noch leere Links.
+und freien Plätze sind Platzhalter und vor dem Veröffentlichen zu ersetzen.
+Weil abgelaufene Kurse automatisch herausfallen, sollte die Seite nach jeder
+Terminänderung neu gebaut und hochgeladen werden – sonst bleibt der Stand
+des letzten Builds stehen. Impressum und Datenschutz sind noch leere Links.
 
 Das gelieferte Logo ist 200 × 42 Pixel groß. Im Kopfbereich wird es 32 Pixel
 hoch dargestellt, was der Auflösung entspricht – auf Bildschirmen mit hoher

@@ -32,6 +32,8 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+import content
+
 BASE_DIR = Path(__file__).resolve().parent
 DIST_DIR = BASE_DIR / "dist"
 WEBROOT_DIR = BASE_DIR / "webroot"
@@ -185,6 +187,8 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
     index = env.get_template("index.html")
     for lang in LANGUAGES:
         strings = load_translations(lang)
+        # Kommende Kurse und der Hinweis oben stammen aus derselben Liste.
+        courses = content.upcoming_courses(strings)
         html = index.render(
             lang=lang,
             t=partial(translate, strings, fallback),
@@ -193,6 +197,8 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
             default_language=DEFAULT_LANGUAGE,
             url_for=make_url_for(lang, site_url, base_path),
             anchor_base="",  # auf der Startseite genügen reine Anker
+            courses=courses,
+            teaser=content.course_teaser(strings, courses),
         )
         target = DIST_DIR / ("index.html" if lang == DEFAULT_LANGUAGE else f"{lang}/index.html")
         target.parent.mkdir(parents=True, exist_ok=True)

@@ -50,7 +50,7 @@
     ],
     "course_teaser": {
       "label": "Nächster Kurs",
-      "text": "Gesunde Füße – Start am 14. September",
+      "text": "{title} – Start am {date}",
       "link": "Freie Plätze ansehen"
     }
   },
@@ -171,30 +171,46 @@
       {
         "title": "Gesunde Füße",
         "text": "Fußgewölbe, Abrollen und Schuhwahl. Sechs Abende, an deren Ende Sie Ihre Füße anders wahrnehmen und gezielt kräftigen können.",
-        "start": "14. September",
+        "start_date": "2026-09-14",
         "scope": "6 × 60 Minuten",
         "spots": "3 von 8",
-        "price": "240 €",
-        "featured": true
+        "price": "240 €"
       },
       {
         "title": "Rücken in Balance",
         "text": "Aufrichtung ohne Anstrengung: Wirbelsäule, Becken und Atmung im Zusammenspiel.",
-        "start": "2. Oktober",
+        "start_date": "2026-10-02",
         "scope": "8 × 75 Minuten",
         "spots": "5 von 8",
-        "price": "360 €",
-        "featured": false
+        "price": "360 €"
       },
       {
         "title": "Bewegt im Büro",
         "text": "Kompaktkurs für den Arbeitsalltag – Sitzen, Stehen, Bildschirmarbeit.",
-        "start": "5. November",
+        "start_date": "2026-11-05",
         "scope": "4 × 60 Minuten",
         "spots": "7 von 10",
-        "price": "160 €",
-        "featured": false
+        "price": "160 €"
       }
-    ]
+    ],
+    "empty": "Die Termine für die nächste Staffel stehen noch nicht fest. Schreiben Sie uns – wir sagen Ihnen Bescheid, sobald neue Kurse feststehen."
+  },
+  "formats": {
+    "months": [
+      "Januar",
+      "Februar",
+      "März",
+      "April",
+      "Mai",
+      "Juni",
+      "Juli",
+      "August",
+      "September",
+      "Oktober",
+      "November",
+      "Dezember"
+    ],
+    "date": "{day}. {month}",
+    "date_with_year": "{day}. {month} {year}"
   }
 }

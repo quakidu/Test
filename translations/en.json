@@ -50,7 +50,7 @@
     ],
     "course_teaser": {
       "label": "Next course",
-      "text": "Healthy feet – starting 14 September",
+      "text": "{title} – starting {date}",
       "link": "See available places"
     }
   },
@@ -171,30 +171,46 @@
       {
         "title": "Healthy feet",
         "text": "Arches, rolling motion and choosing footwear. Six evenings, after which you perceive your feet differently and can strengthen them.",
-        "start": "14 September",
+        "start_date": "2026-09-14",
         "scope": "6 × 60 minutes",
         "spots": "3 of 8",
-        "price": "240 €",
-        "featured": true
+        "price": "240 €"
       },
       {
         "title": "Back in balance",
         "text": "Upright without effort: spine, pelvis and breathing working together.",
-        "start": "2 October",
+        "start_date": "2026-10-02",
         "scope": "8 × 75 minutes",
         "spots": "5 of 8",
-        "price": "360 €",
-        "featured": false
+        "price": "360 €"
       },
       {
         "title": "Active at the office",
         "text": "Compact course for working days – sitting, standing, screen work.",
-        "start": "5 November",
+        "start_date": "2026-11-05",
         "scope": "4 × 60 minutes",
         "spots": "7 of 10",
-        "price": "160 €",
-        "featured": false
+        "price": "160 €"
       }
-    ]
+    ],
+    "empty": "Dates for the next round have not been set yet. Send us a message – we will let you know as soon as new courses are scheduled."
+  },
+  "formats": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ],
+    "date": "{day} {month}",
+    "date_with_year": "{day} {month} {year}"
   }
 }

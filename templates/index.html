@@ -25,12 +25,15 @@
         <a class="btn btn--ghost" href="#courses">{{ t('hero.cta_secondary') }}</a>
       </div>
 
-      {# Hinweis auf den nächsten Kurs, direkt im ersten Bildschirm. #}
+      {# Hinweis auf den nächsten Kurs – wird aus der Kursliste erzeugt und
+         entfällt, solange kein Termin ansteht. #}
+      {% if teaser %}
       <a class="teaser reveal" data-reveal-delay="4" href="#courses">
-        <span class="teaser__label">{{ t('hero.course_teaser.label') }}</span>
-        <span class="teaser__text">{{ t('hero.course_teaser.text') }}</span>
-        <span class="teaser__link">{{ t('hero.course_teaser.link') }} <span aria-hidden="true">&rarr;</span></span>
+        <span class="teaser__label">{{ teaser.label }}</span>
+        <span class="teaser__text">{{ teaser.text }}</span>
+        <span class="teaser__link">{{ teaser.link }} <span aria-hidden="true">&rarr;</span></span>
       </a>
+      {% endif %}
 
       <dl class="stats reveal" data-reveal-delay="4">
         {% for stat in s.hero.stats %}
@@ -103,13 +106,22 @@
       {% endfor %}
     </ul>
 
+    {% if not courses %}
+    <p class="courses__empty reveal">{{ t('courses.empty') }}</p>
+    <a class="btn btn--primary reveal" data-reveal-delay="1" href="#contact">
+      {{ t('nav.contact') }}
+    </a>
+    {% endif %}
+
     <div class="courses">
-      {% for course in s.courses['items'] %}
-      <article class="course{{ ' course--featured' if course.featured }} reveal"
+      {# Die Liste ist nach Startdatum sortiert – der erste Eintrag ist der
+         nächste Kurs und wird hervorgehoben. #}
+      {% for course in courses %}
+      <article class="course{{ ' course--featured' if loop.first }} reveal"
                data-reveal-delay="{{ loop.index0 }}">
         <p class="course__start">
           <span class="course__start-label">{{ t('courses.start_label') }}</span>
-          <span class="course__start-date">{{ course.start }}</span>
+          <span class="course__start-date">{{ course.date }}</span>
         </p>
 
         <h3 class="course__title">{{ course.title }}</h3>

@@ -22,6 +22,8 @@ from flask import (
     url_for,
 )
 
+import content
+
 BASE_DIR = Path(__file__).resolve().parent
 TRANSLATIONS_DIR = BASE_DIR / "translations"
 
@@ -93,6 +95,8 @@ def resolve_language(url_lang: str | None) -> str:
 # --------------------------------------------------------------------------
 def render_home(lang: str):
     strings = load_translations(lang)
+    # Kommende Kurse und der Hinweis oben stammen aus derselben Liste.
+    courses = content.upcoming_courses(strings)
 
     response = make_response(
         render_template(
@@ -103,6 +107,8 @@ def render_home(lang: str):
             languages=LANGUAGES,
             default_language=DEFAULT_LANGUAGE,
             anchor_base="",
+            courses=courses,
+            teaser=content.course_teaser(strings, courses),
         )
     )
     response.set_cookie(
