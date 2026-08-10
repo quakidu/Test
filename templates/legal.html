@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} – {{ t('brand.name') }}{% endblock %}
+
+{% block content %}
+<section class="section section--legal">
+  <div class="container">
+    <header class="section__head">
+      <p class="eyebrow">{{ t('legal.eyebrow') }}</p>
+      <h1 class="section__title">{{ page_title }}</h1>
+    </header>
+
+    {# Der Text kommt aus content/<seite>.<sprache>.html und wird bewusst
+       unverändert eingesetzt – die Dateien gehören zum Projekt. #}
+    <div class="prose">
+      {{ page_body | safe }}
+    </div>
+
+    <p class="legal__back">
+      <a class="card__link" href="{{ url_for('home') if lang == default_language else url_for('home_localized', lang_code=lang) }}">
+        <span aria-hidden="true">&larr;</span>
+        {{ t('legal.back') }}
+      </a>
+    </p>
+  </div>
+</section>
+{% endblock %}

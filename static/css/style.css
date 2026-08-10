@@ -929,6 +929,69 @@ button { font: inherit; color: inherit; }
 .contact__row dd { margin: 0; font-size: 1rem; }
 .contact__row a:hover { color: var(--accent-ink); text-decoration: underline; }
 
+/* ── Rechtsseiten ─────────────────────────────────────────────────────
+ * Fließtext aus content/*.html. Die Regeln greifen auf Elemente statt auf
+ * Klassen, damit die Textbausteine ohne CSS-Kenntnisse bearbeitbar bleiben.
+ */
+.section--legal .section__head { margin-bottom: clamp(1.75rem, 4vw, 2.5rem); }
+
+.prose {
+  max-width: 68ch;
+  color: var(--text-muted);
+}
+.prose h2 {
+  margin: clamp(2rem, 4vw, 2.75rem) 0 0.75rem;
+  font-size: clamp(1.15rem, 1.05rem + 0.5vw, 1.4rem);
+  color: var(--text);
+}
+.prose h2:first-child { margin-top: 0; }
+.prose p { margin-bottom: 1rem; }
+.prose ul {
+  margin: 0 0 1.25rem;
+  padding-left: 1.1rem;
+  list-style: disc;
+}
+.prose li { margin-bottom: 0.4rem; padding-left: 0.25rem; }
+.prose a {
+  color: var(--accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.prose a:hover { text-decoration-thickness: 2px; }
+.prose code {
+  padding: 0.1em 0.4em;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  font-size: 0.9em;
+}
+.prose .lead-note {
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+  font-style: italic;
+}
+
+/* Noch auszufüllende Angaben – sollen ins Auge fallen. */
+.ph {
+  padding: 0.05em 0.35em;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  color: var(--text);
+  font-size: 0.95em;
+}
+
+/* Hinweis, dass die Seite noch nicht fertig ist. Wird später gelöscht. */
+.notice {
+  margin-bottom: 2rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border-strong);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg-elevated));
+  color: var(--text);
+}
+.notice p { margin: 0; font-size: 0.95rem; }
+
 /* Fehlerseite */
 .section--error {
   display: grid;

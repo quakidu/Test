@@ -14,7 +14,7 @@
 
   {% for code in languages %}
   <link rel="alternate" hreflang="{{ code }}"
-        href="{{ url_for('home', _external=True) if code == default_language else url_for('home_localized', lang_code=code, _external=True) }}">
+        href="{{ page_url(code, true) }}">
   {% endfor %}
 
   {# Als Favicon dient das Signet – der breite Schriftzug wäre nicht lesbar. #}

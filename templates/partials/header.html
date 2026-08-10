@@ -20,7 +20,7 @@
         <div class="langswitch" role="group" aria-label="{{ t('nav.language') }}">
           {% for code, meta in languages.items() %}
           <a class="langswitch__item {{ 'is-active' if code == lang }}"
-             href="{{ url_for('home') if code == default_language else url_for('home_localized', lang_code=code) }}"
+             href="{{ page_url(code) }}"
              lang="{{ code }}"
              hreflang="{{ code }}"
              title="{{ meta.label }}"

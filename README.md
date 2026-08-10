@@ -30,9 +30,13 @@ requirements.txt        Abhängigkeiten
 templates/
   base.html             Grundgerüst (Head, Meta, hreflang)
   index.html            Startseite
+  legal.html            Rahmen für Impressum und Datenschutz
   404.html              Fehlerseite
   partials/header.html  Kopfbereich mit Logo links oben
   partials/footer.html  Fußbereich
+content/
+  impressum.de.html     Impressum, deutsch  (dazu .en.html)
+  datenschutz.de.html   Datenschutz, deutsch (dazu .en.html)
 static/
   css/style.css
   js/main.js
@@ -209,6 +213,55 @@ Aktualisierung eine veraltete Fassung sehen.
   Zusatzpakete aus. Der Schriftzug steckt in der Bilddatei – im Kopfbereich
   steht deshalb bewusst kein zusätzlicher Text daneben.
 
+## Impressum und Datenschutz
+
+Beide Seiten liegen als **Vorlage mit Platzhaltern** bereit, erreichbar über
+den Fußbereich:
+
+| Seite       | Deutsch              | Englisch                |
+| ----------- | -------------------- | ----------------------- |
+| Impressum   | `/impressum.html`    | `/en/impressum.html`    |
+| Datenschutz | `/datenschutz.html`  | `/en/datenschutz.html`  |
+
+Die Texte stehen als HTML-Bausteine in `content/` – nicht in den
+JSON-Dateien, weil sich längere Fließtexte dort schlecht bearbeiten lassen.
+Sie können die Dateien direkt bearbeiten oder komplett durch den Text Ihrer
+Anwältin, Ihres Anwalts oder eines Generators ersetzen.
+
+**Vor dem Veröffentlichen:**
+
+1. Alle eingeklammerten Platzhalter ersetzen – sie sind auf der Seite mit
+   gestricheltem Rahmen hervorgehoben, damit keiner übersehen wird.
+2. Den Hinweiskasten „Diese Seite ist noch nicht ausgefüllt“ am Anfang der
+   jeweiligen Datei löschen.
+3. Die Texte rechtlich prüfen lassen.
+
+Die englischen Fassungen sind als Übersetzung gekennzeichnet; verbindlich
+ist die deutsche.
+
+### Wichtig für die Datenschutzerklärung
+
+Der Text beschreibt den heutigen Stand der Seite: rein statische
+Auslieferung, **keine Cookies, keine Dienste Dritter, keine Formulare, keine
+Schriftarten von fremden Servern**. Das wurde am gebauten Ergebnis geprüft.
+Deshalb ist auch kein Einwilligungsbanner nötig.
+
+Sobald etwas davon hinzukommt – ein Kontaktformular, eine eingebettete
+Karte, eine Terminbuchung, Schriftarten von einem fremden Server oder
+Statistik –, **muss der Text erweitert werden**, und je nach Dienst wird
+eine Einwilligung erforderlich.
+
+Zwei weitere Punkte:
+
+* Mit dem Hoster ist ein **Vertrag über die Auftragsverarbeitung** nach
+  Art. 28 DSGVO zu schließen; Alfahosting stellt einen solchen bereit.
+* Die Erklärung deckt nur die Website ab. Für **Patientendaten** in der
+  Praxis brauchen Sie eine gesonderte Datenschutzinformation.
+
+Der Flask-Server aus `app.py` setzt ein Cookie zum Merken der Sprachwahl.
+Das betrifft nur die lokale Arbeit – die veröffentlichte statische Fassung
+tut das nicht.
+
 ## Umgesetzte Details
 
 * Logo links oben, mit der Startseite verlinkt
@@ -223,6 +276,8 @@ Aktualisierung eine veraltete Fassung sehen.
 * Ohne JavaScript bleiben alle Inhalte sichtbar und lesbar
 * `prefers-reduced-motion` schaltet Animationen ab
 * Sprungmarke zum Inhalt, sichtbare Fokusrahmen, ARIA-Attribute am Menü
+* Impressum und Datenschutzerklärung in beiden Sprachen; der
+  Sprachumschalter bleibt dabei auf der aufgerufenen Seite
 
 ## Hinweis
 

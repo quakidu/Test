@@ -26,6 +26,13 @@ import content
 
 BASE_DIR = Path(__file__).resolve().parent
 TRANSLATIONS_DIR = BASE_DIR / "translations"
+CONTENT_DIR = BASE_DIR / "content"
+
+# Rechtsseiten: Adresse, Textbaustein unter content/ und Titelschlüssel.
+LEGAL_PAGES = {
+    "impressum": {"title_key": "legal.imprint"},
+    "datenschutz": {"title_key": "legal.privacy"},
+}
 
 DEFAULT_LANGUAGE = "de"
 LANGUAGES = {
@@ -107,6 +114,10 @@ def render_home(lang: str):
             languages=LANGUAGES,
             default_language=DEFAULT_LANGUAGE,
             anchor_base="",
+            page_url=lambda code, external=False: (
+                url_for("home") if code == DEFAULT_LANGUAGE
+                else url_for("home_localized", lang_code=code)
+            ),
             courses=courses,
             teaser=content.course_teaser(strings, courses),
         )
@@ -135,6 +146,58 @@ def home_localized(lang_code: str):
     if lang_code == DEFAULT_LANGUAGE:
         return redirect(url_for("home"))
     return render_home(lang_code)
+
+
+def render_legal(lang: str, page: str):
+    """Rechtsseite in der gewünschten Sprache; Text kommt aus content/."""
+    strings = load_translations(lang)
+    body = CONTENT_DIR / f"{page}.{lang}.html"
+    if not body.exists():
+        body = CONTENT_DIR / f"{page}.{DEFAULT_LANGUAGE}.html"
+
+    def page_url(code: str, external: bool = False) -> str:
+        if code == DEFAULT_LANGUAGE:
+            return url_for("legal", page=page, _external=external)
+        return url_for("legal_localized", lang_code=code, page=page, _external=external)
+
+    response = make_response(
+        render_template(
+            "legal.html",
+            lang=lang,
+            t=lambda key, default=None: translate(key, lang, default),
+            s=strings,
+            languages=LANGUAGES,
+            default_language=DEFAULT_LANGUAGE,
+            anchor_base=url_for("home"),
+            page_url=page_url,
+            page_title=translate(LEGAL_PAGES[page]["title_key"], lang),
+            page_body=body.read_text(encoding="utf-8"),
+        )
+    )
+    response.set_cookie(LANGUAGE_COOKIE, lang, max_age=LANGUAGE_COOKIE_MAX_AGE,
+                        samesite="Lax")
+    return response
+
+
+# Die Adressen tragen bewusst die Endung .html – so sind sie identisch mit
+# denen des statischen Builds, und /impressum kollidiert nicht mit dem
+# Sprachpräfix /<lang_code>.
+@app.route("/<page>.html")
+def legal(page: str):
+    """Rechtsseite in der Standardsprache, z. B. /impressum.html."""
+    if page not in LEGAL_PAGES:
+        abort(404)
+    return render_legal(resolve_language(None), page)
+
+
+@app.route("/<lang_code>/<page>.html")
+def legal_localized(lang_code: str, page: str):
+    """Rechtsseite unter einem Sprachpräfix, z. B. /en/impressum.html."""
+    if lang_code not in LANGUAGES or page not in LEGAL_PAGES:
+        abort(404)
+    if lang_code == DEFAULT_LANGUAGE:
+        return redirect(url_for("legal", page=page))
+    return render_legal(lang_code, page)
 
 
 @app.route("/api/translations/<lang_code>.json")

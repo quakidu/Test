@@ -47,6 +47,13 @@ LANGUAGES = {
 DEFAULT_SITE_URL = "https://www.beispiel-domain.de"
 DEFAULT_BASE_PATH = "/"
 
+# Rechtsseiten: Dateiname, Textbaustein unter content/ und Titelschlüssel.
+LEGAL_PAGES = {
+    "impressum": {"file": "impressum.html", "title_key": "legal.imprint"},
+    "datenschutz": {"file": "datenschutz.html", "title_key": "legal.privacy"},
+}
+INDEX_FILE = "index.html"
+
 
 def load_translations(lang: str) -> dict:
     path = BASE_DIR / "translations" / f"{lang}.json"
@@ -118,9 +125,41 @@ def make_url_for(lang: str, site_url: str, base_path: str, root_relative: bool =
             if external or root_relative:
                 return base + f"{code}/"
             return prefix + f"{code}/index.html"
+        if endpoint == "legal":
+            page_file = LEGAL_PAGES[values["page"]]["file"]
+            if external or root_relative:
+                folder = "" if lang == DEFAULT_LANGUAGE else f"{lang}/"
+                return base + folder + page_file
+            # Die Rechtsseite der aktuellen Sprache liegt im selben Verzeichnis.
+            return page_file
         raise ValueError(f"Unbekannter Endpoint: {endpoint}")
 
     return url_for
+
+
+def make_page_url(lang: str, page_file: str, site_url: str, base_path: str,
+                  root_relative: bool = False):
+    """Verweise auf dieselbe Seite in den anderen Sprachen.
+
+    Damit bleibt der Sprachumschalter auf der Seite, auf der man gerade ist,
+    statt immer zur Startseite zu springen.
+    """
+    prefix = "" if lang == DEFAULT_LANGUAGE else "../"
+    root = "/" + base_path.strip("/") + "/" if base_path.strip("/") else "/"
+
+    def page_url(code: str, external: bool = False) -> str:
+        folder = "" if code == DEFAULT_LANGUAGE else f"{code}/"
+        if external:
+            # Startseiten als Verzeichnis-URL, ohne index.html
+            name = "" if page_file == INDEX_FILE else page_file
+            return site_url.rstrip("/") + root + folder + name
+        if root_relative:
+            return root + folder + page_file
+        if code == lang:
+            return page_file  # dieselbe Sprache liegt im selben Verzeichnis
+        return prefix + folder + page_file
+
+    return page_url
 
 
 def translate(strings: dict, fallback: dict, key: str, default=None):
@@ -146,12 +185,18 @@ def page_url(site_url: str, base_path: str, lang: str) -> str:
 
 def write_sitemap(site_url: str, base_path: str) -> None:
     today = date.today().isoformat()
+    locations = []
+    for lang in LANGUAGES:
+        root = page_url(site_url, base_path, lang)
+        locations.append(root)
+        locations.extend(root + page["file"] for page in LEGAL_PAGES.values())
+
     entries = "\n".join(
         f"  <url>\n"
-        f"    <loc>{page_url(site_url, base_path, lang)}</loc>\n"
+        f"    <loc>{loc}</loc>\n"
         f"    <lastmod>{today}</lastmod>\n"
         f"  </url>"
-        for lang in LANGUAGES
+        for loc in locations
     )
     (DIST_DIR / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -196,6 +241,7 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
             languages=LANGUAGES,
             default_language=DEFAULT_LANGUAGE,
             url_for=make_url_for(lang, site_url, base_path),
+            page_url=make_page_url(lang, INDEX_FILE, site_url, base_path),
             anchor_base="",  # auf der Startseite genügen reine Anker
             courses=courses,
             teaser=content.course_teaser(strings, courses),
@@ -204,6 +250,35 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(html, encoding="utf-8")
         print(f"  ✓ {target.relative_to(BASE_DIR)}")
+
+    # Impressum und Datenschutzerklärung
+    legal = env.get_template("legal.html")
+    for lang in LANGUAGES:
+        strings = load_translations(lang)
+        url_for = make_url_for(lang, site_url, base_path)
+        for name, page in LEGAL_PAGES.items():
+            body_file = BASE_DIR / "content" / f"{name}.{lang}.html"
+            if not body_file.exists():
+                body_file = BASE_DIR / "content" / f"{name}.{DEFAULT_LANGUAGE}.html"
+
+            html = legal.render(
+                lang=lang,
+                t=partial(translate, strings, fallback),
+                s=strings,
+                languages=LANGUAGES,
+                default_language=DEFAULT_LANGUAGE,
+                url_for=url_for,
+                page_url=make_page_url(lang, page["file"], site_url, base_path),
+                # Die Anker der Navigation zeigen auf die Startseite.
+                anchor_base=url_for("home"),
+                page_title=translate(strings, fallback, page["title_key"]),
+                page_body=body_file.read_text(encoding="utf-8"),
+            )
+            target = DIST_DIR / (page["file"] if lang == DEFAULT_LANGUAGE
+                                 else f"{lang}/{page['file']}")
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(html, encoding="utf-8")
+            print(f"  ✓ {target.relative_to(BASE_DIR)}")
 
     # Fehlerseite in der Standardsprache, mit absoluten Pfaden
     strings = load_translations(DEFAULT_LANGUAGE)
@@ -214,6 +289,8 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
         languages=LANGUAGES,
         default_language=DEFAULT_LANGUAGE,
         url_for=make_url_for(DEFAULT_LANGUAGE, site_url, base_path, root_relative=True),
+        page_url=make_page_url(DEFAULT_LANGUAGE, INDEX_FILE, site_url, base_path,
+                               root_relative=True),
         # Die Fehlerseite liegt nicht auf der Startseite: Anker brauchen den Pfad dorthin.
         anchor_base=make_url_for(DEFAULT_LANGUAGE, site_url, base_path, root_relative=True)("home"),
     )

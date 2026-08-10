@@ -141,8 +141,8 @@
     "tagline": "Holistic therapy and courses – movement based on the Spiraldynamik concept.",
     "nav_title": "Navigation",
     "legal_title": "Legal",
-    "imprint": "Imprint",
-    "privacy": "Privacy",
+    "imprint": "Legal notice",
+    "privacy": "Privacy policy",
     "copyright": "All rights reserved.",
     "note": "Demo site – content and contact details are placeholders."
   },
@@ -212,5 +212,11 @@
     ],
     "date": "{day} {month}",
     "date_with_year": "{day} {month} {year}"
+  },
+  "legal": {
+    "eyebrow": "Legal",
+    "imprint": "Legal notice",
+    "privacy": "Privacy policy",
+    "back": "Back to the home page"
   }
 }
