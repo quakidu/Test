@@ -167,9 +167,14 @@ Aktualisierung eine veraltete Fassung sehen.
 * **Texte, Adresse, Angebote:** `translations/de.json` und
   `translations/en.json`. Beide Dateien haben dieselbe Struktur; fehlt ein
   Schlüssel im Englischen, greift automatisch der deutsche Text.
-* **Angebote ergänzen:** einen weiteren Eintrag in `offer.items` anlegen und
-  `"type"` auf `"therapy"` oder `"course"` setzen – der Filter auf der Seite
-  richtet sich danach.
+* **Kurse pflegen:** `courses.items` in beiden Sprachdateien. Jeder Eintrag
+  hat `title`, `text`, `start`, `scope`, `spots` und `price`. Genau ein
+  Eintrag sollte `"featured": true` tragen – dieser Kurs wird im
+  Kursbereich hervorgehoben. Der Hinweis im Kopfbereich der Seite steht
+  getrennt davon unter `hero.course_teaser` und muss beim Wechsel des
+  nächsten Kurses mitgeändert werden.
+* **Therapien ergänzen:** einen weiteren Eintrag in `offer.items` anlegen
+  (`title`, `text`, `meta`).
 * **Farben:** die Design-Tokens ganz oben in `static/css/style.css`
   (`--blue-*`). Die Leitfarbe `--blue-600` (`#314F6F`) ist das Blau aus der
   Unterzeile des Logos, `--ink-900` die Schriftfarbe des Logos; die übrigen
@@ -193,16 +198,18 @@ Aktualisierung eine veraltete Fassung sehen.
 * Leitfarbe aus dem Logo abgeleitet, helles und dunkles Farbschema
 * Responsiv ab ca. 320 px: Burger-Menü, gestapelte Raster, flexible Typografie
 * Sprachumschalter im Kopfbereich, `hreflang`-Verweise im `<head>`
-* Sticky Header, Scroll-Reveal, Scrollspy, animierte Kennzahlen,
-  Filter für Therapien/Kurse
+* Kurse in einem eigenen, farblich abgesetzten Abschnitt mit Startdatum,
+  freien Plätzen und Preis; Hinweis auf den nächsten Kurs bereits im
+  Kopfbereich
+* Sticky Header, Scroll-Reveal, Scrollspy, animierte Kennzahlen
 * Ohne JavaScript bleiben alle Inhalte sichtbar und lesbar
 * `prefers-reduced-motion` schaltet Animationen ab
 * Sprungmarke zum Inhalt, sichtbare Fokusrahmen, ARIA-Attribute am Menü
 
 ## Hinweis
 
-Adresse, Telefonnummer, E-Mail und Kennzahlen sind Platzhalter und vor dem
-Veröffentlichen zu ersetzen. Impressum und Datenschutz sind noch leere Links.
+Adresse, Telefonnummer, E-Mail, Kennzahlen sowie die Kurstermine, Preise
+und freien Plätze sind Platzhalter und vor dem Veröffentlichen zu ersetzen. Impressum und Datenschutz sind noch leere Links.
 
 Das gelieferte Logo ist 200 × 42 Pixel groß. Im Kopfbereich wird es 32 Pixel
 hoch dargestellt, was der Auflösung entspricht – auf Bildschirmen mit hoher

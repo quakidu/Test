@@ -26,7 +26,7 @@
     "title_line2": "that feels right.",
     "lead": "Pain rarely appears by chance. We analyse how you move, explain what we find and train a movement pattern that takes the load off your joints – step by step, practical and lasting.",
     "cta_primary": "Book an appointment",
-    "cta_secondary": "See our services",
+    "cta_secondary": "See our courses",
     "scroll": "Discover more",
     "card_title": "Your path in short",
     "card_steps": [
@@ -47,7 +47,12 @@
         "value": "12",
         "label": "Courses per year"
       }
-    ]
+    ],
+    "course_teaser": {
+      "label": "Next course",
+      "text": "Healthy feet – starting 14 September",
+      "link": "See available places"
+    }
   },
   "about": {
     "eyebrow": "The concept",
@@ -73,54 +78,25 @@
     ]
   },
   "offer": {
-    "eyebrow": "Services",
-    "title": "Therapy and courses",
-    "lead": "One-to-one therapy for specific complaints, courses for everyone who wants to improve the way they move.",
-    "therapy_label": "Therapy",
-    "course_label": "Course",
-    "detail_link": "Learn more",
-    "filters": {
-      "all": "Show all",
-      "therapy": "Therapies",
-      "course": "Courses"
-    },
-    "empty": "Nothing is listed for this selection at the moment.",
+    "eyebrow": "Therapy",
+    "title": "Treatment in one-to-one sessions",
+    "lead": "For specific complaints: we look closely at how you move and work on the cause.",
+    "detail_link": "Request an appointment",
     "items": [
       {
-        "type": "therapy",
         "title": "Movement analysis & first assessment",
         "text": "Detailed history, gait analysis and functional testing. Together we define your goal and the way there.",
         "meta": "60 min · individual session"
       },
       {
-        "type": "therapy",
         "title": "Physiotherapy based on Spiraldynamik",
         "text": "Manual techniques combined with active movement learning for back, knee and shoulder complaints.",
         "meta": "45 min · individual session"
       },
       {
-        "type": "therapy",
         "title": "Foot & gait analysis",
         "text": "Hallux valgus, flat and splay feet, heel spur: we rebuild the arch of your foot functionally.",
         "meta": "45 min · individual session"
-      },
-      {
-        "type": "course",
-        "title": "Healthy feet",
-        "text": "Six evenings on arches, rolling motion and choosing footwear. Includes a home exercise programme.",
-        "meta": "6 × 60 min · small group"
-      },
-      {
-        "type": "course",
-        "title": "Back in balance",
-        "text": "Upright without effort: spine, pelvis and breathing working together.",
-        "meta": "8 × 75 min · small group"
-      },
-      {
-        "type": "course",
-        "title": "Active at the office",
-        "text": "Compact course for working days – sitting, standing, screen work. Also available for companies.",
-        "meta": "4 × 60 min · group"
       }
     ]
   },
@@ -152,11 +128,11 @@
     "title": "Book an appointment",
     "lead": "Send us a message or give us a call – we usually reply within one working day.",
     "address_label": "Address",
-    "address": "Bahnhofstrasse 12\n8001 Zurich, Switzerland",
+    "address": "Musterstraße 12\n12345 Musterstadt, Germany",
     "phone_label": "Phone",
-    "phone": "+41 44 123 45 67",
+    "phone": "+49 30 12345678",
     "email_label": "Email",
-    "email": "praxis@spiraldynamik-beispiel.ch",
+    "email": "praxis@koerper-im-einklang.de",
     "hours_label": "Opening hours",
     "hours": "Mon–Fri 08:00–19:00\nSat by arrangement",
     "cta": "Write an email"
@@ -176,5 +152,49 @@
     "text": "This page does not exist, or no longer does. The home page will get you back on track.",
     "home": "Go to home page",
     "contact": "Get in touch"
+  },
+  "courses": {
+    "eyebrow": "Courses",
+    "title": "Courses in small groups",
+    "lead": "Over six to eight evenings you learn what matters in the way you move – with exercises you can carry on by yourself afterwards. Eight people per course at most, so there is time for everyone.",
+    "start_label": "Starts",
+    "scope_label": "Scope",
+    "spots_label": "Places left",
+    "price_label": "Price",
+    "cta": "Request a place",
+    "benefits": [
+      "Eight people per group at most",
+      "Home exercise programme included",
+      "Also available as an in-house course for companies"
+    ],
+    "items": [
+      {
+        "title": "Healthy feet",
+        "text": "Arches, rolling motion and choosing footwear. Six evenings, after which you perceive your feet differently and can strengthen them.",
+        "start": "14 September",
+        "scope": "6 × 60 minutes",
+        "spots": "3 of 8",
+        "price": "240 €",
+        "featured": true
+      },
+      {
+        "title": "Back in balance",
+        "text": "Upright without effort: spine, pelvis and breathing working together.",
+        "start": "2 October",
+        "scope": "8 × 75 minutes",
+        "spots": "5 of 8",
+        "price": "360 €",
+        "featured": false
+      },
+      {
+        "title": "Active at the office",
+        "text": "Compact course for working days – sitting, standing, screen work.",
+        "start": "5 November",
+        "scope": "4 × 60 minutes",
+        "spots": "7 of 10",
+        "price": "160 €",
+        "featured": false
+      }
+    ]
   }
 }

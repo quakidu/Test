@@ -6,7 +6,7 @@
    4. Buttons
    5. Header & Navigation
    6. Hero
-   7. Sektionen (Konzept, Angebot, Ablauf, Kontakt)
+   7. Sektionen (Konzept, Kurse, Therapie, Ablauf, Kontakt)
    8. Footer
    9. Animationen
    10. Responsive
@@ -487,6 +487,45 @@ button { font: inherit; color: inherit; }
   margin-top: 2.25rem;
 }
 
+/* Kurshinweis im Hero – führt in den Kursbereich. */
+.teaser {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.85rem;
+  margin-top: 1.75rem;
+  padding: 0.7rem 1.15rem;
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg-elevated));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease),
+              box-shadow 0.25s var(--ease);
+}
+.teaser:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
+}
+.teaser__label {
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.teaser__text { font-size: 0.95rem; font-weight: 600; }
+.teaser__link {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent-ink);
+  white-space: nowrap;
+}
+
 .stats {
   display: flex;
   flex-wrap: wrap;
@@ -627,32 +666,138 @@ button { font: inherit; color: inherit; }
 .feature__title { font-size: 1.15rem; margin-bottom: 0.6rem; }
 .feature__text { color: var(--text-muted); font-size: 0.95rem; }
 
-/* Angebot */
-.filters {
+/* ── Kurse ────────────────────────────────────────────────────────────
+ * Der Abschnitt läuft bewusst gegen den Rest der Seite: dunkler Grund,
+ * helle Schrift. Statt eigener Farbwerte werden die Tokens lokal
+ * umdefiniert – dadurch passen sich Buttons, Ränder und Texte von selbst
+ * an, und das gilt im hellen wie im dunklen Farbschema.
+ */
+.section--courses {
+  --text:          #F2F5F9;
+  --text-muted:    #C3D2E2;
+  --border:        rgba(255, 255, 255, 0.16);
+  --border-strong: rgba(255, 255, 255, 0.32);
+  --accent:        #FFFFFF;
+  --accent-soft:   var(--blue-300);
+  --accent-ink:    var(--blue-200);
+  --on-accent:     var(--blue-800);
+
+  position: relative;
+  overflow: hidden;
+  color: var(--text);
+  background:
+    radial-gradient(70% 100% at 85% 0%, rgba(110, 142, 176, 0.35), transparent 65%),
+    linear-gradient(160deg, var(--blue-800) 0%, var(--blue-700) 55%, var(--blue-600) 100%);
+  background-color: var(--blue-700);
+}
+.section--courses .section__title,
+.section--courses .step__title { color: var(--text); }
+.section__head--wide { max-width: 68ch; }
+
+/* Was für einen Kurs spricht – kurze Aufzählung über den Karten. */
+.benefits {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
+  gap: 0.6rem 1.75rem;
+  margin-bottom: clamp(2rem, 4vw, 2.75rem);
 }
-.filters__btn {
-  padding: 0.55rem 1.2rem;
-  background: transparent;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-pill);
-  font-size: 0.88rem;
-  font-weight: 600;
+.benefits__item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-size: 0.95rem;
   color: var(--text-muted);
-  cursor: pointer;
-  transition: background-color 0.22s var(--ease), color 0.22s var(--ease),
-              border-color 0.22s var(--ease), transform 0.22s var(--ease);
 }
-.filters__btn:hover { color: var(--text); border-color: var(--accent); }
-.filters__btn.is-active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--on-accent);
+.benefits__item::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-soft);
 }
 
+.courses {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+  /* Kein align-items: die Karten sollen auf gleiche Höhe wachsen. */
+}
+
+.course {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: transform 0.3s var(--ease), background-color 0.3s var(--ease),
+              border-color 0.3s var(--ease);
+}
+.course:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.11);
+  border-color: var(--border-strong);
+}
+
+/* Der nächste Kurs wird zusätzlich hervorgehoben. */
+.course--featured {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: var(--accent-soft);
+  box-shadow: 0 24px 50px -28px rgba(0, 0, 0, 0.85);
+}
+.course--featured .course__start {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.course--featured .course__start-label { color: var(--on-accent); opacity: 0.72; }
+
+.course__start {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  align-self: flex-start;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.14);
+}
+.course__start-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+}
+.course__start-date { font-size: 0.88rem; font-weight: 600; }
+
+.course__title { font-size: 1.3rem; color: var(--text); }
+.course__text { color: var(--text-muted); font-size: 0.95rem; }
+
+.course__facts {
+  display: grid;
+  gap: 0.5rem;
+  /* auto oben: schiebt Fakten und Button an den unteren Kartenrand,
+     damit die Buttons aller Karten auf einer Linie sitzen. */
+  margin: auto 0 0;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--border);
+}
+.course__fact {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+.course__fact dt { color: var(--text-muted); }
+.course__fact dd { margin: 0; font-weight: 600; }
+
+.course .btn { margin-top: 1.1rem; }
+.btn--block { width: 100%; }
+
+/* Angebot */
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
@@ -677,29 +822,6 @@ button { font: inherit; color: inherit; }
 }
 .card.is-hidden { display: none; }
 
-.card__badge {
-  align-self: flex-start;
-  padding: 0.28rem 0.7rem;
-  border-radius: var(--radius-pill);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-}
-/*
- * Die Palette ist einfarbig, deshalb unterscheiden sich die beiden Arten
- * über die Form: Therapie gefüllt, Kurs als Kontur.
- */
-.card__badge--therapy {
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
-  color: var(--accent-ink);
-}
-.card__badge--course {
-  background: transparent;
-  color: var(--accent-ink);
-  box-shadow: inset 0 0 0 1px var(--border-strong);
-}
-
 .card__title { font-size: 1.2rem; }
 .card__text { color: var(--text-muted); font-size: 0.95rem; }
 .card__meta {
@@ -720,11 +842,6 @@ button { font: inherit; color: inherit; }
 .card__link span { transition: transform 0.25s var(--ease); }
 .card__link:hover span { transform: translateX(4px); }
 
-.cards__empty {
-  padding: 2.5rem 0;
-  text-align: center;
-  color: var(--text-muted);
-}
 
 /* Ablauf */
 .steps {
@@ -969,6 +1086,6 @@ button { font: inherit; color: inherit; }
 }
 
 @media print {
-  .site-header, .hero__glow, .hero__scroll, .filters, .nav-backdrop { display: none !important; }
+  .site-header, .hero__glow, .hero__scroll, .nav-backdrop { display: none !important; }
   body { background: #fff; color: #000; }
 }

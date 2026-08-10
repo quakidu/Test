@@ -22,8 +22,15 @@
 
       <div class="hero__actions reveal" data-reveal-delay="3">
         <a class="btn btn--primary" href="#contact">{{ t('hero.cta_primary') }}</a>
-        <a class="btn btn--ghost" href="#offer">{{ t('hero.cta_secondary') }}</a>
+        <a class="btn btn--ghost" href="#courses">{{ t('hero.cta_secondary') }}</a>
       </div>
+
+      {# Hinweis auf den nächsten Kurs, direkt im ersten Bildschirm. #}
+      <a class="teaser reveal" data-reveal-delay="4" href="#courses">
+        <span class="teaser__label">{{ t('hero.course_teaser.label') }}</span>
+        <span class="teaser__text">{{ t('hero.course_teaser.text') }}</span>
+        <span class="teaser__link">{{ t('hero.course_teaser.link') }} <span aria-hidden="true">&rarr;</span></span>
+      </a>
 
       <dl class="stats reveal" data-reveal-delay="4">
         {% for stat in s.hero.stats %}
@@ -75,7 +82,65 @@
   </div>
 </section>
 
-<!-- ── Angebot ────────────────────────────────────────────────────────── -->
+<!-- ── Kurse ──────────────────────────────────────────────────────────── -->
+<!--
+  Eigener Abschnitt mit umgekehrtem Farbschema: Die Kurse sollen beim
+  Durchscrollen auffallen und nicht zwischen den Therapien untergehen.
+  Die Farb-Tokens werden dafür lokal überschrieben, die Bausteine
+  darin bleiben dieselben wie im Rest der Seite.
+-->
+<section class="section section--courses" id="courses">
+  <div class="container">
+    <header class="section__head section__head--wide">
+      <p class="eyebrow reveal">{{ t('courses.eyebrow') }}</p>
+      <h2 class="section__title reveal" data-reveal-delay="1">{{ t('courses.title') }}</h2>
+      <p class="section__lead reveal" data-reveal-delay="2">{{ t('courses.lead') }}</p>
+    </header>
+
+    <ul class="benefits reveal" data-reveal-delay="2">
+      {% for benefit in s.courses.benefits %}
+      <li class="benefits__item">{{ benefit }}</li>
+      {% endfor %}
+    </ul>
+
+    <div class="courses">
+      {% for course in s.courses['items'] %}
+      <article class="course{{ ' course--featured' if course.featured }} reveal"
+               data-reveal-delay="{{ loop.index0 }}">
+        <p class="course__start">
+          <span class="course__start-label">{{ t('courses.start_label') }}</span>
+          <span class="course__start-date">{{ course.start }}</span>
+        </p>
+
+        <h3 class="course__title">{{ course.title }}</h3>
+        <p class="course__text">{{ course.text }}</p>
+
+        <dl class="course__facts">
+          <div class="course__fact">
+            <dt>{{ t('courses.scope_label') }}</dt>
+            <dd>{{ course.scope }}</dd>
+          </div>
+          <div class="course__fact">
+            <dt>{{ t('courses.spots_label') }}</dt>
+            <dd>{{ course.spots }}</dd>
+          </div>
+          <div class="course__fact">
+            <dt>{{ t('courses.price_label') }}</dt>
+            <dd>{{ course.price }}</dd>
+          </div>
+        </dl>
+
+        <a class="btn btn--primary btn--block"
+           href="mailto:{{ t('contact.email') }}?subject={{ course.title | urlencode }}">
+          {{ t('courses.cta') }}
+        </a>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── Therapie ───────────────────────────────────────────────────────── -->
 <section class="section section--tinted" id="offer">
   <div class="container">
     <header class="section__head">
@@ -84,24 +149,9 @@
       <p class="section__lead reveal" data-reveal-delay="2">{{ t('offer.lead') }}</p>
     </header>
 
-    <div class="filters reveal" data-reveal-delay="2" role="tablist" aria-label="{{ t('offer.title') }}">
-      <button class="filters__btn is-active" type="button" role="tab" aria-selected="true" data-filter="all">
-        {{ t('offer.filters.all') }}
-      </button>
-      <button class="filters__btn" type="button" role="tab" aria-selected="false" data-filter="therapy">
-        {{ t('offer.filters.therapy') }}
-      </button>
-      <button class="filters__btn" type="button" role="tab" aria-selected="false" data-filter="course">
-        {{ t('offer.filters.course') }}
-      </button>
-    </div>
-
-    <div class="cards" id="offer-cards">
+    <div class="cards">
       {% for item in s.offer['items'] %}
-      <article class="card reveal" data-type="{{ item.type }}" data-reveal-delay="{{ loop.index0 % 3 }}">
-        <span class="card__badge card__badge--{{ item.type }}">
-          {{ t('offer.therapy_label') if item.type == 'therapy' else t('offer.course_label') }}
-        </span>
+      <article class="card reveal" data-reveal-delay="{{ loop.index0 }}">
         <h3 class="card__title">{{ item.title }}</h3>
         <p class="card__text">{{ item.text }}</p>
         <p class="card__meta">{{ item.meta }}</p>
@@ -112,8 +162,6 @@
       </article>
       {% endfor %}
     </div>
-
-    <p class="cards__empty" id="offer-empty" hidden>{{ t('offer.empty') }}</p>
   </div>
 </section>
 

@@ -26,7 +26,7 @@
     "title_line2": "die gut tut.",
     "lead": "Schmerzen entstehen selten zufällig. Wir analysieren Ihre Bewegung, erklären die Zusammenhänge und üben mit Ihnen ein Bewegungsmuster ein, das Ihre Gelenke entlastet – Schritt für Schritt, alltagstauglich und nachhaltig.",
     "cta_primary": "Termin vereinbaren",
-    "cta_secondary": "Angebot ansehen",
+    "cta_secondary": "Kurse ansehen",
     "scroll": "Mehr entdecken",
     "card_title": "Ihr Weg in Kürze",
     "card_steps": [
@@ -47,7 +47,12 @@
         "value": "12",
         "label": "Kurse pro Jahr"
       }
-    ]
+    ],
+    "course_teaser": {
+      "label": "Nächster Kurs",
+      "text": "Gesunde Füße – Start am 14. September",
+      "link": "Freie Plätze ansehen"
+    }
   },
   "about": {
     "eyebrow": "Das Konzept",
@@ -73,54 +78,25 @@
     ]
   },
   "offer": {
-    "eyebrow": "Angebot",
-    "title": "Therapie und Kurse",
-    "lead": "Einzeltherapie für konkrete Beschwerden, Kurse für alle, die ihre Bewegung grundsätzlich verbessern möchten.",
-    "therapy_label": "Therapie",
-    "course_label": "Kurs",
-    "detail_link": "Mehr erfahren",
-    "filters": {
-      "all": "Alles zeigen",
-      "therapy": "Therapien",
-      "course": "Kurse"
-    },
-    "empty": "Für diese Auswahl ist derzeit nichts hinterlegt.",
+    "eyebrow": "Therapie",
+    "title": "Behandlung im Einzeltermin",
+    "lead": "Für konkrete Beschwerden: Wir schauen uns Ihre Bewegung genau an und arbeiten gezielt an der Ursache.",
+    "detail_link": "Termin anfragen",
     "items": [
       {
-        "type": "therapy",
         "title": "Bewegungsanalyse & Erstbefund",
         "text": "Ausführliche Anamnese, Ganganalyse und Funktionstest. Wir klären gemeinsam Ziel und Therapieweg.",
         "meta": "60 Min. · Einzeltermin"
       },
       {
-        "type": "therapy",
         "title": "Physiotherapie nach Spiraldynamik",
         "text": "Manuelle Techniken kombiniert mit aktivem Bewegungslernen bei Rücken-, Knie- und Schulterbeschwerden.",
         "meta": "45 Min. · Einzeltermin"
       },
       {
-        "type": "therapy",
         "title": "Fuß- & Ganganalyse",
         "text": "Hallux valgus, Senk- und Spreizfuß, Fersensporn: Wir bauen das Fußgewölbe funktionell wieder auf.",
         "meta": "45 Min. · Einzeltermin"
-      },
-      {
-        "type": "course",
-        "title": "Gesunde Füße",
-        "text": "Sechs Abende rund um Fußgewölbe, Abrollen und Schuhwahl. Mit Übungsprogramm für zu Hause.",
-        "meta": "6 × 60 Min. · Kleingruppe"
-      },
-      {
-        "type": "course",
-        "title": "Rücken in Balance",
-        "text": "Aufrichtung ohne Anstrengung: Wirbelsäule, Becken und Atmung im Zusammenspiel.",
-        "meta": "8 × 75 Min. · Kleingruppe"
-      },
-      {
-        "type": "course",
-        "title": "Bewegt im Büro",
-        "text": "Kompaktkurs für den Arbeitsalltag – Sitzen, Stehen, Bildschirmarbeit. Auch als Firmenkurs buchbar.",
-        "meta": "4 × 60 Min. · Gruppe"
       }
     ]
   },
@@ -152,11 +128,11 @@
     "title": "Termin vereinbaren",
     "lead": "Schreiben Sie uns oder rufen Sie an – wir melden uns in der Regel innerhalb eines Werktags.",
     "address_label": "Adresse",
-    "address": "Bahnhofstrasse 12\n8001 Zürich",
+    "address": "Musterstraße 12\n12345 Musterstadt",
     "phone_label": "Telefon",
-    "phone": "+41 44 123 45 67",
+    "phone": "+49 30 12345678",
     "email_label": "E-Mail",
-    "email": "praxis@spiraldynamik-beispiel.ch",
+    "email": "praxis@koerper-im-einklang.de",
     "hours_label": "Öffnungszeiten",
     "hours": "Mo–Fr 08:00–19:00\nSa nach Vereinbarung",
     "cta": "E-Mail schreiben"
@@ -176,5 +152,49 @@
     "text": "Diese Seite gibt es nicht oder nicht mehr. Über die Startseite finden Sie alles Weitere.",
     "home": "Zur Startseite",
     "contact": "Kontakt aufnehmen"
+  },
+  "courses": {
+    "eyebrow": "Kurse",
+    "title": "Kurse in kleinen Gruppen",
+    "lead": "In sechs bis acht Abenden lernen Sie, worauf es bei Ihrer Bewegung ankommt – mit Übungen, die Sie danach selbstständig weiterführen. Höchstens acht Personen pro Kurs, damit für jede und jeden Zeit bleibt.",
+    "start_label": "Start",
+    "scope_label": "Umfang",
+    "spots_label": "Freie Plätze",
+    "price_label": "Preis",
+    "cta": "Platz anfragen",
+    "benefits": [
+      "Höchstens acht Personen pro Gruppe",
+      "Übungsprogramm für zu Hause inklusive",
+      "Auch als Firmenkurs im Unternehmen buchbar"
+    ],
+    "items": [
+      {
+        "title": "Gesunde Füße",
+        "text": "Fußgewölbe, Abrollen und Schuhwahl. Sechs Abende, an deren Ende Sie Ihre Füße anders wahrnehmen und gezielt kräftigen können.",
+        "start": "14. September",
+        "scope": "6 × 60 Minuten",
+        "spots": "3 von 8",
+        "price": "240 €",
+        "featured": true
+      },
+      {
+        "title": "Rücken in Balance",
+        "text": "Aufrichtung ohne Anstrengung: Wirbelsäule, Becken und Atmung im Zusammenspiel.",
+        "start": "2. Oktober",
+        "scope": "8 × 75 Minuten",
+        "spots": "5 von 8",
+        "price": "360 €",
+        "featured": false
+      },
+      {
+        "title": "Bewegt im Büro",
+        "text": "Kompaktkurs für den Arbeitsalltag – Sitzen, Stehen, Bildschirmarbeit.",
+        "start": "5. November",
+        "scope": "4 × 60 Minuten",
+        "spots": "7 von 10",
+        "price": "160 €",
+        "featured": false
+      }
+    ]
   }
 }

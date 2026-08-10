@@ -1,8 +1,8 @@
 /**
  * Körper im Einklang – Interaktion der Startseite.
  *
- * Enthält: mobiles Menü, Sticky-Header, Scroll-Reveal, Scrollspy,
- * Angebotsfilter und animierte Kennzahlen.
+ * Enthält: mobiles Menü, Sticky-Header, Scroll-Reveal, Scrollspy
+ * und animierte Kennzahlen.
  */
 (function () {
   'use strict';
@@ -137,35 +137,6 @@
     sections.forEach(function (section) { observer.observe(section); });
   }
 
-  /* ── Angebotsfilter (Therapien / Kurse) ───────────────────────────── */
-  function initFilters() {
-    var buttons = Array.prototype.slice.call(document.querySelectorAll('.filters__btn'));
-    var cards = Array.prototype.slice.call(document.querySelectorAll('#offer-cards .card'));
-    var empty = document.getElementById('offer-empty');
-    if (!buttons.length || !cards.length) return;
-
-    function apply(filter) {
-      var visible = 0;
-      cards.forEach(function (card) {
-        var show = filter === 'all' || card.dataset.type === filter;
-        card.classList.toggle('is-hidden', !show);
-        if (show) visible += 1;
-      });
-      if (empty) empty.hidden = visible > 0;
-    }
-
-    buttons.forEach(function (button) {
-      button.addEventListener('click', function () {
-        buttons.forEach(function (other) {
-          var active = other === button;
-          other.classList.toggle('is-active', active);
-          other.setAttribute('aria-selected', String(active));
-        });
-        apply(button.dataset.filter);
-      });
-    });
-  }
-
   /* ── Animierte Kennzahlen ─────────────────────────────────────────── */
   function initCounters() {
     var values = Array.prototype.slice.call(document.querySelectorAll('[data-count]'));
@@ -217,7 +188,6 @@
     initHeader();
     initReveal();
     initScrollspy();
-    initFilters();
     initCounters();
     initMisc();
   }
