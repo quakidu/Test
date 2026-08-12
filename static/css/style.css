@@ -599,25 +599,6 @@ button { font: inherit; color: inherit; }
   font-weight: 700;
 }
 
-.hero__scroll {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.6rem;
-  margin-top: clamp(2.5rem, 5vw, 4rem);
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-.hero__scroll:hover { color: var(--accent-ink); }
-.hero__scroll-line {
-  width: 1px;
-  height: 44px;
-  background: linear-gradient(to bottom, var(--accent-soft), transparent);
-  animation: pulse-line 2.4s ease-in-out infinite;
-}
-
 /* ── 7. Sektionen ─────────────────────────────────────────────────────── */
 
 /* Konzept */
@@ -1250,9 +1231,6 @@ html:not(.js) .slideshow__track::-webkit-scrollbar { display: block; }
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-10px); }
 }
-@keyframes pulse-line {
-  0%, 100% { opacity: 0.3; transform: scaleY(0.7); }
-  50%      { opacity: 1;   transform: scaleY(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1334,6 +1312,6 @@ html:not(.js) .slideshow__track::-webkit-scrollbar { display: block; }
 }
 
 @media print {
-  .site-header, .hero__glow, .hero__scroll, .nav-backdrop { display: none !important; }
+  .site-header, .hero__glow, .nav-backdrop { display: none !important; }
   body { background: #fff; color: #000; }
 }
