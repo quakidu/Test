@@ -14,6 +14,7 @@
     "offer": "Services",
     "courses": "Courses",
     "approach": "Process",
+    "practice": "Practice",
     "contact": "Contact",
     "cta": "Book an appointment",
     "menu_open": "Open menu",
@@ -223,5 +224,38 @@
     "imprint": "Legal notice",
     "privacy": "Privacy policy",
     "back": "Back to the home page"
+  },
+  "practice": {
+    "eyebrow": "The practice",
+    "title": "A place to arrive",
+    "lead": "Bright rooms, a calm atmosphere and enough space to practise. Have a look around before your first visit.",
+    "prev": "Previous image",
+    "next": "Next image",
+    "play": "Start slideshow",
+    "pause": "Pause slideshow",
+    "goto": "Go to image {n}",
+    "region": "Images from the practice",
+    "slides": [
+      {
+        "image": "praxis-1.jpg",
+        "alt": "Treatment room with couch and window",
+        "caption": "The treatment room – quiet, bright and with space to move."
+      },
+      {
+        "image": "praxis-2.jpg",
+        "alt": "Reception area of the practice",
+        "caption": "Reception. This is where your appointment begins, unhurried."
+      },
+      {
+        "image": "praxis-3.jpg",
+        "alt": "Course room with mats",
+        "caption": "The course room has space for eight people at most."
+      },
+      {
+        "image": "praxis-4.jpg",
+        "alt": "Exercise equipment on the wall",
+        "caption": "Small equipment for the home exercise programme."
+      }
+    ]
   }
 }

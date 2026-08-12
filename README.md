@@ -44,6 +44,7 @@ static/
   img/logo-dark.png     aufgehellte Fassung für das dunkle Farbschema
   img/logo-mark.png     quadratisches Signet (Favicon)
   img/logo-mark-dark.png
+  img/praxis-1.jpg …    Platzhalter für die Diashow, bitte ersetzen
 translations/
   de.json  en.json
 webroot/
@@ -208,6 +209,25 @@ Aktualisierung eine veraltete Fassung sehen.
   Abschnitt in der Datenschutzerklärung.
 * **Therapien ergänzen:** einen weiteren Eintrag in `offer.items` anlegen
   (`title`, `text`, `meta`).
+* **Praxis-Bilder:** Die Diashow zeigt die Dateien aus `static/img/`, die
+  unter `practice.slides` eingetragen sind. Mitgeliefert sind vier
+  **Platzhalter** (`praxis-1.jpg` … `praxis-4.jpg`), die als solche
+  erkennbar sind – bitte durch eigene Fotos ersetzen:
+
+  1. Fotos im Seitenverhältnis 3 : 2 aufnehmen oder zuschneiden, etwa
+     1600 × 1067 Pixel, als JPEG mit mittlerer Qualität (Ziel: unter
+     300 KB je Bild, sonst lädt die Seite auf dem Handy spürbar langsamer).
+  2. Unter demselben Dateinamen nach `static/img/` legen – dann ist keine
+     weitere Änderung nötig. Bei anderen Namen die Einträge in
+     `practice.slides` anpassen.
+  3. `alt` beschreibt das Bild für Menschen, die es nicht sehen können;
+     `caption` ist die Bildunterschrift. Der Dateiname steht nur in
+     `de.json` – ein Foto ist nicht sprachabhängig; Beschreibung und
+     Unterschrift stehen in beiden Dateien.
+
+  Weitere Bilder: einfach einen Eintrag mehr in beiden Sprachdateien.
+  Weniger als zwei Bilder blenden die Bedienelemente automatisch aus.
+
 * **Farben:** die Design-Tokens ganz oben in `static/css/style.css`
   (`--blue-*`). Die Leitfarbe `--blue-600` (`#314F6F`) ist das Blau aus der
   Unterzeile des Logos, `--ink-900` die Schriftfarbe des Logos; die übrigen
@@ -284,6 +304,9 @@ tut das nicht.
   freien Plätzen und Preis; Hinweis auf den nächsten Kurs bereits im
   Kopfbereich – beides aus derselben Liste erzeugt
 * abgelaufene Kurstermine fallen automatisch heraus
+* Diashow im Praxis-Bereich: Wischen, Pfeile, Punkte und automatischer
+  Wechsel, der bei eigener Bedienung endgültig stoppt und bei
+  `prefers-reduced-motion` gar nicht erst anläuft
 * Sticky Header, Scroll-Reveal, Scrollspy, animierte Kennzahlen
 * Ohne JavaScript bleiben alle Inhalte sichtbar und lesbar
 * `prefers-reduced-motion` schaltet Animationen ab

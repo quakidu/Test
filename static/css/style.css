@@ -948,6 +948,109 @@ button { font: inherit; color: inherit; }
 .contact__row dd { margin: 0; font-size: 1rem; }
 .contact__row a:hover { color: var(--accent-ink); text-decoration: underline; }
 
+/* ── Diashow (Praxis) ─────────────────────────────────────────────────
+ * Ein waagerechter Scroll-Container mit Scroll-Snap. Wischen auf dem
+ * Telefon und Scrollen mit der Tastatur funktionieren dadurch schon ohne
+ * JavaScript; Schaltflächen, Punkte und der automatische Wechsel kommen
+ * erst per JavaScript dazu.
+ */
+.slideshow { position: relative; }
+
+.slideshow__track {
+  display: flex;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  /* Bildlaufleiste ausblenden – navigiert wird über Wischen und Knöpfe. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 0.5rem;
+}
+.slideshow__track::-webkit-scrollbar { display: none; }
+.slideshow__track:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+.slideshow__slide {
+  flex: 0 0 min(100%, 760px);
+  scroll-snap-align: center;
+}
+
+.slideshow__figure {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+.slideshow__figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+.slideshow__caption {
+  padding: 0.9rem clamp(1rem, 2.5vw, 1.5rem);
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.slideshow__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  margin-top: 1.5rem;
+}
+
+.slideshow__btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  color: var(--text);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.22s var(--ease), border-color 0.22s var(--ease),
+              transform 0.22s var(--ease), opacity 0.22s var(--ease);
+}
+.slideshow__btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  transform: translateY(-2px);
+}
+.slideshow__btn:disabled { opacity: 0.35; cursor: default; }
+
+.slideshow__dots { display: flex; align-items: center; gap: 0.5rem; }
+.slideshow__dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--border-strong);
+  cursor: pointer;
+  transition: background-color 0.22s var(--ease), width 0.22s var(--ease);
+}
+.slideshow__dot:hover { background: var(--accent-soft); }
+.slideshow__dot[aria-current="true"] {
+  width: 26px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+}
+
+/* Ohne JavaScript gibt es keine Punkte und keine Knöpfe – der Streifen
+   bleibt trotzdem bedienbar, deshalb dann die Bildlaufleiste zeigen. */
+html:not(.js) .slideshow__controls { display: none; }
+html:not(.js) .slideshow__track { scrollbar-width: auto; }
+html:not(.js) .slideshow__track::-webkit-scrollbar { display: block; }
+
 /* ── Rechtsseiten ─────────────────────────────────────────────────────
  * Fließtext aus content/*.html. Die Regeln greifen auf Elemente statt auf
  * Klassen, damit die Textbausteine ohne CSS-Kenntnisse bearbeitbar bleiben.

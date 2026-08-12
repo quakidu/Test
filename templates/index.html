@@ -211,6 +211,62 @@
   </div>
 </section>
 
+<!-- ── Praxis ─────────────────────────────────────────────────────────── -->
+<!--
+  Die Diashow ist ein Scroll-Container mit CSS-Scroll-Snap. Wischen und
+  Tastatur funktionieren dadurch ohne JavaScript; die Schaltflächen, die
+  Punkte und der automatische Wechsel kommen erst per JavaScript dazu.
+-->
+<section class="section section--tinted" id="practice">
+  <div class="container">
+    <header class="section__head">
+      <p class="eyebrow reveal">{{ t('practice.eyebrow') }}</p>
+      <h2 class="section__title reveal" data-reveal-delay="1">{{ t('practice.title') }}</h2>
+      <p class="section__lead reveal" data-reveal-delay="2">{{ t('practice.lead') }}</p>
+    </header>
+
+    {% if slides %}
+    <div class="slideshow reveal" id="slideshow"
+         data-label-play="{{ t('practice.play') }}"
+         data-label-pause="{{ t('practice.pause') }}">
+
+      <ul class="slideshow__track" id="slideshow-track"
+          tabindex="0" role="group" aria-label="{{ t('practice.region') }}">
+        {% for slide in slides %}
+        <li class="slideshow__slide" id="slide-{{ loop.index }}">
+          <figure class="slideshow__figure">
+            <img src="{{ url_for('static', filename='img/' ~ slide.image) }}"
+                 alt="{{ slide.alt }}"
+                 width="1600" height="1067"
+                 loading="{{ 'eager' if loop.first else 'lazy' }}"
+                 decoding="async">
+            {% if slide.caption %}
+            <figcaption class="slideshow__caption">{{ slide.caption }}</figcaption>
+            {% endif %}
+          </figure>
+        </li>
+        {% endfor %}
+      </ul>
+
+      <div class="slideshow__controls">
+        <button class="slideshow__btn" type="button" data-slide="prev"
+                aria-label="{{ t('practice.prev') }}" aria-controls="slideshow-track">
+          <span aria-hidden="true">&larr;</span>
+        </button>
+
+        <div class="slideshow__dots" id="slideshow-dots"
+             data-label-goto="{{ t('practice.goto') }}"></div>
+
+        <button class="slideshow__btn" type="button" data-slide="next"
+                aria-label="{{ t('practice.next') }}" aria-controls="slideshow-track">
+          <span aria-hidden="true">&rarr;</span>
+        </button>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
 <!-- ── Kontakt ────────────────────────────────────────────────────────── -->
 <section class="section section--contact" id="contact">
   <div class="container">

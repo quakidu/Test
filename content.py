@@ -108,6 +108,30 @@ def upcoming_courses(strings: dict, today: date | None = None) -> list[dict]:
     return sorted(courses, key=sort_key)
 
 
+def practice_slides(strings: dict, fallback: dict) -> list[dict]:
+    """Bilder der Diashow.
+
+    Die Dateinamen stehen nur in der Standardsprache – ein Foto ist nicht
+    sprachabhängig. Beschreibung und Bildunterschrift kommen aus der aktiven
+    Sprache, mit Rückfall auf die Standardsprache.
+    """
+    base = fallback.get("practice", {}).get("slides", [])
+    texts = strings.get("practice", {}).get("slides", [])
+
+    slides = []
+    for index, entry in enumerate(base):
+        image = entry.get("image")
+        if not image:
+            continue
+        text = texts[index] if index < len(texts) else entry
+        slides.append({
+            "image": image,
+            "alt": text.get("alt", entry.get("alt", "")),
+            "caption": text.get("caption", entry.get("caption", "")),
+        })
+    return slides
+
+
 def course_teaser(strings: dict, courses: list[dict]) -> dict | None:
     """Hinweis auf den nächsten Kurs für den Kopfbereich.
 

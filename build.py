@@ -245,6 +245,7 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
             anchor_base="",  # auf der Startseite genügen reine Anker
             courses=courses,
             teaser=content.course_teaser(strings, courses),
+            slides=content.practice_slides(strings, fallback),
         )
         target = DIST_DIR / ("index.html" if lang == DEFAULT_LANGUAGE else f"{lang}/index.html")
         target.parent.mkdir(parents=True, exist_ok=True)

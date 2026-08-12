@@ -1,8 +1,8 @@
 /**
  * Körper im Einklang – Interaktion der Startseite.
  *
- * Enthält: mobiles Menü, Sticky-Header, Scroll-Reveal, Scrollspy
- * und animierte Kennzahlen.
+ * Enthält: mobiles Menü, Sticky-Header, Scroll-Reveal, Scrollspy,
+ * animierte Kennzahlen und die Diashow im Praxis-Bereich.
  */
 (function () {
   'use strict';
@@ -177,6 +177,117 @@
     values.forEach(function (value) { observer.observe(value); });
   }
 
+  /* ── Diashow ──────────────────────────────────────────────────────── */
+  function initSlideshow() {
+    var root = document.getElementById('slideshow');
+    var track = document.getElementById('slideshow-track');
+    var dotsBox = document.getElementById('slideshow-dots');
+    if (!root || !track) return;
+
+    var slides = Array.prototype.slice.call(track.children);
+    if (slides.length < 2) {
+      if (root.querySelector('.slideshow__controls')) {
+        root.querySelector('.slideshow__controls').hidden = true;
+      }
+      return;
+    }
+
+    var prev = root.querySelector('[data-slide="prev"]');
+    var next = root.querySelector('[data-slide="next"]');
+    var current = 0;
+    var dots = [];
+
+    function scrollToSlide(index) {
+      var target = slides[Math.max(0, Math.min(index, slides.length - 1))];
+      // scrollLeft statt scrollIntoView: sonst springt die ganze Seite mit.
+      track.scrollTo({ left: target.offsetLeft - track.offsetLeft, behavior: 'smooth' });
+    }
+
+    // Punkte zum direkten Anspringen
+    if (dotsBox) {
+      var gotoLabel = dotsBox.dataset.labelGoto || '';
+      slides.forEach(function (slide, index) {
+        var dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'slideshow__dot';
+        dot.setAttribute('aria-label', gotoLabel.replace('{n}', String(index + 1)));
+        dot.setAttribute('aria-current', index === 0 ? 'true' : 'false');
+        dot.addEventListener('click', function () {
+          stopAuto();
+          scrollToSlide(index);
+        });
+        dotsBox.appendChild(dot);
+        dots.push(dot);
+      });
+    }
+
+    function setCurrent(index) {
+      current = index;
+      dots.forEach(function (dot, i) {
+        dot.setAttribute('aria-current', i === index ? 'true' : 'false');
+      });
+      if (prev) prev.disabled = index === 0;
+      if (next) next.disabled = index === slides.length - 1;
+    }
+
+    if (prev) prev.addEventListener('click', function () {
+      stopAuto();
+      scrollToSlide(current - 1);
+    });
+    if (next) next.addEventListener('click', function () {
+      stopAuto();
+      scrollToSlide(current + 1);
+    });
+
+    // Welches Bild gerade sichtbar ist, meldet der Browser selbst.
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) setCurrent(slides.indexOf(entry.target));
+        });
+      }, { root: track, threshold: 0.6 });
+      slides.forEach(function (slide) { observer.observe(slide); });
+    }
+    setCurrent(0);
+
+    /* Automatischer Wechsel – nur wenn niemand widerspricht: Er startet
+       erst, wenn die Diashow sichtbar ist, pausiert bei Mauszeiger und
+       Tastaturfokus und endet endgültig, sobald jemand selbst blättert. */
+    var timer = null;
+    var stopped = prefersReducedMotion;
+
+    function tick() {
+      scrollToSlide(current === slides.length - 1 ? 0 : current + 1);
+    }
+    function startAuto() {
+      if (stopped || timer) return;
+      timer = window.setInterval(tick, 6000);
+    }
+    function pauseAuto() {
+      if (timer) { window.clearInterval(timer); timer = null; }
+    }
+    function stopAuto() {
+      stopped = true;
+      pauseAuto();
+    }
+
+    root.addEventListener('mouseenter', pauseAuto);
+    root.addEventListener('mouseleave', startAuto);
+    root.addEventListener('focusin', pauseAuto);
+    root.addEventListener('focusout', startAuto);
+    track.addEventListener('pointerdown', stopAuto);
+    track.addEventListener('keydown', stopAuto);
+
+    if (!stopped && 'IntersectionObserver' in window) {
+      var visibility = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) startAuto(); else pauseAuto();
+        });
+      }, { threshold: 0.35 });
+      visibility.observe(root);
+    }
+  }
+
   /* ── Kleinkram ────────────────────────────────────────────────────── */
   function initMisc() {
     var year = document.getElementById('year');
@@ -189,6 +300,7 @@
     initReveal();
     initScrollspy();
     initCounters();
+    initSlideshow();
     initMisc();
   }
 

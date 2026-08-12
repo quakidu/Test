@@ -14,6 +14,7 @@
     "offer": "Angebot",
     "courses": "Kurse",
     "approach": "Ablauf",
+    "practice": "Praxis",
     "contact": "Kontakt",
     "cta": "Termin vereinbaren",
     "menu_open": "Menü öffnen",
@@ -223,5 +224,38 @@
     "imprint": "Impressum",
     "privacy": "Datenschutzerklärung",
     "back": "Zurück zur Startseite"
+  },
+  "practice": {
+    "eyebrow": "Praxis",
+    "title": "Ein Ort zum Ankommen",
+    "lead": "Helle Räume, ruhige Atmosphäre und genug Platz zum Üben. Schauen Sie sich um, bevor Sie das erste Mal herkommen.",
+    "prev": "Vorheriges Bild",
+    "next": "Nächstes Bild",
+    "play": "Diashow starten",
+    "pause": "Diashow anhalten",
+    "goto": "Zu Bild {n}",
+    "region": "Bilder aus der Praxis",
+    "slides": [
+      {
+        "image": "praxis-1.jpg",
+        "alt": "Behandlungsraum mit Liege und Fenster",
+        "caption": "Der Behandlungsraum – ruhig, hell und mit Platz für Bewegung."
+      },
+      {
+        "image": "praxis-2.jpg",
+        "alt": "Empfangsbereich der Praxis",
+        "caption": "Der Empfang. Hier beginnt Ihr Termin, ohne Hektik."
+      },
+      {
+        "image": "praxis-3.jpg",
+        "alt": "Kursraum mit Matten",
+        "caption": "Der Kursraum bietet Platz für höchstens acht Personen."
+      },
+      {
+        "image": "praxis-4.jpg",
+        "alt": "Übungsgeräte an der Wand",
+        "caption": "Kleingeräte für das Übungsprogramm zu Hause."
+      }
+    ]
   }
 }
