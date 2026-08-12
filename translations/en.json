@@ -145,7 +145,17 @@
       "embed_url": "https://www.google.com/maps?q=Musterstra%C3%9Fe%2012%2C%2012345%20Musterstadt&output=embed",
       "link_url": "https://www.google.com/maps/search/?api=1&query=Musterstra%C3%9Fe%2012%2C%2012345%20Musterstadt"
     },
-    "mail_hint": "No email program at hand? Write to"
+    "mail_hint": "No email program at hand? Write to",
+    "notes": [
+      {
+        "title": "Booking an appointment",
+        "text": "Appointments are arranged by phone or by email. We set aside 60 minutes for the first session. If you have a medical prescription, please bring it to your first appointment."
+      },
+      {
+        "title": "Cancelling an appointment",
+        "text": "Please cancel an appointment at least 24 hours in advance. That way someone on the waiting list can take the slot. A short message on the answering machine is enough."
+      }
+    ]
   },
   "footer": {
     "tagline": "Holistic therapy and courses – movement based on the Spiraldynamik concept.",

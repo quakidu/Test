@@ -935,6 +935,27 @@ button { font: inherit; color: inherit; }
 .contact__row dd { margin: 0; font-size: 1rem; }
 .contact__row a:hover { color: var(--accent-ink); text-decoration: underline; }
 
+/* Hinweise zu Terminvergabe und -absage, über die volle Kartenbreite. */
+.contact__notes {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  margin-top: clamp(0.5rem, 2vw, 1rem);
+  padding-top: clamp(1.5rem, 3vw, 2rem);
+  border-top: 1px solid var(--border);
+}
+.contact__note-title {
+  margin-bottom: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.contact__note-text { font-size: 0.95rem; color: var(--text-muted); }
+
 /* ── Diashow (Praxis) ─────────────────────────────────────────────────
  * Ein waagerechter Scroll-Container mit Scroll-Snap. Wischen auf dem
  * Telefon und Scrollen mit der Tastatur funktionieren dadurch schon ohne

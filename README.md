@@ -233,6 +233,14 @@ Aktualisierung eine veraltete Fassung sehen.
   Weitere Bilder: einfach einen Eintrag mehr in beiden Sprachdateien.
   Weniger als zwei Bilder blenden die Bedienelemente automatisch aus.
 
+* **Terminvergabe und Terminabsage:** die beiden Hinweise unten in der
+  Kontaktkarte stehen unter `contact.notes`. Die genannte Frist von
+  **24 Stunden** ist ein üblicher, aber frei gewählter Wert – bitte an die
+  eigene Handhabung anpassen. Ein Ausfallhonorar ist bewusst nicht
+  erwähnt: Das lässt sich nicht einseitig über die Website festlegen,
+  sondern muss mit den Patientinnen und Patienten vereinbart sein. Wenn
+  eine solche Vereinbarung besteht, kann der Satz dort ergänzt werden.
+
 * **Karte im Kontaktbereich:** Adresse und Einbett-Adresse stehen unter
   `contact.map` in beiden Sprachdateien. Am einfachsten: bei Google Maps den
   Standort suchen, „Teilen → Karte einbetten“ wählen und die Adresse aus dem

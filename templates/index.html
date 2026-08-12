@@ -303,6 +303,16 @@
           <dd>{{ t('contact.hours') | replace('\n', '<br>') | safe }}</dd>
         </div>
       </dl>
+
+      {# Volle Breite unter beiden Spalten: Terminvergabe und -absage. #}
+      <div class="contact__notes reveal" data-reveal-delay="3">
+        {% for note in s.contact.notes %}
+        <div class="contact__note">
+          <h3 class="contact__note-title">{{ note.title }}</h3>
+          <p class="contact__note-text">{{ note.text }}</p>
+        </div>
+        {% endfor %}
+      </div>
     </div>
 
     {#

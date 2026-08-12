@@ -145,7 +145,17 @@
       "embed_url": "https://www.google.com/maps?q=Musterstra%C3%9Fe%2012%2C%2012345%20Musterstadt&output=embed",
       "link_url": "https://www.google.com/maps/search/?api=1&query=Musterstra%C3%9Fe%2012%2C%2012345%20Musterstadt"
     },
-    "mail_hint": "Kein E-Mail-Programm zur Hand? Schreiben Sie an"
+    "mail_hint": "Kein E-Mail-Programm zur Hand? Schreiben Sie an",
+    "notes": [
+      {
+        "title": "Terminvergabe",
+        "text": "Termine vereinbaren wir telefonisch oder per E-Mail. Für das Erstgespräch planen wir 60 Minuten ein. Wenn Sie eine ärztliche Verordnung haben, bringen Sie diese bitte zum ersten Termin mit."
+      },
+      {
+        "title": "Terminabsage",
+        "text": "Bitte sagen Sie einen Termin spätestens 24 Stunden vorher ab. Dann kann jemand nachrücken, der auf einen Platz wartet. Eine kurze Nachricht auf den Anrufbeantworter genügt."
+      }
+    ]
   },
   "footer": {
     "tagline": "Ganzheitliche Therapie und Kurse – Bewegung nach dem Konzept der Spiraldynamik.",
