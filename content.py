@@ -53,6 +53,17 @@ def format_date(iso_date: str, strings: dict, today: date | None = None) -> str:
     )
 
 
+def build_mailto(email: str, subject: str, body: str = "") -> str:
+    """Setzt eine mailto-Adresse zusammen und kodiert sie korrekt.
+
+    Zeilenumbrüche gehören als CRLF hinein, alles Übrige prozentkodiert.
+    """
+    parts = ["subject=" + quote(subject, safe="")]
+    if body:
+        parts.append("body=" + quote(body.replace("\n", "\r\n"), safe=""))
+    return f"mailto:{email}?" + "&".join(parts)
+
+
 def request_mailto(strings: dict, title: str, shown_date: str) -> str:
     """Baut die vorbereitete E-Mail für eine Kursanfrage.
 
@@ -61,21 +72,27 @@ def request_mailto(strings: dict, title: str, shown_date: str) -> str:
     ``{date}``. Der Textkörper nennt bereits die Felder, die wir brauchen –
     sonst kommt eine leere Mail an, und es folgt eine Rückfragerunde.
     """
-    courses = strings.get("courses", {})
-    request = courses.get("request", {})
+    request = strings.get("courses", {}).get("request", {})
     email = strings.get("contact", {}).get("email", "")
 
     def fill(pattern: str) -> str:
         return pattern.replace("{title}", title).replace("{date}", shown_date)
 
-    subject = fill(request.get("subject", title))
-    # Zeilenumbrüche im mailto gehören als CRLF kodiert.
-    body = fill(request.get("body", "")).replace("\n", "\r\n")
+    return build_mailto(email, fill(request.get("subject", title)),
+                        fill(request.get("body", "")))
 
-    parts = ["subject=" + quote(subject, safe="")]
-    if body:
-        parts.append("body=" + quote(body, safe=""))
-    return f"mailto:{email}?" + "&".join(parts)
+
+def feedback_mailto(strings: dict) -> str:
+    """Vorbereitete E-Mail für eine Rückmeldung.
+
+    Der Textkörper fragt bereits ab, was wir zum Veröffentlichen brauchen:
+    den Text, die gewünschte Namensnennung und die ausdrückliche
+    Zustimmung. Rückmeldungen erscheinen nicht automatisch auf der Seite –
+    sie werden von Hand in die Sprachdateien übernommen.
+    """
+    request = strings.get("testimonials", {}).get("request", {})
+    email = strings.get("contact", {}).get("email", "")
+    return build_mailto(email, request.get("subject", ""), request.get("body", ""))
 
 
 def sort_key(course: dict) -> str:

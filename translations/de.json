@@ -297,5 +297,34 @@
         "url": ""
       }
     ]
+  },
+  "testimonials": {
+    "eyebrow": "Stimmen",
+    "title": "Rückmeldungen aus der Praxis",
+    "lead": "Was Patientinnen, Patienten und Kursteilnehmende berichten. Alle Zuschriften sind mit Einverständnis der jeweiligen Person veröffentlicht.",
+    "cta": "Rückmeldung schreiben",
+    "note": "Ihre Rückmeldung erscheint nicht automatisch auf dieser Seite. Sie erreicht uns zunächst per E-Mail; veröffentlicht wird sie nur, wenn Sie ausdrücklich zustimmen – und in der Form, die Sie angeben.",
+    "empty": "Hier erscheinen künftig Rückmeldungen. Wenn Sie den Anfang machen möchten, freuen wir uns über Ihre Zeilen.",
+    "request": {
+      "subject": "Rückmeldung zur Praxis",
+      "body": "Guten Tag,\n\nhier meine Rückmeldung:\n\n\n\n— — —\nDamit wir sie veröffentlichen dürfen, bitte noch kurz ausfüllen:\n\nMein Name soll erscheinen als (voller Name / Vorname / Initialen / anonym):\nWorauf bezieht sich die Rückmeldung (Therapie oder Kurs):\nIch bin damit einverstanden, dass dieser Text auf der Website\nveröffentlicht wird (ja / nein):\n\nHinweis: Angaben zu Ihrer Gesundheit sind dafür nicht nötig.\n\nViele Grüße\n"
+    },
+    "items": [
+      {
+        "name": "Beispieleintrag – bitte ersetzen",
+        "context": "Therapie",
+        "text": "Platzhalter: Hier steht später eine echte Rückmeldung. Diesen Eintrag in translations/de.json unter testimonials.items ersetzen – oder löschen, bis die erste Zuschrift vorliegt."
+      },
+      {
+        "name": "Beispieleintrag – bitte ersetzen",
+        "context": "Kurs „Gesunde Füße“",
+        "text": "Platzhalter: Ein zweiter Beispieltext, damit die Anordnung sichtbar wird. Kürzere und längere Rückmeldungen stehen nebeneinander gleich gut."
+      },
+      {
+        "name": "Beispieleintrag – bitte ersetzen",
+        "context": "Kurs „Rücken in Balance“",
+        "text": "Platzhalter: Auch ein knapper Satz genügt."
+      }
+    ]
   }
 }

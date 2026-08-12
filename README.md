@@ -242,6 +242,21 @@ Aktualisierung eine veraltete Fassung sehen.
   sondern muss mit den Patientinnen und Patienten vereinbart sein. Wenn
   eine solche Vereinbarung besteht, kann der Satz dort ergänzt werden.
 
+* **Rückmeldungen (Abschnitt „Stimmen“):** die veröffentlichten Zuschriften
+  stehen unter `testimonials.items` mit `name`, `context` und `text`. Die
+  drei mitgelieferten Einträge sind als **Beispiele gekennzeichnet** – vor
+  dem Veröffentlichen ersetzen oder löschen. Ist die Liste leer, erscheint
+  statt der Karten der Text aus `testimonials.empty`; die Einladung zum
+  Schreiben bleibt.
+
+  **Rückmeldungen kommen nicht automatisch auf die Seite.** Die
+  Schaltfläche „Rückmeldung schreiben“ öffnet eine vorbereitete E-Mail an
+  die Praxisadresse, die bereits nach der gewünschten Namensnennung und
+  nach der ausdrücklichen Zustimmung zur Veröffentlichung fragt. Sie
+  übernehmen den Text dann von Hand in beide Sprachdateien. Das ist so
+  gewollt – die Gründe stehen unten unter „Warum Rückmeldungen von Hand
+  eingetragen werden“.
+
 * **Förderhinweis:** Text und Logos stehen unter `funding`. Die drei
   mitgelieferten Logos sind **Platzhalter** – bitte durch die echten
   Logos der Förderer ersetzen:
@@ -350,6 +365,29 @@ Der Flask-Server aus `app.py` setzt ein Cookie zum Merken der Sprachwahl.
 Das betrifft nur die lokale Arbeit – die veröffentlichte statische Fassung
 tut das nicht.
 
+## Warum Rückmeldungen von Hand eingetragen werden
+
+Ein Formular, das Bewertungen direkt auf der Seite veröffentlicht, wäre
+technisch machbar, wäre hier aber die schlechtere Lösung:
+
+* **Rechtlich.** Eine veröffentlichte Rückmeldung ist eine Aussage über eine
+  Gesundheitsbehandlung. Sie darf nur mit ausdrücklicher Einwilligung der
+  schreibenden Person erscheinen, und diese Einwilligung muss nachweisbar
+  sein. Beim Weg über E-Mail liegt sie schriftlich vor.
+* **Werberecht.** Für Heilberufe gelten beim Werben mit Äußerungen Dritter
+  besondere Grenzen (§ 11 Heilmittelwerbegesetz). Was erscheint, sollte
+  jemand gelesen haben.
+* **Missbrauch.** Ein offenes Formular zieht Spam an, und für fremde
+  Inhalte auf der eigenen Seite haftet man ab Kenntnis. Ohne Prüfung
+  landet irgendwann Werbung oder Beleidigendes auf der Startseite.
+* **Technik.** Der Webspace liefert statische Dateien aus. Direktes
+  Veröffentlichen bräuchte serverseitigen Code samt Speicher, Moderation
+  und Löschfunktion – deutlich mehr Aufwand als der jetzige Weg.
+
+Der Aufwand pro Zuschrift beträgt: Text in `testimonials.items` einfügen,
+`python3 deploy.py`. Bei einer kleinen Praxis sind das ein paar Minuten im
+Quartal.
+
 ## Umgesetzte Details
 
 * Logo links oben, mit der Startseite verlinkt
@@ -360,6 +398,8 @@ tut das nicht.
   freien Plätzen und Preis; Hinweis auf den nächsten Kurs bereits im
   Kopfbereich – beides aus derselben Liste erzeugt
 * abgelaufene Kurstermine fallen automatisch heraus
+* Abschnitt „Stimmen“ mit Rückmeldungen; Zuschriften erreichen die Praxis
+  per E-Mail und werden von Hand veröffentlicht
 * Förderhinweis am Seitenende mit den Logos der Förderer in einer Zeile
 * Karte im Kontaktbereich nach dem Zwei-Klick-Prinzip: keine Verbindung zu
   Google, solange niemand „Karte laden“ drückt

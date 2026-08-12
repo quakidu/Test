@@ -263,6 +263,46 @@
   </div>
 </section>
 
+<!-- ── Stimmen ────────────────────────────────────────────────────────── -->
+<!--
+  Rückmeldungen werden von Hand in translations/*.json gepflegt. Die
+  Schaltfläche öffnet eine vorbereitete E-Mail, die schon nach der
+  gewünschten Namensnennung und der Zustimmung zur Veröffentlichung
+  fragt – nichts erscheint automatisch auf der Seite.
+-->
+<section class="section" id="testimonials">
+  <div class="container">
+    <header class="section__head">
+      <p class="eyebrow reveal">{{ t('testimonials.eyebrow') }}</p>
+      <h2 class="section__title reveal" data-reveal-delay="1">{{ t('testimonials.title') }}</h2>
+      <p class="section__lead reveal" data-reveal-delay="2">{{ t('testimonials.lead') }}</p>
+    </header>
+
+    {% if s.testimonials['items'] %}
+    <ul class="voices">
+      {% for voice in s.testimonials['items'] %}
+      <li class="voice reveal" data-reveal-delay="{{ loop.index0 % 3 }}">
+        <blockquote class="voice__quote">{{ voice.text }}</blockquote>
+        <p class="voice__by">
+          <span class="voice__name">{{ voice.name }}</span>
+          {% if voice.context %}
+          <span class="voice__context">{{ voice.context }}</span>
+          {% endif %}
+        </p>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="voices__empty reveal">{{ t('testimonials.empty') }}</p>
+    {% endif %}
+
+    <div class="voices__invite reveal" data-reveal-delay="1">
+      <a class="btn btn--ghost" href="{{ feedback }}">{{ t('testimonials.cta') }}</a>
+      <p class="voices__note">{{ t('testimonials.note') }}</p>
+    </div>
+  </div>
+</section>
+
 <!-- ── Kontakt ────────────────────────────────────────────────────────── -->
 <section class="section section--contact" id="contact">
   <div class="container">

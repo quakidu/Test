@@ -297,5 +297,34 @@
         "url": ""
       }
     ]
+  },
+  "testimonials": {
+    "eyebrow": "Voices",
+    "title": "Feedback from the practice",
+    "lead": "What patients and course participants report. Everything here is published with the consent of the person who wrote it.",
+    "cta": "Write feedback",
+    "note": "Your feedback does not appear on this page automatically. It reaches us by email first and is published only if you expressly agree – and in the form you specify.",
+    "empty": "Feedback will appear here in future. If you would like to be the first, we would be glad to hear from you.",
+    "request": {
+      "subject": "Feedback on the practice",
+      "body": "Hello,\n\nhere is my feedback:\n\n\n\n— — —\nSo that we may publish it, please fill in briefly:\n\nMy name should appear as (full name / first name / initials / anonymous):\nWhat the feedback refers to (therapy or course):\nI agree to this text being published on the website (yes / no):\n\nNote: details about your health are not needed for this.\n\nKind regards\n"
+    },
+    "items": [
+      {
+        "name": "Example entry – please replace",
+        "context": "Therapy",
+        "text": "Placeholder: real feedback will go here. Replace this entry in translations/en.json under testimonials.items – or delete it until the first message arrives."
+      },
+      {
+        "name": "Example entry – please replace",
+        "context": "Course \"Healthy feet\"",
+        "text": "Placeholder: a second example so the layout is visible. Shorter and longer entries sit side by side equally well."
+      },
+      {
+        "name": "Example entry – please replace",
+        "context": "Course \"Back in balance\"",
+        "text": "Placeholder: a brief sentence is enough, too."
+      }
+    ]
   }
 }
