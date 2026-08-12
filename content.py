@@ -19,6 +19,7 @@ zählt noch als kommend.
 from __future__ import annotations
 
 from datetime import date
+from urllib.parse import quote
 
 
 def format_date(iso_date: str, strings: dict, today: date | None = None) -> str:
@@ -52,6 +53,31 @@ def format_date(iso_date: str, strings: dict, today: date | None = None) -> str:
     )
 
 
+def request_mailto(strings: dict, title: str, shown_date: str) -> str:
+    """Baut die vorbereitete E-Mail für eine Kursanfrage.
+
+    Betreff und Textkörper stehen unter ``courses.request`` in den
+    Übersetzungsdateien und enthalten die Platzhalter ``{title}`` und
+    ``{date}``. Der Textkörper nennt bereits die Felder, die wir brauchen –
+    sonst kommt eine leere Mail an, und es folgt eine Rückfragerunde.
+    """
+    courses = strings.get("courses", {})
+    request = courses.get("request", {})
+    email = strings.get("contact", {}).get("email", "")
+
+    def fill(pattern: str) -> str:
+        return pattern.replace("{title}", title).replace("{date}", shown_date)
+
+    subject = fill(request.get("subject", title))
+    # Zeilenumbrüche im mailto gehören als CRLF kodiert.
+    body = fill(request.get("body", "")).replace("\n", "\r\n")
+
+    parts = ["subject=" + quote(subject, safe="")]
+    if body:
+        parts.append("body=" + quote(body, safe=""))
+    return f"mailto:{email}?" + "&".join(parts)
+
+
 def sort_key(course: dict) -> str:
     """Sortierschlüssel: ISO-Daten lassen sich als Text vergleichen."""
     return str(course.get("start_date", "9999-12-31"))
@@ -74,6 +100,9 @@ def upcoming_courses(strings: dict, today: date | None = None) -> list[dict]:
             continue  # Termin liegt in der Vergangenheit
         prepared = dict(course)
         prepared["date"] = format_date(start, strings, today) if start else ""
+        prepared["mailto"] = request_mailto(
+            strings, str(prepared.get("title", "")), prepared["date"]
+        )
         courses.append(prepared)
 
     return sorted(courses, key=sort_key)

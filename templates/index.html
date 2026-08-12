@@ -142,13 +142,25 @@
           </div>
         </dl>
 
-        <a class="btn btn--primary btn--block"
-           href="mailto:{{ t('contact.email') }}?subject={{ course.title | urlencode }}">
+        {# Öffnet eine vorbereitete E-Mail mit Betreff, Kurs, Termin und den
+           Feldern, die wir für die Anmeldung brauchen. #}
+        <a class="btn btn--primary btn--block" href="{{ course.mailto }}">
           {{ t('courses.cta') }}
         </a>
       </article>
       {% endfor %}
     </div>
+
+    {# Nicht überall ist ein E-Mail-Programm eingerichtet – dann darf der
+       Klick oben keine Sackgasse sein. #}
+    {% if courses %}
+    <p class="courses__contact reveal">
+      {{ t('courses.alt_label') }}
+      <a href="mailto:{{ t('contact.email') }}">{{ t('contact.email') }}</a>
+      <span class="courses__contact-sep" aria-hidden="true">·</span>
+      <a href="tel:{{ t('contact.phone') | replace(' ', '') }}">{{ t('contact.phone') }}</a>
+    </p>
+    {% endif %}
   </div>
 </section>
 

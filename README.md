@@ -194,6 +194,18 @@ Aktualisierung eine veraltete Fassung sehen.
   `python3 deploy.py`. Die Formulierungen drumherum stehen in
   `hero.course_teaser` (mit den Platzhaltern `{title}` und `{date}`) und in
   `formats` (Monatsnamen und Datumsmuster).
+* **„Platz anfragen“:** Der Button öffnet das E-Mail-Programm mit fertigem
+  Betreff (Kurs und Starttermin) und einem vorbereiteten Text, der bereits
+  nach Name, Telefon und Rückfragen fragt – sonst kommt eine leere Mail an.
+  Beide Texte stehen unter `courses.request` und dürfen die Platzhalter
+  `{title}` und `{date}` enthalten. Weil nicht überall ein Mailprogramm
+  eingerichtet ist, stehen unter den Karten zusätzlich E-Mail-Adresse und
+  Telefonnummer als anklickbarer Text (`courses.alt_label`).
+
+  Wenn Anmeldungen später wirklich über die Seite laufen sollen, wäre ein
+  Formular der nächste Schritt – dafür braucht es serverseitigen Code (bei
+  Alfahosting per PHP möglich), einen Spam-Schutz und einen zusätzlichen
+  Abschnitt in der Datenschutzerklärung.
 * **Therapien ergänzen:** einen weiteren Eintrag in `offer.items` anlegen
   (`title`, `text`, `meta`).
 * **Farben:** die Design-Tokens ganz oben in `static/css/style.css`

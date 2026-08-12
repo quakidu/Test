@@ -193,7 +193,12 @@
         "price": "160 €"
       }
     ],
-    "empty": "Dates for the next round have not been set yet. Send us a message – we will let you know as soon as new courses are scheduled."
+    "empty": "Dates for the next round have not been set yet. Send us a message – we will let you know as soon as new courses are scheduled.",
+    "request": {
+      "subject": "Course enquiry: {title}, starting {date}",
+      "body": "Hello,\n\nI am interested in the course \"{title}\" (starting {date}).\n\nName:\nPhone:\nQuestion or comment:\n\nKind regards\n"
+    },
+    "alt_label": "No email program at hand? Write to"
   },
   "formats": {
     "months": [

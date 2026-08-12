@@ -193,7 +193,12 @@
         "price": "160 €"
       }
     ],
-    "empty": "Die Termine für die nächste Staffel stehen noch nicht fest. Schreiben Sie uns – wir sagen Ihnen Bescheid, sobald neue Kurse feststehen."
+    "empty": "Die Termine für die nächste Staffel stehen noch nicht fest. Schreiben Sie uns – wir sagen Ihnen Bescheid, sobald neue Kurse feststehen.",
+    "request": {
+      "subject": "Kursanfrage: {title}, Start am {date}",
+      "body": "Guten Tag,\n\nich interessiere mich für den Kurs „{title}“ (Start am {date}).\n\nName:\nTelefon:\nFrage oder Anmerkung:\n\nViele Grüße\n"
+    },
+    "alt_label": "Kein E-Mail-Programm zur Hand? Schreiben Sie an"
   },
   "formats": {
     "months": [
