@@ -205,8 +205,9 @@ Aktualisierung eine veraltete Fassung sehen.
   Telefonnummer als anklickbarer Text (`courses.alt_label`).
 
   Denselben Hinweis gibt es unter dem Knopf „E-Mail schreiben“ im
-  Kontaktbereich – dort ohne Telefonnummer, weil sie daneben in den
-  Kontaktdaten steht. Beide Stellen greifen auf `contact.mail_hint` zu,
+  Kontaktbereich und unter „Rückmeldung schreiben“ im Abschnitt „Stimmen“ –
+  an diesen beiden Stellen ohne Telefonnummer, weil dort schriftlich
+  geantwortet werden soll. Alle drei greifen auf `contact.mail_hint` zu,
   damit die Formulierung nicht auseinanderläuft.
 
   Wenn Anmeldungen später wirklich über die Seite laufen sollen, wäre ein

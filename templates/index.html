@@ -297,7 +297,17 @@
     {% endif %}
 
     <div class="voices__invite reveal" data-reveal-delay="1">
-      <a class="btn btn--ghost" href="{{ feedback }}">{{ t('testimonials.cta') }}</a>
+      <div class="voices__action">
+        <a class="btn btn--ghost" href="{{ feedback }}">{{ t('testimonials.cta') }}</a>
+
+        {# Wie bei Kursen und Kontakt: Ohne eingerichtetes Mailprogramm
+           passiert beim Klick nichts sichtbares. #}
+        <p class="mail-hint">
+          {{ t('contact.mail_hint') }}
+          <a href="mailto:{{ t('contact.email') }}">{{ t('contact.email') }}</a>
+        </p>
+      </div>
+
       <p class="voices__note">{{ t('testimonials.note') }}</p>
     </div>
   </div>
