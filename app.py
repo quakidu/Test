@@ -121,6 +121,7 @@ def render_home(lang: str):
             courses=courses,
             teaser=content.course_teaser(strings, courses),
             slides=content.practice_slides(strings, load_translations(DEFAULT_LANGUAGE)),
+            logos=content.funding_logos(strings, load_translations(DEFAULT_LANGUAGE)),
         )
     )
     response.set_cookie(

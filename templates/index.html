@@ -346,4 +346,35 @@
   </div>
 </section>
 
+<!-- ── Förderung ──────────────────────────────────────────────────────── -->
+{% if logos %}
+<section class="section section--funding" id="funding">
+  <div class="container">
+    <header class="section__head funding__head">
+      <p class="eyebrow reveal">{{ t('funding.eyebrow') }}</p>
+      <h2 class="section__title reveal" data-reveal-delay="1">{{ t('funding.title') }}</h2>
+      <p class="section__lead reveal" data-reveal-delay="2">{{ t('funding.text') }}</p>
+    </header>
+
+    {# Eigene Zeile, nebeneinander. Der helle Streifen bleibt in beiden
+       Farbschemata hell – Förderlogos sind meist dunkel auf transparent. #}
+    <ul class="funding__logos reveal" data-reveal-delay="2">
+      {% for logo in logos %}
+      <li class="funding__item">
+        {% if logo.url %}
+        <a href="{{ logo.url }}" target="_blank" rel="noopener noreferrer">
+          <img src="{{ url_for('static', filename='img/' ~ logo.image) }}"
+               alt="{{ logo.alt }}" loading="lazy" decoding="async">
+        </a>
+        {% else %}
+        <img src="{{ url_for('static', filename='img/' ~ logo.image) }}"
+             alt="{{ logo.alt }}" loading="lazy" decoding="async">
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}
+
 {% endblock %}

@@ -1188,6 +1188,45 @@ html:not(.js) .slideshow__track::-webkit-scrollbar { display: block; }
   .map__frame { aspect-ratio: 4 / 3; }
 }
 
+/* ── Förderung ────────────────────────────────────────────────────────
+ * Abschluss der Seite: kurzer Text, darunter die Logos in einer Zeile.
+ * Der Streifen bleibt in beiden Farbschemata hell, weil Förderlogos in
+ * aller Regel dunkel auf transparentem Grund geliefert werden und auf
+ * dunklem Untergrund sonst verschwinden.
+ */
+.section--funding { padding-block: clamp(3rem, 6vw, 4.5rem); }
+.funding__head { margin-bottom: clamp(1.75rem, 4vw, 2.5rem); }
+
+.funding__logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding: clamp(1.25rem, 3vw, 2rem) clamp(1.5rem, 4vw, 2.5rem);
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.funding__item { display: flex; }
+.funding__item img {
+  width: auto;
+  max-width: 200px;
+  max-height: 56px;
+  object-fit: contain;
+  /* Zurückhaltend, bis jemand hinsieht – so drängen sich die Logos nicht
+     vor den eigentlichen Inhalt. */
+  opacity: 0.75;
+  transition: opacity 0.25s var(--ease);
+}
+.funding__item a:hover img,
+.funding__item img:hover { opacity: 1; }
+
+@media (max-width: 560px) {
+  .funding__logos { gap: 1.25rem; }
+  .funding__item img { max-height: 44px; }
+}
+
 /* ── 8. Footer ────────────────────────────────────────────────────────── */
 .site-footer {
   padding-top: clamp(3rem, 6vw, 4.5rem);

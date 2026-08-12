@@ -275,5 +275,27 @@
         "caption": "Small equipment for the home exercise programme."
       }
     ]
+  },
+  "funding": {
+    "eyebrow": "Funding",
+    "title": "Supported by",
+    "text": "Setting up the practice was supported by the following organisations. We are grateful for the funding – some of this would not have been possible otherwise.",
+    "logos": [
+      {
+        "image": "foerderer-1.png",
+        "alt": "Logo of the first funding organisation",
+        "url": ""
+      },
+      {
+        "image": "foerderer-2.png",
+        "alt": "Logo of the second funding organisation",
+        "url": ""
+      },
+      {
+        "image": "foerderer-3.png",
+        "alt": "Logo of the third funding organisation",
+        "url": ""
+      }
+    ]
   }
 }

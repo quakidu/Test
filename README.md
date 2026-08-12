@@ -45,6 +45,7 @@ static/
   img/logo-mark.png     quadratisches Signet (Favicon)
   img/logo-mark-dark.png
   img/praxis-1.jpg …    Platzhalter für die Diashow, bitte ersetzen
+  img/foerderer-1.png … Platzhalter für die Förderlogos, bitte ersetzen
 translations/
   de.json  en.json
 webroot/
@@ -241,6 +242,32 @@ Aktualisierung eine veraltete Fassung sehen.
   sondern muss mit den Patientinnen und Patienten vereinbart sein. Wenn
   eine solche Vereinbarung besteht, kann der Satz dort ergänzt werden.
 
+* **Förderhinweis:** Text und Logos stehen unter `funding`. Die drei
+  mitgelieferten Logos sind **Platzhalter** – bitte durch die echten
+  Logos der Förderer ersetzen:
+
+  1. Am besten PNG mit transparentem Hintergrund. Die Höhe begrenzt das
+     Layout auf 56 Pixel, die Breite ergibt sich; unterschiedliche
+     Seitenverhältnisse sind also kein Problem.
+  2. Unter demselben Dateinamen nach `static/img/` legen oder die Einträge
+     in `funding.logos` anpassen.
+  3. `alt` beschreibt das Logo für Menschen, die es nicht sehen können –
+     dort gehört der Name der Einrichtung hinein.
+  4. Ist bei einem Eintrag `url` gefüllt, wird das Logo zu einem Verweis
+     auf die Website des Förderers (öffnet in einem neuen Tab).
+
+  Der Logo-Streifen bleibt in beiden Farbschemata **weiß**. Das ist
+  Absicht: Förderlogos sind meist dunkel auf transparentem Grund und
+  würden auf dunklem Untergrund verschwinden.
+
+  Der Text („Der Aufbau der Praxis wurde von den folgenden Einrichtungen
+  unterstützt …“) ist ein Vorschlag. Achten Sie darauf, dass die Aussage
+  zur tatsächlichen Förderung passt – und prüfen Sie die Auflagen der
+  Fördermittelgeber: Bei öffentlichen Programmen sind Wortlaut, Logo und
+  Platzierung des Hinweises oft genau vorgeschrieben.
+
+  Sind keine Logos hinterlegt, entfällt der ganze Abschnitt.
+
 * **Karte im Kontaktbereich:** Adresse und Einbett-Adresse stehen unter
   `contact.map` in beiden Sprachdateien. Am einfachsten: bei Google Maps den
   Standort suchen, „Teilen → Karte einbetten“ wählen und die Adresse aus dem
@@ -333,6 +360,7 @@ tut das nicht.
   freien Plätzen und Preis; Hinweis auf den nächsten Kurs bereits im
   Kopfbereich – beides aus derselben Liste erzeugt
 * abgelaufene Kurstermine fallen automatisch heraus
+* Förderhinweis am Seitenende mit den Logos der Förderer in einer Zeile
 * Karte im Kontaktbereich nach dem Zwei-Klick-Prinzip: keine Verbindung zu
   Google, solange niemand „Karte laden“ drückt
 * Diashow im Praxis-Bereich: Wischen, Pfeile, Punkte und automatischer

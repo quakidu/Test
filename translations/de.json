@@ -275,5 +275,27 @@
         "caption": "Kleingeräte für das Übungsprogramm zu Hause."
       }
     ]
+  },
+  "funding": {
+    "eyebrow": "Förderung",
+    "title": "Gefördert durch",
+    "text": "Der Aufbau der Praxis wurde von den folgenden Einrichtungen unterstützt. Wir danken für die Förderung, ohne die manches so nicht möglich gewesen wäre.",
+    "logos": [
+      {
+        "image": "foerderer-1.png",
+        "alt": "Logo des ersten Förderers",
+        "url": ""
+      },
+      {
+        "image": "foerderer-2.png",
+        "alt": "Logo des zweiten Förderers",
+        "url": ""
+      },
+      {
+        "image": "foerderer-3.png",
+        "alt": "Logo des dritten Förderers",
+        "url": ""
+      }
+    ]
   }
 }

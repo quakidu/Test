@@ -132,6 +132,29 @@ def practice_slides(strings: dict, fallback: dict) -> list[dict]:
     return slides
 
 
+def funding_logos(strings: dict, fallback: dict) -> list[dict]:
+    """Logos der Förderer – wie bei den Praxisbildern.
+
+    Dateiname und Verweis stehen in der Standardsprache, die
+    Bildbeschreibung kommt aus der aktiven Sprache.
+    """
+    base = fallback.get("funding", {}).get("logos", [])
+    texts = strings.get("funding", {}).get("logos", [])
+
+    logos = []
+    for index, entry in enumerate(base):
+        image = entry.get("image")
+        if not image:
+            continue
+        text = texts[index] if index < len(texts) else entry
+        logos.append({
+            "image": image,
+            "alt": text.get("alt", entry.get("alt", "")),
+            "url": entry.get("url", ""),
+        })
+    return logos
+
+
 def course_teaser(strings: dict, courses: list[dict]) -> dict | None:
     """Hinweis auf den nächsten Kurs für den Kopfbereich.
 
