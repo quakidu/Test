@@ -136,7 +136,16 @@
     "email": "praxis@koerper-im-einklang.de",
     "hours_label": "Opening hours",
     "hours": "Mon–Fri 08:00–19:00\nSat by arrangement",
-    "cta": "Write an email"
+    "cta": "Write an email",
+    "map": {
+      "title": "How to find us",
+      "note": "The map is only loaded from Google when you click. Google then receives your IP address and further technical data. See the privacy policy for details.",
+      "load": "Load map",
+      "frame_title": "Map showing the location of the practice",
+      "route": "Plan your route",
+      "embed_url": "https://www.google.com/maps?q=Musterstra%C3%9Fe%2012%2C%2012345%20Musterstadt&output=embed",
+      "link_url": "https://www.google.com/maps/search/?api=1&query=Musterstra%C3%9Fe%2012%2C%2012345%20Musterstadt"
+    }
   },
   "footer": {
     "tagline": "Holistic therapy and courses – movement based on the Spiraldynamik concept.",

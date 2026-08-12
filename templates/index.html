@@ -299,6 +299,35 @@
         </div>
       </dl>
     </div>
+
+    {#
+      Karte nach dem Zwei-Klick-Prinzip: Solange niemand auf „Karte laden“
+      drückt, geht keine Anfrage an Google – die Seite bleibt damit ohne
+      Zustimmungsbanner. Die Adresse steht ohnehin darüber, und der Verweis
+      „Route planen“ funktioniert auch ohne die eingebettete Karte.
+    #}
+    <div class="map reveal" id="map"
+         data-embed="{{ t('contact.map.embed_url') }}"
+         data-frame-title="{{ t('contact.map.frame_title') }}">
+      <h3 class="map__title">{{ t('contact.map.title') }}</h3>
+
+      <div class="map__frame" id="map-frame">
+        <div class="map__placeholder">
+          <p class="map__note">{{ t('contact.map.note') }}</p>
+          <button class="btn btn--primary btn--sm" type="button" id="map-load">
+            {{ t('contact.map.load') }}
+          </button>
+        </div>
+      </div>
+
+      <p class="map__route">
+        <a class="card__link" href="{{ t('contact.map.link_url') }}"
+           target="_blank" rel="noopener noreferrer">
+          {{ t('contact.map.route') }}
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </p>
+    </div>
   </div>
 </section>
 

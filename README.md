@@ -228,6 +228,19 @@ Aktualisierung eine veraltete Fassung sehen.
   Weitere Bilder: einfach einen Eintrag mehr in beiden Sprachdateien.
   Weniger als zwei Bilder blenden die Bedienelemente automatisch aus.
 
+* **Karte im Kontaktbereich:** Adresse und Einbett-Adresse stehen unter
+  `contact.map` in beiden Sprachdateien. Am einfachsten: bei Google Maps den
+  Standort suchen, „Teilen → Karte einbetten“ wählen und die Adresse aus dem
+  `src`-Attribut nach `embed_url` kopieren; `link_url` ist der Verweis
+  „Route planen“. Beide Werte müssen in `de.json` und `en.json`
+  übereinstimmen – eine Adresse ist nicht sprachabhängig.
+
+  **Die Karte lädt erst auf Klick.** Vorher geht keine Anfrage an Google.
+  Das ist kein Zufall, sondern der Grund, warum die Seite ohne
+  Einwilligungsbanner auskommt: Ohne Klick werden keine Daten an Dritte
+  übertragen. Wird die Karte irgendwann direkt eingebunden, ist ein Banner
+  erforderlich und die Datenschutzerklärung erneut anzupassen.
+
 * **Farben:** die Design-Tokens ganz oben in `static/css/style.css`
   (`--blue-*`). Die Leitfarbe `--blue-600` (`#314F6F`) ist das Blau aus der
   Unterzeile des Logos, `--ink-900` die Schriftfarbe des Logos; die übrigen
@@ -273,15 +286,18 @@ ist die deutsche.
 
 ### Wichtig für die Datenschutzerklärung
 
-Der Text beschreibt den heutigen Stand der Seite: rein statische
-Auslieferung, **keine Cookies, keine Dienste Dritter, keine Formulare, keine
-Schriftarten von fremden Servern**. Das wurde am gebauten Ergebnis geprüft.
-Deshalb ist auch kein Einwilligungsbanner nötig.
+Der Text beschreibt den heutigen Stand der Seite: statische Auslieferung,
+**keine Cookies, keine Formulare, keine Schriftarten von fremden Servern**.
+Einziger Dienst eines Dritten ist die Google-Karte im Kontaktbereich – und
+die wird erst nach einem Klick geladen (Abschnitt 6 der Erklärung). Beides
+wurde am gebauten Ergebnis geprüft: Vor dem Klick gehen null Anfragen an
+fremde Adressen hinaus und es werden null Cookies gesetzt. Deshalb ist kein
+Einwilligungsbanner nötig.
 
-Sobald etwas davon hinzukommt – ein Kontaktformular, eine eingebettete
-Karte, eine Terminbuchung, Schriftarten von einem fremden Server oder
-Statistik –, **muss der Text erweitert werden**, und je nach Dienst wird
-eine Einwilligung erforderlich.
+Sobald weiteres hinzukommt – ein Kontaktformular, eine Terminbuchung,
+Schriftarten von einem fremden Server oder Statistik –, **muss der Text
+erweitert werden**, und je nach Dienst wird eine Einwilligung erforderlich.
+Dasselbe gilt, wenn die Karte künftig direkt statt auf Klick geladen wird.
 
 Zwei weitere Punkte:
 
@@ -304,6 +320,8 @@ tut das nicht.
   freien Plätzen und Preis; Hinweis auf den nächsten Kurs bereits im
   Kopfbereich – beides aus derselben Liste erzeugt
 * abgelaufene Kurstermine fallen automatisch heraus
+* Karte im Kontaktbereich nach dem Zwei-Klick-Prinzip: keine Verbindung zu
+  Google, solange niemand „Karte laden“ drückt
 * Diashow im Praxis-Bereich: Wischen, Pfeile, Punkte und automatischer
   Wechsel, der bei eigener Bedienung endgültig stoppt und bei
   `prefers-reduced-motion` gar nicht erst anläuft

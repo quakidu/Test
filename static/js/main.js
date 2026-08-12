@@ -2,7 +2,8 @@
  * Körper im Einklang – Interaktion der Startseite.
  *
  * Enthält: mobiles Menü, Sticky-Header, Scroll-Reveal, Scrollspy,
- * animierte Kennzahlen und die Diashow im Praxis-Bereich.
+ * animierte Kennzahlen, die Diashow im Praxis-Bereich und die Karte,
+ * die erst auf Klick geladen wird.
  */
 (function () {
   'use strict';
@@ -288,6 +289,35 @@
     }
   }
 
+  /* ── Karte (Zwei-Klick-Lösung) ────────────────────────────────────── */
+  function initMap() {
+    var root = document.getElementById('map');
+    var frame = document.getElementById('map-frame');
+    var button = document.getElementById('map-load');
+    if (!root || !frame || !button) return;
+
+    var embed = root.dataset.embed;
+    if (!embed) return;
+
+    button.addEventListener('click', function () {
+      // Erst hier entsteht die erste Verbindung zu Google.
+      var iframe = document.createElement('iframe');
+      iframe.src = embed;
+      iframe.title = root.dataset.frameTitle || '';
+      iframe.loading = 'lazy';
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = 'no-referrer-when-downgrade';
+      iframe.setAttribute('aria-label', iframe.title);
+
+      frame.innerHTML = '';
+      frame.appendChild(iframe);
+      frame.classList.add('is-loaded');
+      // Die Zustimmung wird bewusst nicht gespeichert: Die Seite legt
+      // nichts im Browser ab, und ein Klick pro Besuch ist zumutbar.
+      iframe.focus();
+    });
+  }
+
   /* ── Kleinkram ────────────────────────────────────────────────────── */
   function initMisc() {
     var year = document.getElementById('year');
@@ -301,6 +331,7 @@
     initScrollspy();
     initCounters();
     initSlideshow();
+    initMap();
     initMisc();
   }
 

@@ -136,7 +136,16 @@
     "email": "praxis@koerper-im-einklang.de",
     "hours_label": "Öffnungszeiten",
     "hours": "Mo–Fr 08:00–19:00\nSa nach Vereinbarung",
-    "cta": "E-Mail schreiben"
+    "cta": "E-Mail schreiben",
+    "map": {
+      "title": "Anfahrt",
+      "note": "Die Karte wird erst auf Ihren Klick von Google geladen. Dabei erhält Google Ihre IP-Adresse und weitere technische Daten. Näheres steht in der Datenschutzerklärung.",
+      "load": "Karte laden",
+      "frame_title": "Karte mit dem Standort der Praxis",
+      "route": "Route planen",
+      "embed_url": "https://www.google.com/maps?q=Musterstra%C3%9Fe%2012%2C%2012345%20Musterstadt&output=embed",
+      "link_url": "https://www.google.com/maps/search/?api=1&query=Musterstra%C3%9Fe%2012%2C%2012345%20Musterstadt"
+    }
   },
   "footer": {
     "tagline": "Ganzheitliche Therapie und Kurse – Bewegung nach dem Konzept der Spiraldynamik.",
