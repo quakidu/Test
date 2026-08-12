@@ -145,7 +145,8 @@
       "route": "Route planen",
       "embed_url": "https://www.google.com/maps?q=Musterstra%C3%9Fe%2012%2C%2012345%20Musterstadt&output=embed",
       "link_url": "https://www.google.com/maps/search/?api=1&query=Musterstra%C3%9Fe%2012%2C%2012345%20Musterstadt"
-    }
+    },
+    "mail_hint": "Kein E-Mail-Programm zur Hand? Schreiben Sie an"
   },
   "footer": {
     "tagline": "Ganzheitliche Therapie und Kurse – Bewegung nach dem Konzept der Spiraldynamik.",
@@ -207,8 +208,7 @@
     "request": {
       "subject": "Kursanfrage: {title}, Start am {date}",
       "body": "Guten Tag,\n\nich interessiere mich für den Kurs „{title}“ (Start am {date}).\n\nName:\nTelefon:\nFrage oder Anmerkung:\n\nViele Grüße\n"
-    },
-    "alt_label": "Kein E-Mail-Programm zur Hand? Schreiben Sie an"
+    }
   },
   "formats": {
     "months": [

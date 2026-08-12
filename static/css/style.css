@@ -797,24 +797,30 @@ button { font: inherit; color: inherit; }
 .course .btn { margin-top: 1.1rem; }
 .btn--block { width: 100%; }
 
-/* Ausweichweg unter den Kurskarten, falls kein Mailprogramm eingerichtet ist. */
-.courses__contact {
+/*
+ * Ausweichweg, wo ein mailto-Knopf steht: Ohne eingerichtetes Mailprogramm
+ * passiert beim Klick nichts sichtbares. Wird unter den Kurskarten und im
+ * Kontaktbereich verwendet; die Farben kommen aus Tokens und passen sich
+ * dem hellen wie dem dunklen Untergrund an.
+ */
+.mail-hint {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.35rem 0.6rem;
-  margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
+  margin-top: 1.25rem;
   color: var(--text-muted);
   font-size: 0.95rem;
 }
-.courses__contact a {
+.mail-hint--courses { margin-top: clamp(1.75rem, 3.5vw, 2.5rem); }
+.mail-hint a {
   color: var(--text);
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 0.2em;
 }
-.courses__contact a:hover { color: var(--accent-ink); }
-.courses__contact-sep { opacity: 0.5; }
+.mail-hint a:hover { color: var(--accent-ink); }
+.mail-hint__sep { opacity: 0.5; }
 
 /* Steht kein Termin an, tritt dieser Hinweis an die Stelle der Karten. */
 .courses__empty {

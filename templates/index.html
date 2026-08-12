@@ -154,10 +154,10 @@
     {# Nicht überall ist ein E-Mail-Programm eingerichtet – dann darf der
        Klick oben keine Sackgasse sein. #}
     {% if courses %}
-    <p class="courses__contact reveal">
-      {{ t('courses.alt_label') }}
+    <p class="mail-hint mail-hint--courses reveal">
+      {{ t('contact.mail_hint') }}
       <a href="mailto:{{ t('contact.email') }}">{{ t('contact.email') }}</a>
-      <span class="courses__contact-sep" aria-hidden="true">·</span>
+      <span class="mail-hint__sep" aria-hidden="true">·</span>
       <a href="tel:{{ t('contact.phone') | replace(' ', '') }}">{{ t('contact.phone') }}</a>
     </p>
     {% endif %}
@@ -278,6 +278,15 @@
         <a class="btn btn--primary reveal" data-reveal-delay="3" href="mailto:{{ t('contact.email') }}">
           {{ t('contact.cta') }}
         </a>
+
+        {# Derselbe Hinweis wie bei den Kursen: Der Knopf darüber öffnet das
+           Mailprogramm – ist keines eingerichtet, passiert sonst nichts.
+           Die Telefonnummer steht hier bewusst nicht noch einmal, sie ist
+           daneben in den Kontaktdaten aufgeführt. #}
+        <p class="mail-hint reveal" data-reveal-delay="4">
+          {{ t('contact.mail_hint') }}
+          <a href="mailto:{{ t('contact.email') }}">{{ t('contact.email') }}</a>
+        </p>
       </div>
 
       <dl class="contact__details reveal" data-reveal-delay="2">

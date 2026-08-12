@@ -145,7 +145,8 @@
       "route": "Plan your route",
       "embed_url": "https://www.google.com/maps?q=Musterstra%C3%9Fe%2012%2C%2012345%20Musterstadt&output=embed",
       "link_url": "https://www.google.com/maps/search/?api=1&query=Musterstra%C3%9Fe%2012%2C%2012345%20Musterstadt"
-    }
+    },
+    "mail_hint": "No email program at hand? Write to"
   },
   "footer": {
     "tagline": "Holistic therapy and courses – movement based on the Spiraldynamik concept.",
@@ -207,8 +208,7 @@
     "request": {
       "subject": "Course enquiry: {title}, starting {date}",
       "body": "Hello,\n\nI am interested in the course \"{title}\" (starting {date}).\n\nName:\nPhone:\nQuestion or comment:\n\nKind regards\n"
-    },
-    "alt_label": "No email program at hand? Write to"
+    }
   },
   "formats": {
     "months": [

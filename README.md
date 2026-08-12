@@ -203,6 +203,11 @@ Aktualisierung eine veraltete Fassung sehen.
   eingerichtet ist, stehen unter den Karten zusätzlich E-Mail-Adresse und
   Telefonnummer als anklickbarer Text (`courses.alt_label`).
 
+  Denselben Hinweis gibt es unter dem Knopf „E-Mail schreiben“ im
+  Kontaktbereich – dort ohne Telefonnummer, weil sie daneben in den
+  Kontaktdaten steht. Beide Stellen greifen auf `contact.mail_hint` zu,
+  damit die Formulierung nicht auseinanderläuft.
+
   Wenn Anmeldungen später wirklich über die Seite laufen sollen, wäre ein
   Formular der nächste Schritt – dafür braucht es serverseitigen Code (bei
   Alfahosting per PHP möglich), einen Spam-Schutz und einen zusätzlichen
