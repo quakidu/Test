@@ -207,13 +207,60 @@
   </div>
 </section>
 
+<!-- ── Therapeut ──────────────────────────────────────────────────────── -->
+<!--
+  Der Abschnitt zeigt die Person hinter der Praxis. Die strukturierten
+  Daten im Kopf der Seite nennen dieselbe Person als Gründer – was dort
+  steht, muss hier sichtbar sein, sonst zählt es für Suchmaschinen nicht.
+-->
+<section class="section section--tinted" id="therapist">
+  <div class="container">
+    <header class="section__head">
+      <p class="eyebrow reveal">{{ t('therapist.eyebrow') }}</p>
+      <h2 class="section__title reveal" data-reveal-delay="1">{{ t('therapist.title') }}</h2>
+      <p class="section__lead reveal" data-reveal-delay="2">{{ t('therapist.lead') }}</p>
+    </header>
+
+    <div class="therapist">
+      <figure class="therapist__figure reveal">
+        <img src="{{ url_for('static', filename='img/' ~ t('therapist.image')) }}"
+             alt="{{ t('therapist.alt') }}"
+             width="900" height="1200"
+             loading="lazy" decoding="async">
+      </figure>
+
+      <div class="therapist__body reveal" data-reveal-delay="1">
+        <h3 class="therapist__name">{{ t('therapist.name') }}</h3>
+        <p class="therapist__role">{{ t('therapist.role') }}</p>
+
+        {% for paragraph in s.therapist.text %}
+        <p class="therapist__text">{{ paragraph }}</p>
+        {% endfor %}
+
+        <h4 class="therapist__facts-title">{{ t('therapist.facts_label') }}</h4>
+        <dl class="therapist__facts">
+          {% for fact in s.therapist.facts %}
+          <div class="therapist__fact">
+            <dt>{{ fact.label }}</dt>
+            <dd>{{ fact.value }}</dd>
+          </div>
+          {% endfor %}
+        </dl>
+
+        <a class="btn btn--primary" href="#contact">{{ t('therapist.cta') }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 <!-- ── Praxis ─────────────────────────────────────────────────────────── -->
 <!--
   Die Diashow ist ein Scroll-Container mit CSS-Scroll-Snap. Wischen und
   Tastatur funktionieren dadurch ohne JavaScript; die Schaltflächen, die
   Punkte und der automatische Wechsel kommen erst per JavaScript dazu.
 -->
-<section class="section section--tinted" id="practice">
+<section class="section" id="practice">
   <div class="container">
     <header class="section__head">
       <p class="eyebrow reveal">{{ t('practice.eyebrow') }}</p>
@@ -270,7 +317,7 @@
   gewünschten Namensnennung und der Zustimmung zur Veröffentlichung
   fragt – nichts erscheint automatisch auf der Seite.
 -->
-<section class="section" id="testimonials">
+<section class="section section--tinted" id="testimonials">
   <div class="container">
     <header class="section__head">
       <p class="eyebrow reveal">{{ t('testimonials.eyebrow') }}</p>

@@ -45,6 +45,7 @@ static/
   img/logo-mark.png     quadratisches Signet (Favicon)
   img/logo-mark-dark.png
   img/praxis-1.jpg …    Platzhalter für die Diashow, bitte ersetzen
+  img/therapeut.jpg     Platzhalter für das Porträt, bitte ersetzen
   img/foerderer-1.png … Platzhalter für die Förderlogos, bitte ersetzen
   img/og-bild.png       Vorschaubild für geteilte Links (erzeugt)
   img/og-bild-en.png    dasselbe für die englische Fassung
@@ -239,6 +240,32 @@ Aktualisierung eine veraltete Fassung sehen.
   Weitere Bilder: einfach einen Eintrag mehr in beiden Sprachdateien.
   Weniger als zwei Bilder blenden die Bedienelemente automatisch aus.
 
+* **Abschnitt „Therapeut“:** Name, Berufsbezeichnung, die beiden Absätze und
+  die Tabelle mit Ausbildung und Qualifikation stehen unter `therapist` in
+  beiden Sprachdateien. **Alles darin ist mit `[Platzhalter]` markiert und
+  muss ersetzt werden** – es sind Beispieltexte, keine Angaben über eine
+  echte Person.
+
+  Beim Ausfüllen zu beachten:
+
+  1. „Physiotherapeut“ ist eine **geschützte Berufsbezeichnung**; sie darf
+     nur führen, wer die staatliche Anerkennung hat. Dasselbe gilt für
+     Zertifikatsstufen der Spiraldynamik® Akademie – bitte genau so
+     angeben, wie sie auf der Urkunde stehen.
+  2. **Keine Heilversprechen.** Für Aussagen über Wirkung und Erfolg gilt
+     hier dasselbe wie im Rest der Seite (§ 11 Heilmittelwerbegesetz).
+  3. Einträge in `therapist.facts`, die nicht zutreffen, einfach löschen –
+     die Liste passt sich an.
+  4. `therapist.name` sollte mit `seo.founder` übereinstimmen. Weichen die
+     beiden voneinander ab, meldet der Build das.
+
+  **Porträtfoto:** `static/img/therapeut.jpg` ist ein erkennbarer
+  Platzhalter. Bitte durch ein echtes Foto ersetzen – Hochformat 3 : 4,
+  etwa 900 × 1200 Pixel, JPEG unter 300 KB. Ein Stockfoto wirkt hier
+  gegenteilig: Besucher prüfen an dieser Stelle, ob die Person real ist.
+  Das Bild erscheint zusätzlich als `Person.image` in den strukturierten
+  Daten und ist damit der Beleg für die Angaben im Seitenkopf.
+
 * **Terminvergabe und Terminabsage:** die beiden Hinweise unten in der
   Kontaktkarte stehen unter `contact.notes`. Die genannte Frist von
   **24 Stunden** ist ein üblicher, aber frei gewählter Wert – bitte an die
@@ -387,8 +414,9 @@ Kartenpunkt – alles andere funktioniert.
 
 * **Strukturierte Daten** (JSON-LD, `content.py`) im Kopf jeder Seite: die
   Praxis als `Physiotherapy` mit Anschrift, Öffnungszeiten und Einzugsgebiet,
-  `Test User` als `Person`, jeder kommende Kurs als `Course` mit Starttermin
-  und Preis. Abgelaufene Kurse fallen automatisch heraus – auch hier.
+  `Test User` als `Person` mit Porträt und Qualifikationen aus dem Abschnitt
+  „Therapeut“, jeder kommende Kurs als `Course` mit Starttermin und Preis.
+  Abgelaufene Kurse fallen automatisch heraus – auch hier.
 * **`llms.txt`** im Wurzelverzeichnis: die ganze Seite als knapper Text, den
   Sprachmodelle sicher lesen können. Wird bei jedem Build neu erzeugt.
 * **`robots.txt`** mit ausdrücklichen Einträgen für GPTBot, ClaudeBot,

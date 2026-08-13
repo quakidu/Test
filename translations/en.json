@@ -19,7 +19,8 @@
     "cta": "Book an appointment",
     "menu_open": "Open menu",
     "menu_close": "Close menu",
-    "language": "Choose language"
+    "language": "Choose language",
+    "therapist": "Therapist"
   },
   "hero": {
     "eyebrow": "Spiraldynamik in Musterstadt",
@@ -122,6 +123,47 @@
         "text": "In follow-up sessions or in a course we anchor the new pattern in your everyday life."
       }
     ]
+  },
+  "therapist": {
+    "eyebrow": "Therapist",
+    "title": "Who will treat you",
+    "lead": "So you know who you are coming to: a short look at training, focus areas and the approach behind the work.",
+    "image": "therapeut.jpg",
+    "alt": "[Placeholder] Portrait of the therapist – please replace with your own photo",
+    "name": "Test User",
+    "role": "Physiotherapist and Spiraldynamik specialist",
+    "text": [
+      "[Placeholder] I have worked as a physiotherapist since [year], and exclusively with the Spiraldynamik concept since [year]. What convinces me: it explains complaints through movement – and makes it clear why something hurts.",
+      "[Placeholder] My focus is on feet and gait as well as back and shoulder complaints. What matters to me is that you can carry on by yourself after the treatment. That is why I explain a great deal and give you exercises that fit into your day."
+    ],
+    "facts_label": "Training and qualifications",
+    "facts": [
+      {
+        "label": "Training",
+        "value": "[Placeholder] State-certified physiotherapist, [school], graduated [year]"
+      },
+      {
+        "label": "Spiraldynamik",
+        "value": "[Placeholder] Certificate [level], Spiraldynamik® Academy, [year]"
+      },
+      {
+        "label": "Further training",
+        "value": "[Placeholder] Manual therapy, foot therapy, [more]"
+      },
+      {
+        "label": "Experience",
+        "value": "[Placeholder] in private practice since [year]"
+      },
+      {
+        "label": "Memberships",
+        "value": "[Placeholder] e.g. German Association for Physiotherapy"
+      },
+      {
+        "label": "Languages",
+        "value": "[Placeholder] German, English"
+      }
+    ],
+    "cta": "Book an appointment"
   },
   "contact": {
     "eyebrow": "Contact",

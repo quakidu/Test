@@ -379,13 +379,27 @@ def structured_data(strings: dict, fallback: dict, page_url: str, site_url: str,
         },
     }
 
+    # Der Abschnitt „Therapeut“ ist die sichtbare Entsprechung dieser Angaben.
+    # Was hier steht, steht auch auf der Seite – sonst zählt es nicht.
+    therapist = strings.get("therapist", {})
     person = {
         "@type": "Person",
         "@id": person_id,
-        "name": seo.get("founder", ""),
-        "jobTitle": seo.get("founder_role", ""),
+        "name": therapist.get("name") or seo.get("founder", ""),
+        "jobTitle": therapist.get("role") or seo.get("founder_role", ""),
+        "description": " ".join(therapist.get("text", [])),
+        "image": (site_url + "static/img/" + therapist["image"]
+                  if therapist.get("image") else ""),
         "worksFor": {"@id": practice_id},
         "knowsAbout": seo.get("keywords", []),
+        "hasCredential": [
+            {
+                "@type": "EducationalOccupationalCredential",
+                "name": fact.get("label", ""),
+                "description": fact.get("value", ""),
+            }
+            for fact in therapist.get("facts", [])
+        ],
     }
 
     website = {

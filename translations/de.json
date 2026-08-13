@@ -19,7 +19,8 @@
     "cta": "Termin vereinbaren",
     "menu_open": "Menü öffnen",
     "menu_close": "Menü schließen",
-    "language": "Sprache wählen"
+    "language": "Sprache wählen",
+    "therapist": "Therapeut"
   },
   "hero": {
     "eyebrow": "Spiraldynamik in Musterstadt",
@@ -122,6 +123,47 @@
         "text": "In Folgeterminen oder im Kurs verankern wir das neue Muster im Alltag."
       }
     ]
+  },
+  "therapist": {
+    "eyebrow": "Therapeut",
+    "title": "Wer Sie behandelt",
+    "lead": "Damit Sie wissen, zu wem Sie kommen: ein kurzer Blick auf Ausbildung, Schwerpunkte und die Haltung, mit der hier gearbeitet wird.",
+    "image": "therapeut.jpg",
+    "alt": "[Platzhalter] Porträtfoto des Therapeuten – bitte durch ein eigenes Foto ersetzen",
+    "name": "Test User",
+    "role": "Physiotherapeut und Spiraldynamik-Fachkraft",
+    "text": [
+      "[Platzhalter] Seit [Jahr] arbeite ich als Physiotherapeut, seit [Jahr] ausschließlich nach dem Konzept der Spiraldynamik. Was mich daran überzeugt: Es erklärt Beschwerden aus der Bewegung heraus – und macht damit nachvollziehbar, warum etwas weh tut.",
+      "[Platzhalter] Meine Schwerpunkte sind Fuß und Gangbild sowie Rücken- und Schulterbeschwerden. Wichtig ist mir, dass Sie nach der Behandlung selbst weiterarbeiten können. Deshalb erkläre ich viel und gebe Ihnen Übungen mit, die in Ihren Alltag passen."
+    ],
+    "facts_label": "Ausbildung und Qualifikation",
+    "facts": [
+      {
+        "label": "Ausbildung",
+        "value": "[Platzhalter] Staatlich anerkannter Physiotherapeut, [Schule], Abschluss [Jahr]"
+      },
+      {
+        "label": "Spiraldynamik",
+        "value": "[Platzhalter] Zertifikat [Stufe], Spiraldynamik® Akademie, [Jahr]"
+      },
+      {
+        "label": "Fortbildungen",
+        "value": "[Platzhalter] Manuelle Therapie, Fußtherapie, [weitere]"
+      },
+      {
+        "label": "Erfahrung",
+        "value": "[Platzhalter] seit [Jahr] in eigener Praxis"
+      },
+      {
+        "label": "Mitgliedschaften",
+        "value": "[Platzhalter] z. B. Deutscher Verband für Physiotherapie"
+      },
+      {
+        "label": "Sprachen",
+        "value": "[Platzhalter] Deutsch, Englisch"
+      }
+    ],
+    "cta": "Termin vereinbaren"
   },
   "contact": {
     "eyebrow": "Kontakt",

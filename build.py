@@ -274,10 +274,17 @@ def write_llms_txt(site_url: str, base_path: str, strings: dict) -> None:
         f"- E-Mail: {contact.get('email', '')}",
         f"- Öffnungszeiten: {one_line(contact.get('hours', ''))}",
         f"- Einzugsgebiet: {', '.join(seo.get('area_served', []))}",
-        "",
-        "## Angebot",
-        "",
     ]
+
+    therapist = strings.get("therapist", {})
+    if therapist:
+        lines += ["", f"## {therapist.get('name', '')}", "",
+                  f"- {therapist.get('role', '')}"]
+        lines += [f"- {fact.get('label', '')}: {fact.get('value', '')}"
+                  for fact in therapist.get("facts", [])]
+        lines += [""] + [one_line(text) for text in therapist.get("text", [])]
+
+    lines += ["", "## Angebot", ""]
     for item in strings.get("offer", {}).get("items", []):
         lines.append(f"- {item.get('title', '')}: {item.get('text', '')} ({item.get('meta', '')})")
 
@@ -337,10 +344,15 @@ def check_seo(strings: dict, lang: str) -> list[str]:
             notes.append(f"[{lang}] seo.{field} fehlt – ohne Koordinaten entfällt "
                          f"die Ortsangabe für Kartendienste.")
 
-    image = seo.get("og_image")
-    if image and not (BASE_DIR / "static" / "img" / image).exists():
-        notes.append(f"[{lang}] seo.og_image verweist auf static/img/{image} – "
-                     f"die Datei fehlt.")
+    therapist = strings.get("therapist", {})
+    if therapist and seo.get("founder") and therapist.get("name") != seo.get("founder"):
+        notes.append(f"[{lang}] therapist.name „{therapist.get('name')}“ und "
+                     f"seo.founder „{seo.get('founder')}“ sind verschieden – "
+                     f"beide beschreiben dieselbe Person.")
+
+    for image in (seo.get("og_image"), therapist.get("image")):
+        if image and not (BASE_DIR / "static" / "img" / image).exists():
+            notes.append(f"[{lang}] static/img/{image} fehlt.")
 
     title = strings.get("meta", {}).get("title", "")
     if len(title) > 60:
