@@ -1,8 +1,8 @@
 {
   "meta": {
     "lang": "en",
-    "title": "Körper im Einklang – Practice for Holistic Therapy",
-    "description": "Körper im Einklang – practice for holistic therapy: Spiraldynamik, movement analysis and courses for feet, back and joints.",
+    "title": "Spiraldynamik in Musterstadt – Körper im Einklang",
+    "description": "Körper im Einklang in Musterstadt: physiotherapy based on Spiraldynamik, movement analysis and courses for feet and back. Appointments with Test User.",
     "skip_link": "Skip to content"
   },
   "brand": {
@@ -22,7 +22,7 @@
     "language": "Choose language"
   },
   "hero": {
-    "eyebrow": "Practice for Spiraldynamik",
+    "eyebrow": "Spiraldynamik in Musterstadt",
     "title_line1": "Movement",
     "title_line2": "that feels right.",
     "lead": "Pain rarely appears by chance. We analyse how you move, explain what we find and train a movement pattern that takes the load off your joints – step by step, practical and lasting.",
@@ -326,5 +326,46 @@
         "text": "Placeholder: a brief sentence is enough, too."
       }
     ]
+  },
+  "seo": {
+    "legal_name": "Körper im Einklang – Praxis für ganzheitliche Therapie",
+    "founder": "Test User",
+    "founder_role": "Physiotherapist and Spiraldynamik specialist",
+    "street": "Musterstraße 12",
+    "postal_code": "12345",
+    "city": "Musterstadt",
+    "region": "",
+    "country": "DE",
+    "latitude": "",
+    "longitude": "",
+    "area_served": [
+      "Musterstadt",
+      "area around Musterstadt"
+    ],
+    "price_range": "€€",
+    "founding_year": "",
+    "opening_hours": [
+      {
+        "days": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "08:00",
+        "closes": "19:00"
+      }
+    ],
+    "same_as": [],
+    "keywords": [
+      "Spiraldynamik",
+      "physiotherapy",
+      "Musterstadt",
+      "movement analysis",
+      "back course",
+      "foot arch"
+    ],
+    "og_image": "og-bild-en.png"
   }
 }

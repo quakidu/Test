@@ -7,15 +7,42 @@
   <meta name="description" content="{{ t('meta.description') }}">
   <meta name="theme-color" content="#314F6F">
 
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="{{ t('meta.title') }}">
-  <meta property="og:description" content="{{ t('meta.description') }}">
-  <meta property="og:locale" content="{{ 'de_DE' if lang == 'de' else 'en_GB' }}">
-
+  {# Eine Seite, eine Adresse: sagt Suchmaschinen, welche Fassung zählt.
+     Die Fehlerseite hat keine eigene Adresse und überschreibt diesen Block. #}
+  {% block indexing %}
+  <link rel="canonical" href="{{ page_url(lang, true) }}">
   {% for code in languages %}
   <link rel="alternate" hreflang="{{ code }}"
         href="{{ page_url(code, true) }}">
   {% endfor %}
+  <link rel="alternate" hreflang="x-default"
+        href="{{ page_url(default_language, true) }}">
+  {% endblock %}
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ t('brand.name') }}">
+  <meta property="og:title" content="{{ t('meta.title') }}">
+  <meta property="og:description" content="{{ t('meta.description') }}">
+  <meta property="og:url" content="{{ page_url(lang, true) }}">
+  <meta property="og:locale" content="{{ 'de_DE' if lang == 'de' else 'en_GB' }}">
+  {% set og_image = t('seo.og_image', '') %}
+  {% if og_image %}
+  <meta property="og:image" content="{{ url_for('static', filename='img/' ~ og_image, _external=true) }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{{ t('meta.title') }}">
+  <meta name="twitter:card" content="summary_large_image">
+  {% else %}
+  <meta name="twitter:card" content="summary">
+  {% endif %}
+  <meta name="twitter:title" content="{{ t('meta.title') }}">
+  <meta name="twitter:description" content="{{ t('meta.description') }}">
+
+  {# Maschinenlesbare Fassung der Angaben, die auch im Text stehen:
+     Praxis, Anschrift, Öffnungszeiten, Person und Kurstermine. #}
+  {% if json_ld %}
+  <script type="application/ld+json">{{ json_ld|safe }}</script>
+  {% endif %}
 
   {# Als Favicon dient das Signet – der breite Schriftzug wäre nicht lesbar. #}
   <link rel="icon" href="{{ url_for('static', filename='img/logo-mark.png') }}" type="image/png">

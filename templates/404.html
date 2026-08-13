@@ -2,6 +2,11 @@
 
 {% block title %}{{ t('error.title') }} – {{ t('brand.name') }}{% endblock %}
 
+{# Die Fehlerseite erscheint unter beliebigen Adressen und gehört nicht in den Index. #}
+{% block indexing %}
+  <meta name="robots" content="noindex, follow">
+{% endblock %}
+
 {% block content %}
 <section class="section section--error">
   <div class="container error">

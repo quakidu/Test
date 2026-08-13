@@ -25,7 +25,7 @@ app.py                  Flask-Server (nur für die lokale Arbeit)
 build.py                Statischer Build nach dist/
 deploy.py               lädt dist/ per FTPS auf den Webspace
 deploy.ini.example      Vorlage für Domain und FTP-Zugang
-content.py              Kursauswahl und Datumsformate
+content.py              Kursauswahl, Datumsformate, strukturierte Daten
 requirements.txt        Abhängigkeiten
 templates/
   base.html             Grundgerüst (Head, Meta, hreflang)
@@ -46,12 +46,16 @@ static/
   img/logo-mark-dark.png
   img/praxis-1.jpg …    Platzhalter für die Diashow, bitte ersetzen
   img/foerderer-1.png … Platzhalter für die Förderlogos, bitte ersetzen
+  img/og-bild.png       Vorschaubild für geteilte Links (erzeugt)
+  img/og-bild-en.png    dasselbe für die englische Fassung
 translations/
   de.json  en.json
 webroot/
   .htaccess             Apache-Konfiguration, kommt unverändert nach dist/
 tools/
+  png.py                PNG lesen und schreiben (Standardbibliothek)
   prepare-logo.py       leitet die Logo-Varianten aus logo.png ab
+  make-og-image.py      erzeugt die Vorschaubilder für geteilte Links
 ```
 
 ## Starten
@@ -313,6 +317,103 @@ Aktualisierung eine veraltete Fassung sehen.
   Farbschema sowie das quadratische Signet fürs Favicon ab. Es kommt ohne
   Zusatzpakete aus. Der Schriftzug steckt in der Bilddatei – im Kopfbereich
   steht deshalb bewusst kein zusätzlicher Text daneben.
+
+## Gefunden werden: Suchmaschinen und Antwortdienste
+
+Drei Wege führen heute zur Praxis, und alle drei brauchen dieselbe Grundlage:
+
+* **SEO** – die klassische Trefferliste bei Google und Bing.
+* **GEO** – der örtliche Teil davon: die Karte, der Eintrag „in Ihrer Nähe“,
+  die Route. Hier zählt vor allem, dass Anschrift, Telefonnummer und
+  Öffnungszeiten **überall gleich** lauten.
+* **AIO** – Antworten von Sprachmodellen (ChatGPT, Gemini, Perplexity,
+  Claude). Die lesen kein Layout, sondern Text und maschinenlesbare Angaben.
+
+Alles, was diese drei brauchen, steht an **einer** Stelle: im Block `seo` in
+`translations/de.json` und `translations/en.json`. Daraus baut der Build den
+Kopf der Seite, die strukturierten Daten, `llms.txt` und die Vorschaubilder.
+
+### Welche Informationen müssen hinterlegt werden?
+
+| Feld            | Beispiel (Vorlage)                                     | Wofür                                        |
+| --------------- | ------------------------------------------------------ | -------------------------------------------- |
+| `legal_name`    | `Körper im Einklang – Praxis für ganzheitliche Therapie`| voller Name, wie im Impressum                |
+| `founder`       | `Test User`                                            | die Person, nach der gesucht wird            |
+| `founder_role`  | `Physiotherapeut und Spiraldynamik-Fachkraft`          | Qualifikation, erscheint in Antworten        |
+| `street`        | `Musterstraße 12`                                      | Anschrift für Karte und Route                |
+| `postal_code`   | `12345`                                                | dito                                         |
+| `city`          | `Musterstadt`                                          | **der wichtigste Ortsbezug**                 |
+| `region`        | `Bayern`                                               | Bundesland, optional                         |
+| `country`       | `DE`                                                   | Ländercode                                   |
+| `latitude`      | `48.137154`                                            | genauer Punkt auf der Karte                  |
+| `longitude`     | `11.576124`                                            | dito                                         |
+| `area_served`   | `["Musterstadt", "Umgebung von Musterstadt"]`          | Einzugsgebiet                                |
+| `price_range`   | `€€`                                                   | grobe Preislage                              |
+| `founding_year` | `2014`                                                 | seit wann es die Praxis gibt, optional       |
+| `opening_hours` | `Mo–Fr 08:00–19:00`                                    | maschinenlesbare Öffnungszeiten              |
+| `same_as`       | `["https://www.instagram.com/…"]`                      | weitere Profile, bestätigen die Identität    |
+| `keywords`      | `["Spiraldynamik", "Physiotherapie", "Musterstadt", …]`| Themen der Praxis                            |
+| `og_image`      | `og-bild.png`                                          | Vorschaubild für geteilte Links              |
+
+Dazu kommen drei Texte, die schon gefüllt sind und beim Umzug auf die echten
+Daten mitgeändert werden sollten:
+
+* `meta.title` – **„Spiraldynamik in Musterstadt – Körper im Einklang“**
+  (Thema + Ort + Name, höchstens 60 Zeichen)
+* `meta.description` – **„Praxis Körper im Einklang in Musterstadt:
+  Physiotherapie nach Spiraldynamik, Bewegungsanalyse und Kurse für Füße und
+  Rücken. Termine bei Test User.“** (120–165 Zeichen)
+* `hero.eyebrow` – **„Spiraldynamik in Musterstadt“**, die erste sichtbare
+  Zeile der Seite
+
+Der Build meldet nach jedem Lauf, was fehlt oder nicht zusammenpasst – etwa
+wenn `seo.city` nicht in `contact.address` vorkommt oder der Titel zu lang
+ist. Die Meldungen brechen den Build nicht ab, sie stehen nur am Ende.
+
+### Koordinaten herausfinden
+
+`latitude` und `longitude` sind bewusst leer: geraten wären sie schlimmer als
+gar nicht. So kommen Sie an die richtigen Werte:
+
+1. Die Adresse in Google Maps oder OpenStreetMap suchen.
+2. Rechtsklick auf die Praxis → die beiden Zahlen erscheinen
+   (z. B. `48.137154, 11.576124`).
+3. Die erste Zahl nach `latitude`, die zweite nach `longitude` eintragen.
+
+Ohne die beiden Werte fehlt in den strukturierten Daten nur der
+Kartenpunkt – alles andere funktioniert.
+
+### Was daraus gebaut wird
+
+* **Strukturierte Daten** (JSON-LD, `content.py`) im Kopf jeder Seite: die
+  Praxis als `Physiotherapy` mit Anschrift, Öffnungszeiten und Einzugsgebiet,
+  `Test User` als `Person`, jeder kommende Kurs als `Course` mit Starttermin
+  und Preis. Abgelaufene Kurse fallen automatisch heraus – auch hier.
+* **`llms.txt`** im Wurzelverzeichnis: die ganze Seite als knapper Text, den
+  Sprachmodelle sicher lesen können. Wird bei jedem Build neu erzeugt.
+* **`robots.txt`** mit ausdrücklichen Einträgen für GPTBot, ClaudeBot,
+  PerplexityBot, Google-Extended und andere. Sie sind **erlaubt**, damit die
+  Praxis in solchen Antworten auftauchen kann. Wer das nicht möchte, ändert
+  in `build.py` (`write_robots`) das jeweilige `Allow: /` in `Disallow: /`.
+* **Vorschaubild** für geteilte Links, je Sprache:
+
+  ```bash
+  python3 tools/make-og-image.py        # beide Sprachen
+  ```
+
+  Das Bild entsteht aus Logo, Ort und Namen – nach einer Änderung an diesen
+  Angaben einmal neu erzeugen. Gebraucht wird dafür Chromium oder Chrome.
+* **Kanonische Adresse**, `hreflang` für Deutsch/Englisch und `x-default`,
+  Open Graph und Twitter-Card. Die Fehlerseite trägt `noindex`.
+
+### Was der Code nicht leisten kann
+
+Für den örtlichen Teil (GEO) ist der wichtigste Schritt außerhalb dieser
+Seite: ein **Eintrag bei Google Unternehmensprofil** (früher „Google My
+Business“) und bei Bing Places, mit **exakt derselben** Schreibweise von
+Name, Anschrift und Telefonnummer wie im Impressum. Weicht auch nur die
+Straßenabkürzung ab, zählen Suchmaschinen das als zwei verschiedene Betriebe.
+Ist das Profil angelegt, gehört seine Adresse zusätzlich in `seo.same_as`.
 
 ## Impressum und Datenschutz
 

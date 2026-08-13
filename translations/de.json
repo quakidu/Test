@@ -1,8 +1,8 @@
 {
   "meta": {
     "lang": "de",
-    "title": "Körper im Einklang – Praxis für ganzheitliche Therapie",
-    "description": "Körper im Einklang – Praxis für ganzheitliche Therapie: Spiraldynamik, Bewegungsanalyse und Kurse für Füße, Rücken und Gelenke.",
+    "title": "Spiraldynamik in Musterstadt – Körper im Einklang",
+    "description": "Praxis Körper im Einklang in Musterstadt: Physiotherapie nach Spiraldynamik, Bewegungsanalyse und Kurse für Füße und Rücken. Termine bei Test User.",
     "skip_link": "Zum Inhalt springen"
   },
   "brand": {
@@ -22,7 +22,7 @@
     "language": "Sprache wählen"
   },
   "hero": {
-    "eyebrow": "Praxis für Spiraldynamik",
+    "eyebrow": "Spiraldynamik in Musterstadt",
     "title_line1": "Bewegung,",
     "title_line2": "die gut tut.",
     "lead": "Schmerzen entstehen selten zufällig. Wir analysieren Ihre Bewegung, erklären die Zusammenhänge und üben mit Ihnen ein Bewegungsmuster ein, das Ihre Gelenke entlastet – Schritt für Schritt, alltagstauglich und nachhaltig.",
@@ -326,5 +326,46 @@
         "text": "Platzhalter: Auch ein knapper Satz genügt."
       }
     ]
+  },
+  "seo": {
+    "legal_name": "Körper im Einklang – Praxis für ganzheitliche Therapie",
+    "founder": "Test User",
+    "founder_role": "Physiotherapeut und Spiraldynamik-Fachkraft",
+    "street": "Musterstraße 12",
+    "postal_code": "12345",
+    "city": "Musterstadt",
+    "region": "",
+    "country": "DE",
+    "latitude": "",
+    "longitude": "",
+    "area_served": [
+      "Musterstadt",
+      "Umgebung von Musterstadt"
+    ],
+    "price_range": "€€",
+    "founding_year": "",
+    "opening_hours": [
+      {
+        "days": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "08:00",
+        "closes": "19:00"
+      }
+    ],
+    "same_as": [],
+    "keywords": [
+      "Spiraldynamik",
+      "Physiotherapie",
+      "Musterstadt",
+      "Bewegungsanalyse",
+      "Rückenkurs",
+      "Fußgewölbe"
+    ],
+    "og_image": "og-bild.png"
   }
 }

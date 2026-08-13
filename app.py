@@ -115,9 +115,17 @@ def render_home(lang: str):
             default_language=DEFAULT_LANGUAGE,
             anchor_base="",
             page_url=lambda code, external=False: (
-                url_for("home") if code == DEFAULT_LANGUAGE
-                else url_for("home_localized", lang_code=code)
+                url_for("home", _external=external) if code == DEFAULT_LANGUAGE
+                else url_for("home_localized", lang_code=code, _external=external)
             ),
+            json_ld=content.json_ld(content.structured_data(
+                strings,
+                load_translations(DEFAULT_LANGUAGE),
+                url_for("home", _external=True),
+                url_for("home", _external=True),
+                lang,
+                courses,
+            )),
             courses=courses,
             teaser=content.course_teaser(strings, courses),
             slides=content.practice_slides(strings, load_translations(DEFAULT_LANGUAGE)),
@@ -173,6 +181,15 @@ def render_legal(lang: str, page: str):
             default_language=DEFAULT_LANGUAGE,
             anchor_base=url_for("home"),
             page_url=page_url,
+            # Ohne Kurse: die gehören auf die Startseite, nicht hierher.
+            json_ld=content.json_ld(content.structured_data(
+                strings,
+                load_translations(DEFAULT_LANGUAGE),
+                page_url(lang, True),
+                url_for("home", _external=True),
+                lang,
+                page_title=translate(LEGAL_PAGES[page]["title_key"], lang),
+            )),
             page_title=translate(LEGAL_PAGES[page]["title_key"], lang),
             page_body=body.read_text(encoding="utf-8"),
         )

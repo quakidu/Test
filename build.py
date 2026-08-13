@@ -8,6 +8,7 @@ Rendert die Jinja-Templates in den Ordner ``dist/``:
     dist/static/…        → CSS, JavaScript, Bilder
     dist/robots.txt      → Suchmaschinen-Hinweise
     dist/sitemap.xml     → Seitenverzeichnis
+    dist/llms.txt        → Kurzfassung der Seite für Sprachmodelle
     dist/.htaccess       → Apache-Konfiguration (aus webroot/)
 
 Der Inhalt von ``dist/`` wird unverändert auf den Webspace geladen –
@@ -207,13 +208,149 @@ def write_sitemap(site_url: str, base_path: str) -> None:
     )
 
 
+# Sammler, die Inhalte für Sprachmodelle und Antwortdienste lesen. Sie sind
+# hier ausdrücklich erlaubt, damit die Praxis in solchen Antworten auftaucht.
+# Wer das nicht möchte, ändert unten Allow in Disallow – siehe README.
+AI_AGENTS = [
+    ("GPTBot", "ChatGPT / OpenAI"),
+    ("OAI-SearchBot", "ChatGPT-Suche"),
+    ("ChatGPT-User", "Abruf beim Klick in ChatGPT"),
+    ("ClaudeBot", "Claude / Anthropic"),
+    ("Claude-User", "Abruf beim Klick in Claude"),
+    ("PerplexityBot", "Perplexity"),
+    ("Google-Extended", "Google Gemini / AI Overviews"),
+    ("Applebot-Extended", "Apple Intelligence"),
+    ("Bingbot", "Bing und Copilot"),
+]
+
+
 def write_robots(site_url: str, base_path: str) -> None:
-    sitemap = site_url.rstrip("/") + "/" + (
+    root = site_url.rstrip("/") + "/" + (
         base_path.strip("/") + "/" if base_path.strip("/") else ""
-    ) + "sitemap.xml"
-    (DIST_DIR / "robots.txt").write_text(
-        "User-agent: *\nAllow: /\n\n" f"Sitemap: {sitemap}\n", encoding="utf-8"
     )
+    lines = [
+        "# Suchmaschinen und Antwortdienste dürfen die Seite vollständig lesen.",
+        "User-agent: *",
+        "Allow: /",
+        "",
+    ]
+    for agent, note in AI_AGENTS:
+        lines += [f"# {note}", f"User-agent: {agent}", "Allow: /", ""]
+    lines += [
+        f"Sitemap: {root}sitemap.xml",
+        "",
+        f"# Kurzfassung der Seite für Sprachmodelle: {root}llms.txt",
+        "",
+    ]
+    (DIST_DIR / "robots.txt").write_text("\n".join(lines), encoding="utf-8")
+
+
+def write_llms_txt(site_url: str, base_path: str, strings: dict) -> None:
+    """Kurzfassung der Seite als reiner Text (``llms.txt``).
+
+    Antwortdienste lesen lieber wenige klare Zeilen als ein Layout. Die
+    Datei fasst zusammen, was auf der Startseite steht – Quelle sind
+    dieselben Sprachdateien, damit sie nicht auseinanderlaufen kann.
+    """
+    root = site_url.rstrip("/") + "/" + (
+        base_path.strip("/") + "/" if base_path.strip("/") else ""
+    )
+    seo = strings.get("seo", {})
+    contact = strings.get("contact", {})
+    def one_line(text: str) -> str:
+        """Mehrzeilige Angaben (Adresse, Öffnungszeiten) in eine Zeile."""
+        return ", ".join(part.strip() for part in str(text).splitlines() if part.strip())
+
+    lines = [
+        f"# {seo.get('legal_name') or strings.get('brand', {}).get('name', '')}",
+        "",
+        f"> {strings.get('meta', {}).get('description', '')}",
+        "",
+        "## Praxis",
+        "",
+        f"- Inhaber: {seo.get('founder', '')}, {seo.get('founder_role', '')}",
+        f"- Adresse: {one_line(contact.get('address', ''))}",
+        f"- Telefon: {contact.get('phone', '')}",
+        f"- E-Mail: {contact.get('email', '')}",
+        f"- Öffnungszeiten: {one_line(contact.get('hours', ''))}",
+        f"- Einzugsgebiet: {', '.join(seo.get('area_served', []))}",
+        "",
+        "## Angebot",
+        "",
+    ]
+    for item in strings.get("offer", {}).get("items", []):
+        lines.append(f"- {item.get('title', '')}: {item.get('text', '')} ({item.get('meta', '')})")
+
+    lines += ["", "## Kurse", ""]
+    courses = content.upcoming_courses(strings)
+    if courses:
+        for course in courses:
+            lines.append(
+                f"- {course.get('title', '')} (Start: {course.get('start_date', '')}, "
+                f"{course.get('scope', '')}, {course.get('price', '')}): {course.get('text', '')}"
+            )
+    else:
+        lines.append(f"- {strings.get('courses', {}).get('empty', '')}")
+
+    lines += [
+        "",
+        "## Seiten",
+        "",
+        f"- [Startseite]({root}): Angebot, Kurse, Ablauf und Kontakt",
+        f"- [English version]({root}en/): the same information in English",
+        f"- [Impressum]({root}impressum.html): Anbieterkennzeichnung",
+        f"- [Datenschutz]({root}datenschutz.html): Umgang mit Daten",
+        "",
+        "## Hinweise",
+        "",
+        "- Termine werden telefonisch oder per E-Mail vereinbart; es gibt keine Online-Buchung.",
+        "- Absagen bitte spätestens 24 Stunden vorher.",
+        "- Rückmeldungen auf der Seite werden von Hand geprüft und nur mit Zustimmung veröffentlicht.",
+        "- Die Angaben auf dieser Seite ersetzen keine ärztliche Beratung oder Diagnose.",
+        "",
+    ]
+    (DIST_DIR / "llms.txt").write_text("\n".join(lines), encoding="utf-8")
+
+
+def check_seo(strings: dict, lang: str) -> list[str]:
+    """Prüft die maschinenlesbaren Angaben gegen den sichtbaren Text.
+
+    Strukturierte Daten dürfen nichts behaupten, was auf der Seite nicht
+    steht – sonst gilt das als irreführend. Statt den Build abzubrechen,
+    gibt es Hinweise: die Vorlagenwerte sollen ja bewusst ersetzt werden.
+    """
+    notes = []
+    seo = strings.get("seo", {})
+    address = strings.get("contact", {}).get("address", "")
+
+    for field, label in (("street", "Straße"), ("postal_code", "Postleitzahl"),
+                         ("city", "Ort")):
+        value = str(seo.get(field, "")).strip()
+        if value and value not in address:
+            notes.append(
+                f"[{lang}] seo.{field} „{value}“ steht nicht in contact.address – "
+                f"Adresse und strukturierte Daten müssen übereinstimmen."
+            )
+
+    for field in ("latitude", "longitude"):
+        if not seo.get(field):
+            notes.append(f"[{lang}] seo.{field} fehlt – ohne Koordinaten entfällt "
+                         f"die Ortsangabe für Kartendienste.")
+
+    image = seo.get("og_image")
+    if image and not (BASE_DIR / "static" / "img" / image).exists():
+        notes.append(f"[{lang}] seo.og_image verweist auf static/img/{image} – "
+                     f"die Datei fehlt.")
+
+    title = strings.get("meta", {}).get("title", "")
+    if len(title) > 60:
+        notes.append(f"[{lang}] meta.title ist {len(title)} Zeichen lang – "
+                     f"Suchmaschinen zeigen etwa 60.")
+    description = strings.get("meta", {}).get("description", "")
+    if not 120 <= len(description) <= 165:
+        notes.append(f"[{lang}] meta.description ist {len(description)} Zeichen lang – "
+                     f"gut sind 120 bis 165.")
+    return notes
 
 
 def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) -> Path:
@@ -234,6 +371,7 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
         strings = load_translations(lang)
         # Kommende Kurse und der Hinweis oben stammen aus derselben Liste.
         courses = content.upcoming_courses(strings)
+        home_url = page_url(site_url, base_path, lang)
         html = index.render(
             lang=lang,
             t=partial(translate, strings, fallback),
@@ -242,6 +380,9 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
             default_language=DEFAULT_LANGUAGE,
             url_for=make_url_for(lang, site_url, base_path),
             page_url=make_page_url(lang, INDEX_FILE, site_url, base_path),
+            json_ld=content.json_ld(content.structured_data(
+                strings, fallback, home_url, home_url, lang, courses
+            )),
             anchor_base="",  # auf der Startseite genügen reine Anker
             courses=courses,
             teaser=content.course_teaser(strings, courses),
@@ -272,6 +413,13 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
                 default_language=DEFAULT_LANGUAGE,
                 url_for=url_for,
                 page_url=make_page_url(lang, page["file"], site_url, base_path),
+                # Ohne Kurse: die gehören auf die Startseite, nicht hierher.
+                json_ld=content.json_ld(content.structured_data(
+                    strings, fallback,
+                    make_page_url(lang, page["file"], site_url, base_path)(lang, True),
+                    page_url(site_url, base_path, lang), lang,
+                    page_title=translate(strings, fallback, page["title_key"]),
+                )),
                 # Die Anker der Navigation zeigen auf die Startseite.
                 anchor_base=url_for("home"),
                 page_title=translate(strings, fallback, page["title_key"]),
@@ -302,7 +450,8 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
 
     write_sitemap(site_url, base_path)
     write_robots(site_url, base_path)
-    print("  ✓ dist/sitemap.xml, dist/robots.txt")
+    write_llms_txt(site_url, base_path, fallback)
+    print("  ✓ dist/sitemap.xml, dist/robots.txt, dist/llms.txt")
 
     # Dateien, die unverändert ins Wurzelverzeichnis gehören (.htaccess …)
     if WEBROOT_DIR.exists():
@@ -310,6 +459,14 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
             if item.is_file():
                 shutil.copy2(item, DIST_DIR / item.name)
                 print(f"  ✓ dist/{item.name}")
+
+    notes = []
+    for lang in LANGUAGES:
+        notes.extend(check_seo(load_translations(lang), lang))
+    if notes:
+        print("\nHinweise zu den Suchmaschinen-Angaben:")
+        for note in notes:
+            print(f"  · {note}")
 
     return DIST_DIR
 

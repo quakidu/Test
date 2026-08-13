@@ -60,6 +60,9 @@ ErrorDocument 404 /404.html
   ExpiresByType image/png             "access plus 1 year"
   ExpiresByType image/jpeg            "access plus 1 year"
   ExpiresByType image/svg+xml         "access plus 1 year"
+  # robots.txt, sitemap.xml und llms.txt tragen keinen Versionsstempel.
+  ExpiresByType text/plain            "access plus 1 day"
+  ExpiresByType application/xml       "access plus 1 day"
 </IfModule>
 
 

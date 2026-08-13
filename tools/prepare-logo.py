@@ -21,10 +21,10 @@ Nach dem Austausch von ``static/img/logo.png`` einmal ausführen.
 from __future__ import annotations
 
 import colorsys
-import struct
 import sys
-import zlib
 from pathlib import Path
+
+from png import read_png, write_png
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 IMG_DIR = BASE_DIR / "static" / "img"
@@ -36,102 +36,6 @@ VISIBLE = 20
 GAP = 4
 # Freiraum um das Signet im quadratischen Ausschnitt, in Pixeln.
 MARK_PADDING = 1
-
-
-# ---------------------------------------------------------------------------
-# PNG lesen und schreiben
-# ---------------------------------------------------------------------------
-def read_png(path: Path) -> tuple[int, int, list[bytearray]]:
-    """Liest ein PNG und gibt Breite, Höhe und die RGBA-Zeilen zurück."""
-    data = path.read_bytes()
-    if data[:8] != b"\x89PNG\r\n\x1a\n":
-        raise ValueError(f"{path} ist keine PNG-Datei")
-
-    width, height, depth, color_type = struct.unpack(">IIBB", data[16:26])
-    if depth != 8 or color_type != 6:
-        raise ValueError(
-            f"{path}: erwartet werden 8 Bit RGBA (Farbtyp 6), gefunden "
-            f"Bittiefe {depth}, Farbtyp {color_type}"
-        )
-
-    compressed = b""
-    offset = 8
-    while offset < len(data):
-        length = struct.unpack(">I", data[offset:offset + 4])[0]
-        chunk_type = data[offset + 4:offset + 8]
-        if chunk_type == b"IDAT":
-            compressed += data[offset + 8:offset + 8 + length]
-        offset += 12 + length
-
-    raw = zlib.decompress(compressed)
-    return width, height, unfilter(raw, width, height)
-
-
-def unfilter(raw: bytes, width: int, height: int) -> list[bytearray]:
-    """Macht die zeilenweisen PNG-Filter rückgängig."""
-    bpp = 4
-    stride = width * bpp
-    previous = bytearray(stride)
-    rows: list[bytearray] = []
-    pos = 0
-
-    for _ in range(height):
-        filter_type = raw[pos]
-        pos += 1
-        line = bytearray(raw[pos:pos + stride])
-        pos += stride
-
-        for x in range(stride):
-            left = line[x - bpp] if x >= bpp else 0
-            up = previous[x]
-            up_left = previous[x - bpp] if x >= bpp else 0
-
-            if filter_type == 1:
-                line[x] = (line[x] + left) & 0xFF
-            elif filter_type == 2:
-                line[x] = (line[x] + up) & 0xFF
-            elif filter_type == 3:
-                line[x] = (line[x] + ((left + up) >> 1)) & 0xFF
-            elif filter_type == 4:
-                predictor = left + up - up_left
-                d_left = abs(predictor - left)
-                d_up = abs(predictor - up)
-                d_up_left = abs(predictor - up_left)
-                if d_left <= d_up and d_left <= d_up_left:
-                    line[x] = (line[x] + left) & 0xFF
-                elif d_up <= d_up_left:
-                    line[x] = (line[x] + up) & 0xFF
-                else:
-                    line[x] = (line[x] + up_left) & 0xFF
-            elif filter_type != 0:
-                raise ValueError(f"unbekannter PNG-Filter: {filter_type}")
-
-        rows.append(line)
-        previous = line
-
-    return rows
-
-
-def write_png(path: Path, rows: list[bytearray]) -> None:
-    """Schreibt RGBA-Zeilen als PNG (Filtertyp 0)."""
-    raw = b"".join(b"\x00" + bytes(row) for row in rows)
-    width = len(rows[0]) // 4
-    height = len(rows)
-
-    def chunk(kind: bytes, payload: bytes) -> bytes:
-        return (
-            struct.pack(">I", len(payload))
-            + kind
-            + payload
-            + struct.pack(">I", zlib.crc32(kind + payload) & 0xFFFFFFFF)
-        )
-
-    path.write_bytes(
-        b"\x89PNG\r\n\x1a\n"
-        + chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 6, 0, 0, 0))
-        + chunk(b"IDAT", zlib.compress(raw, 9))
-        + chunk(b"IEND", b"")
-    )
 
 
 # ---------------------------------------------------------------------------
@@ -210,7 +114,9 @@ def main() -> None:
     if not SOURCE.exists():
         sys.exit(f"Quelle fehlt: {SOURCE}")
 
-    width, height, rows = read_png(SOURCE)
+    width, height, channels, rows = read_png(SOURCE)
+    if channels != 4:
+        sys.exit(f"{SOURCE} braucht einen Alphakanal (RGBA) für die Transparenz.")
     print(f"Quelle: {SOURCE.relative_to(BASE_DIR)} ({width}x{height})")
 
     write_png(IMG_DIR / "logo-dark.png", lighten(rows))
