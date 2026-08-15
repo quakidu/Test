@@ -25,6 +25,7 @@ app.py                  Flask-Server (nur für die lokale Arbeit)
 build.py                Statischer Build nach dist/
 deploy.py               lädt dist/ per FTPS auf den Webspace
 deploy.ini.example      Vorlage für Domain und FTP-Zugang
+README-Proxmox-Deploy.md  Anleitung: täglicher Lauf in einem Proxmox-Container
 content.py              Kursauswahl, Datumsformate, strukturierte Daten
 requirements.txt        Abhängigkeiten
 Dockerfile              Bild für den täglichen Lauf im Container
@@ -307,6 +308,7 @@ geändert hat, und baut ohne Änderung nicht einmal eine Verbindung auf.
 | Ort               | Passt, wenn …                                          |
 | ----------------- | ------------------------------------------------------ |
 | **NAS** (Synology)| das Gerät ohnehin durchläuft – dann klappt der tägliche Lauf zuverlässig |
+| **Proxmox**       | ein Server mit Proxmox vorhanden ist. Eigene Anleitung: [README-Proxmox-Deploy.md](README-Proxmox-Deploy.md) |
 | **Desktop-PC**    | kein NAS da ist. Achtung: Ist der Rechner um 5 Uhr aus, passiert nichts |
 
 **Zweitens: Wie kommen die Texte auf diesen Rechner?**
@@ -594,6 +596,14 @@ Danach in den Eigenschaften der Aufgabe:
   5 Uhr aus war.
 
 ---
+
+### Weg E – Proxmox
+
+Für einen Server mit Proxmox gibt es eine eigene, ausführlichere
+Anleitung: **[README-Proxmox-Deploy.md](README-Proxmox-Deploy.md)**. Dort
+steht Schritt für Schritt, welche Vorlage sich eignet, wie der Container
+angelegt und eingerichtet wird, wie der tägliche Lauf über cron oder einen
+systemd-Timer eingetragen wird und wie sich das Ganze sichern lässt.
 
 ### Inhalte pflegen: Ordner oder Git
 
