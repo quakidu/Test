@@ -130,14 +130,19 @@ oder aus der Umgebungsvariable `DEPLOY_FTP_PASSWORD` gelesen.
 
 ### Hochladen
 
+Drei Wege führen zum Ziel. Alle laden denselben Ordner `dist/` hoch – sie
+unterscheiden sich nur darin, womit.
+
+#### Weg 1 – `deploy.py` (empfohlen)
+
 ```bash
 python3 deploy.py --dry-run    # zeigt nur, was übertragen würde
 python3 deploy.py              # baut und lädt hoch
 ```
 
 `deploy.py` baut die Seite zuerst neu und spiegelt dann `dist/` auf den
-Server. Die Verbindung läuft über FTPS, also verschlüsselt. Weitere
-Schalter:
+Server. Die Verbindung läuft über FTPS, also verschlüsselt – auch die
+Datenverbindung, nicht nur die Anmeldung. Weitere Schalter:
 
 | Schalter      | Wirkung                                                     |
 | ------------- | ----------------------------------------------------------- |
@@ -146,11 +151,34 @@ Schalter:
 | `--delete`    | entfernt auf dem Server Dateien, die es lokal nicht mehr gibt |
 | `--plain-ftp` | unverschlüsseltes FTP, nur falls FTPS nicht zustande kommt  |
 
-Wer lieber ein FTP-Programm wie FileZilla nutzt: `python3 build.py`
-ausführen und den **Inhalt** von `dist/` in das Domain-Verzeichnis laden –
-also `index.html`, `en/`, `static/` und die versteckte Datei `.htaccess`.
-In FileZilla müssen versteckte Dateien dafür eingeblendet sein
-(Server → Versteckte Dateien anzeigen).
+#### Weg 2 – FTP-Programm wie FileZilla
+
+```bash
+python3 build.py --site-url https://www.ihre-domain.de
+```
+
+Danach den **Inhalt** von `dist/` in das Domain-Verzeichnis laden – also
+`index.html`, `en/`, `static/`, `robots.txt`, `sitemap.xml`, `llms.txt`
+und die versteckte Datei `.htaccess`. In FileZilla müssen versteckte
+Dateien dafür eingeblendet sein (Server → Versteckte Dateien anzeigen).
+Fehlt die `.htaccess`, fehlen HTTPS-Weiterleitung, eigene Fehlerseite,
+Komprimierung und Sicherheits-Header.
+
+#### Weg 3 – Dateimanager im Kundenmenü
+
+Bietet das Paket einen Dateimanager, geht es auch ohne FTP-Programm:
+`dist/` als ZIP packen, hochladen, auf dem Server entpacken. Für
+regelmäßige Änderungen umständlich, aber brauchbar, wenn gerade kein
+anderes Werkzeug zur Hand ist. Auch hier auf die `.htaccess` achten –
+manche Dateimanager übergehen Dateien, die mit einem Punkt beginnen.
+
+#### Die Domain muss bei jedem Weg stimmen
+
+Ob aus `deploy.ini` (`[site] url`) oder per `--site-url`: Die Domain
+steckt in der kanonischen Adresse, in den `hreflang`-Angaben, in
+`sitemap.xml`, `robots.txt`, `llms.txt` und in den Vorschaubildern für
+geteilte Links. Steht dort die falsche Domain, zeigen alle diese Angaben
+auf die falsche Stelle – sichtbar ist davon zunächst nichts.
 
 ### Was mitgeliefert wird
 
@@ -158,7 +186,8 @@ In FileZilla müssen versteckte Dateien dafür eingeblendet sein
   Komprimierung und Browser-Cache ein und ergänzt Sicherheits-Header.
   Jeder Block ist gegen fehlende Apache-Module abgesichert.
 * `404.html` – eigene Fehlerseite im Design der Website
-* `robots.txt` und `sitemap.xml` – mit der Domain aus `deploy.ini`
+* `robots.txt`, `sitemap.xml` und `llms.txt` – mit der Domain aus
+  `deploy.ini`
 
 ### Nach dem ersten Hochladen prüfen
 
@@ -168,6 +197,8 @@ In FileZilla müssen versteckte Dateien dafür eingeblendet sein
 2. Führt eine erfundene Adresse wie `ihre-domain.de/gibtsnicht` zur
    eigenen Fehlerseite?
 3. Erscheint die englische Fassung unter `ihre-domain.de/en/`?
+4. Sind `/robots.txt`, `/sitemap.xml` und `/llms.txt` erreichbar, und
+   steht darin die richtige Domain?
 
 CSS, JavaScript und Bilder werden mit einem Versionsstempel verlinkt
 (`style.css?v=7392bb8c`), der sich bei jeder Änderung mitändert. Deshalb
