@@ -57,6 +57,7 @@ tools/
   png.py                PNG lesen und schreiben (Standardbibliothek)
   prepare-logo.py       leitet die Logo-Varianten aus logo.png ab
   make-og-image.py      erzeugt die Vorschaubilder für geteilte Links
+  deploy-taeglich.sh    für den Aufgabenplaner: täglich bauen und laden
 ```
 
 ## Starten
@@ -151,6 +152,21 @@ Datenverbindung, nicht nur die Anmeldung. Weitere Schalter:
 | `--no-build`  | lädt das vorhandene `dist/` hoch, ohne neu zu bauen         |
 | `--delete`    | entfernt auf dem Server Dateien, die es lokal nicht mehr gibt |
 | `--plain-ftp` | unverschlüsseltes FTP, nur falls FTPS nicht zustande kommt  |
+| `--all`       | alle Dateien übertragen, auch unveränderte                  |
+
+**Übertragen wird nur, was sich geändert hat.** Welche Dateien zuletzt
+oben lagen, merkt sich `.deploy-state.json` als Liste von Prüfsummen
+(lokal, gitignoriert). Hat sich nichts geändert, baut das Skript gar keine
+Verbindung auf und fragt auch kein Passwort ab:
+
+```
+27 Dateien in dist/, davon 0 geändert
+Nichts zu tun – der Server hat bereits diesen Stand.
+```
+
+Zeigt `deploy.ini` auf einen anderen Server oder ein anderes Verzeichnis,
+gilt der gemerkte Stand nicht mehr und es wird wieder alles übertragen.
+Dasselbe erzwingt `--all`, falls auf dem Server einmal etwas fehlt.
 
 #### Das Passwort: abfragen lassen oder `DEPLOY_FTP_PASSWORD` setzen
 
@@ -244,6 +260,72 @@ steckt in der kanonischen Adresse, in den `hreflang`-Angaben, in
 `sitemap.xml`, `robots.txt`, `llms.txt` und in den Vorschaubildern für
 geteilte Links. Steht dort die falsche Domain, zeigen alle diese Angaben
 auf die falsche Stelle – sichtbar ist davon zunächst nichts.
+
+### Täglich bauen und hochladen (Synology, cron)
+
+Abgelaufene Kurstermine und Bekanntmachungen verschwinden beim **Bauen**,
+nicht im Browser des Besuchers. Wer nicht daran denken möchte, lässt die
+Seite einmal täglich neu bauen und hochladen. Weil nur Geändertes
+übertragen wird, kostet das an den meisten Tagen nichts – es wird nicht
+einmal eine Verbindung aufgebaut.
+
+Mitgeliefert ist `tools/deploy-taeglich.sh`. Darin stehen oben vier
+Einstellungen, die anzupassen sind; danach läuft es unverändert.
+
+**Auf der DiskStation vorbereiten** (Menüpunkte nach DSM 7, Beispielpfade
+für eine DS720+; sinngemäß gilt es für jedes Modell mit Intel-Prozessor):
+
+1. **Python 3** im Paketzentrum installieren. Gebraucht wird nur Jinja2 –
+   Flask aus `requirements.txt` ist für die lokale Vorschau und wird auf
+   dem NAS nicht benötigt:
+
+   ```bash
+   python3 -m venv /volume1/web-praxis/venv
+   /volume1/web-praxis/venv/bin/pip install jinja2
+   ```
+
+2. **Projekt ablegen**, etwa unter `/volume1/web-praxis/site`. Entweder als
+   Kopie in einem freigegebenen Ordner – dann pflegen Sie die JSON-Dateien
+   direkt dort – oder als Git-Arbeitskopie; dafür im Skript `MIT_GIT=1`
+   setzen, dann holt es vor jedem Lauf den neuesten Stand.
+
+3. **Passwortdatei** anlegen, die nur das FTP-Passwort enthält:
+
+   ```bash
+   chmod 600 /volume1/web-praxis/ftp-passwort
+   ```
+
+   Das Passwort gehört nicht ins Skript und nicht in das Befehlsfeld des
+   Aufgabenplaners – dort wäre es für jeden Administrator im Klartext
+   lesbar.
+
+4. **Pfade im Skript anpassen** und einmal von Hand ausprobieren:
+
+   ```bash
+   sh /volume1/web-praxis/site/tools/deploy-taeglich.sh
+   ```
+
+**Aufgabenplaner einrichten:** Systemsteuerung → Aufgabenplaner →
+Erstellen → Geplante Aufgabe → Benutzerdefiniertes Skript.
+
+| Einstellung   | Empfehlung                                                |
+| ------------- | --------------------------------------------------------- |
+| Benutzer      | nicht `root`, sondern der Besitzer des Projektordners      |
+| Zeitplan      | täglich, z. B. 05:00 – vor den Öffnungszeiten              |
+| Befehl        | `sh /volume1/web-praxis/site/tools/deploy-taeglich.sh`     |
+| Benachrichtigung | E-Mail, **nur bei abnormalem Beenden**                  |
+
+Ohne die Einschränkung auf Fehler kommt jeden Morgen eine Mail, auch wenn
+nichts passiert ist – nach einer Woche liest sie niemand mehr.
+
+**Zwei Dinge, auf die es dabei ankommt:**
+
+* Die **Zeitzone des NAS** muss stimmen (Systemsteuerung → Regionale
+  Optionen). Verglichen wird mit dem Datum des Geräts; bei falscher
+  Zeitzone verschwindet ein Hinweis einen Tag zu früh oder zu spät.
+* `--delete` ist im Skript bewusst **nicht** gesetzt. Mit dem Schalter
+  räumt jeder Lauf auf dem Server auf – dann darf im Zielverzeichnis
+  nichts liegen, was nicht aus `dist/` stammt.
 
 ### Was mitgeliefert wird
 

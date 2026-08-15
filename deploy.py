@@ -7,6 +7,11 @@ konfigurierte Verzeichnis auf dem Server spiegeln.
     python3 deploy.py --dry-run         # zeigt nur, was passieren würde
     python3 deploy.py                   # lädt hoch
 
+Übertragen wird nur, was sich seit dem letzten Lauf geändert hat. Wie der
+zuletzt hochgeladene Stand aussah, merkt sich ``.deploy-state.json`` –
+eine Liste von Prüfsummen. Ändert sich nichts, geht das Skript gar nicht
+erst online. ``--all`` überträgt wieder alles.
+
 Das Passwort steht bewusst nicht in der Konfiguration. Es kommt aus der
 Umgebungsvariable ``DEPLOY_FTP_PASSWORD`` oder wird abgefragt.
 
@@ -22,6 +27,8 @@ from __future__ import annotations
 import argparse
 import configparser
 import ftplib
+import hashlib
+import json
 import os
 import ssl
 import sys
@@ -33,6 +40,7 @@ import build as builder
 BASE_DIR = Path(__file__).resolve().parent
 DIST_DIR = BASE_DIR / "dist"
 CONFIG_FILE = BASE_DIR / "deploy.ini"
+STATE_FILE = BASE_DIR / ".deploy-state.json"
 PASSWORD_ENV = "DEPLOY_FTP_PASSWORD"
 
 # Dateien, die nie hochgeladen werden.
@@ -76,6 +84,55 @@ def local_files() -> list[Path]:
     ]
     # Verzeichnisse zuerst anlegen: nach Tiefe sortieren hält die Ausgabe ruhig.
     return sorted(files, key=lambda p: (len(p.parts), str(p)))
+
+
+# --------------------------------------------------------------------------
+# Was hat sich geändert?
+# --------------------------------------------------------------------------
+# Der Build erzeugt jedes Mal alle Dateien neu, auch wenn sich nichts
+# geändert hat. Statt sie täglich erneut hochzuladen, vergleichen wir
+# Prüfsummen mit dem Stand des letzten erfolgreichen Laufs.
+#
+# Der Stand steht lokal in .deploy-state.json, nicht auf dem Server: Ein
+# Webspace beantwortet Fragen nach Prüfsummen nicht, und Zeitstempel über
+# FTP sind zu unzuverlässig, um daran eine Entscheidung zu knüpfen.
+
+
+def file_hash(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(65536), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def load_state(host: str, remote_dir: str) -> dict[str, str]:
+    """Prüfsummen des letzten Laufs – nur für dasselbe Ziel.
+
+    Zeigt die Konfiguration auf einen anderen Server oder ein anderes
+    Verzeichnis, ist der gemerkte Stand wertlos: Dort liegt die Seite noch
+    gar nicht. Dann wird alles übertragen.
+    """
+    if not STATE_FILE.exists():
+        return {}
+    try:
+        data = json.loads(STATE_FILE.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}  # beschädigt oder unlesbar: lieber alles neu laden
+    if data.get("host") != host or data.get("remote_dir") != remote_dir:
+        return {}
+    files = data.get("files")
+    return files if isinstance(files, dict) else {}
+
+
+def save_state(host: str, remote_dir: str, hashes: dict[str, str]) -> None:
+    STATE_FILE.write_text(
+        json.dumps(
+            {"host": host, "remote_dir": remote_dir, "files": hashes},
+            ensure_ascii=False, indent=2, sort_keys=True,
+        ) + "\n",
+        encoding="utf-8",
+    )
 
 
 # --------------------------------------------------------------------------
@@ -143,7 +200,14 @@ def remote_listing(session: ftplib.FTP, directory: str = "") -> list[str]:
 # --------------------------------------------------------------------------
 # Ablauf
 # --------------------------------------------------------------------------
-def upload(session: ftplib.FTP, files: list[Path], dry_run: bool) -> int:
+def upload(session: ftplib.FTP, files: list[Path], dry_run: bool,
+           done: set[str] | None = None) -> int:
+    """Überträgt die übergebenen Dateien.
+
+    Jede erfolgreich übertragene Datei landet in ``done``. Bricht der Lauf
+    in der Mitte ab, ist damit trotzdem festgehalten, was schon oben ist –
+    der nächste Lauf macht dort weiter.
+    """
     known_dirs: set[str] = set()
     count = 0
 
@@ -162,6 +226,8 @@ def upload(session: ftplib.FTP, files: list[Path], dry_run: bool) -> int:
         with (DIST_DIR / relative).open("rb") as fh:
             session.storbinary(f"STOR {remote}", fh)
         print(f"  geladen  {remote}")
+        if done is not None:
+            done.add(remote)
         count += 1
 
     return count
@@ -194,6 +260,8 @@ def main() -> None:
                         help="Dateien auf dem Server löschen, die es lokal nicht mehr gibt")
     parser.add_argument("--plain-ftp", action="store_true",
                         help="unverschlüsseltes FTP, nur wenn FTPS nicht geht")
+    parser.add_argument("--all", action="store_true",
+                        help="alle Dateien übertragen, auch unveränderte")
     args = parser.parse_args()
 
     config = load_config()
@@ -208,17 +276,33 @@ def main() -> None:
     if not DIST_DIR.exists():
         sys.exit("dist/ fehlt – bitte zuerst python3 build.py ausführen.")
 
+    host = config.get("ftp", "host")
     files = local_files()
-    print(f"\n{len(files)} Dateien in dist/")
-    print(f"Ziel: {config.get('ftp', 'host')}:{remote_dir}\n")
+    hashes = {path.as_posix(): file_hash(DIST_DIR / path) for path in files}
+
+    previous = {} if args.all else load_state(host, remote_dir)
+    pending = [path for path in files if hashes[path.as_posix()]
+               != previous.get(path.as_posix())]
+
+    print(f"\n{len(files)} Dateien in dist/, davon {len(pending)} geändert")
+    print(f"Ziel: {host}:{remote_dir}\n")
 
     if args.dry_run:
         print("Testlauf – es wird nichts übertragen.\n")
-        upload(None, files, dry_run=True)  # type: ignore[arg-type]
+        upload(None, files if args.all else pending, dry_run=True)  # type: ignore[arg-type]
         if args.delete:
             print("\n(Aufräumen lässt sich nur mit Verbindung ermitteln.)")
         return
 
+    # Gibt es nichts zu übertragen und soll auch nicht aufgeräumt werden,
+    # ist eine Verbindung überflüssig – dann wird auch kein Passwort
+    # gebraucht. Das ist der Normalfall bei einem täglichen Lauf.
+    if not pending and not args.delete:
+        print("Nichts zu tun – der Server hat bereits diesen Stand.")
+        return
+
+    # Was schon oben liegt, bleibt vermerkt, auch wenn der Lauf abbricht.
+    uploaded: set[str] = set()
     session = connect(config, get_password(), args.plain_ftp)
     try:
         if remote_dir not in ("", "/"):
@@ -230,13 +314,19 @@ def main() -> None:
                     "Bitte den Pfad im Kundenmenü von Alfahosting prüfen."
                 )
 
-        count = upload(session, files, dry_run=False)
+        count = upload(session, pending, dry_run=False, done=uploaded)
         removed = remove_stale(session, files, dry_run=False) if args.delete else 0
 
         print(f"\nFertig: {count} Dateien übertragen"
-              + (f", {removed} entfernt" if args.delete else ""))
+              + (f", {removed} entfernt" if args.delete else "")
+              + (f", {len(files) - count} unverändert" if count < len(files) else ""))
         print(f"Die Seite ist erreichbar unter {site_url}")
     finally:
+        # Nur Dateien vermerken, die es lokal noch gibt – sonst wüchse die
+        # Liste mit jeder umbenannten Datei weiter.
+        state = {name: value for name, value in previous.items() if name in hashes}
+        state.update({name: hashes[name] for name in uploaded})
+        save_state(host, remote_dir, state)
         try:
             session.quit()
         except Exception:
