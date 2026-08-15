@@ -57,26 +57,51 @@
   },
   "about": {
     "eyebrow": "The concept",
-    "title": "Spiraldynamik – understanding anatomy in motion",
-    "lead": "Spiraldynamik is a movement and therapy concept that reads the human body as a three-dimensional spiral. Once you understand how foot, pelvis and spine work together, you can correct harmful loading patterns instead of treating symptoms alone.",
+    "title": "Spiraldynamik – the body as a twisted structure",
+    "lead": "Spiraldynamik is a movement and therapy concept grounded in anatomy. Its starting point: the human body is not assembled from straight, symmetrical parts but is twisted in spirals. That twist is what makes it both stable and mobile – and when it is lost, strain builds up in the same places again and again.",
+    "body": [
+      "The foot shows this most clearly: forefoot and heel are turned against each other, like the two ends of a cloth being wrung out. Only this twist tensions the arch of the foot. If the tension fades, the arch drops – and the load travels on through knee and pelvis into the back.",
+      "The same principle runs through the whole chain of movement. This is why Spiraldynamik does not treat only the painful spot but asks which link of the chain has given up its task. Instead of one exercise against one symptom, the result is a changed movement pattern that holds up in daily life."
+    ],
     "features": [
       {
         "title": "Cause, not symptom",
-        "text": "We look where the pain originates: in posture, gait and habit. Treatment starts with the quality of your movement."
+        "text": "The place that hurts and the place that causes it rarely coincide. We examine the whole chain of movement – foot, knee, pelvis, spine – and work where the strain arises."
       },
       {
-        "title": "Explained clearly",
-        "text": "Models and images show you what happens inside your body. Understanding is the first step towards change."
+        "title": "Anatomy as the yardstick",
+        "text": "The basis is the body’s own design, not a catalogue of exercises. What is right for a joint follows from its shape: a hip is built to rotate, a knee barely is."
       },
       {
-        "title": "Exercises for everyday life",
-        "text": "Short, precise exercises that fit into your day – while walking, sitting and working."
+        "title": "Explained so it makes sense",
+        "text": "You see on models and in your own movement what is happening in your body. Once the connection is clear, you correct yourself even when nobody is watching."
       },
       {
-        "title": "Lasting results",
-        "text": "The goal is not the next session but your independence. You should be able to steer your own movement long term."
+        "title": "Exercise, not a series of sessions",
+        "text": "Manual techniques create the range of movement that you then use yourself. The aim is not the next appointment, but that you can carry on without us."
       }
-    ]
+    ],
+    "examples_title": "Where the principle applies",
+    "examples": [
+      {
+        "title": "Foot",
+        "text": "The twist between forefoot and heel, rolling off over the big toe – relevant for fallen and splayed arches, hallux valgus and heel pain."
+      },
+      {
+        "title": "Leg axis",
+        "text": "Hip, knee and foot in one line. The knee has little rotation of its own; that belongs in the hip and the foot."
+      },
+      {
+        "title": "Pelvis & spine",
+        "text": "The double-S shape only carries with an upright pelvis. Uprightness comes from tension, not from effort."
+      },
+      {
+        "title": "Shoulder & neck",
+        "text": "The shoulder blade needs support on the ribcage. Without it, the neck takes on work it was not built for."
+      }
+    ],
+    "origin_title": "Where the concept comes from",
+    "origin": "Spiraldynamik® was developed from the 1980s onwards by the physician Christian Larsen and the French movement educator Yolande Deswarte, and is taught by the Spiraldynamik® Academy in Zurich. Using it in therapy requires a separate, multi-stage qualification."
   },
   "offer": {
     "eyebrow": "Therapy",

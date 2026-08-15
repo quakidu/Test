@@ -252,6 +252,33 @@ Aktualisierung eine veraltete Fassung sehen.
   Abschnitt in der Datenschutzerklärung.
 * **Therapien ergänzen:** einen weiteren Eintrag in `offer.items` anlegen
   (`title`, `text`, `meta`).
+
+* **Abschnitt „Konzept“:** unter `about` und in mehrere Teile gegliedert,
+  damit sich Umfang und Tiefe getrennt anpassen lassen:
+
+  | Schlüssel        | Was daraus wird                                       |
+  | ---------------- | ----------------------------------------------------- |
+  | `lead`           | der einleitende Absatz unter der Überschrift          |
+  | `body`           | Liste von Absätzen: das Bauprinzip am Beispiel Fuß    |
+  | `features`       | die vier Karten zur Arbeitsweise                      |
+  | `examples`       | Körperregionen, an denen das Prinzip ansetzt          |
+  | `origin`         | Herkunft des Konzepts und Ausbildungsweg              |
+
+  Jede Liste darf länger oder kürzer sein – das Layout passt sich an.
+  Zwei Dinge sollten beim Umschreiben erhalten bleiben:
+
+  1. **Keine Wirkungsversprechen.** Formulierungen wie „beseitigt
+     Schmerzen“ oder „heilt Hallux valgus“ sind im Heilmittelwerbegesetz
+     (§ 11 HWG) geregelt. Die vorhandenen Texte beschreiben, wie gearbeitet
+     wird, und was das Ziel ist – nicht, was garantiert eintritt.
+  2. **Spiraldynamik® ist ein geschütztes Konzept**, kein allgemeiner
+     Fachbegriff. Der Absatz `origin` nennt deshalb Herkunft und
+     Ausbildungsweg. Wer damit wirbt, sollte die Zusatzausbildung
+     tatsächlich haben – dieselbe Anforderung wie beim Abschnitt
+     „Therapeut“.
+
+  Der Text landet zusätzlich in `llms.txt`; Sprachmodelle beantworten
+  „Was ist Spiraldynamik?“ dann mit dieser Fassung.
 * **Praxis-Bilder:** Die Diashow zeigt die Dateien aus `static/img/`, die
   unter `practice.slides` eingetragen sind. Mitgeliefert sind vier
   **Platzhalter** (`praxis-1.jpg` … `praxis-4.jpg`), die als solche

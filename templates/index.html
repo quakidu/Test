@@ -69,6 +69,14 @@
       <p class="section__lead reveal" data-reveal-delay="2">{{ t('about.lead') }}</p>
     </header>
 
+    {# Ausführlicher Teil: erklärt das Bauprinzip an einem Beispiel, bevor
+       die Karten die Arbeitsweise zusammenfassen. #}
+    <div class="concept__body">
+      {% for paragraph in s.about.body %}
+      <p class="concept__text reveal" data-reveal-delay="{{ loop.index0 }}">{{ paragraph }}</p>
+      {% endfor %}
+    </div>
+
     <div class="features">
       {% for feature in s.about.features %}
       <article class="feature reveal" data-reveal-delay="{{ loop.index0 }}">
@@ -77,6 +85,23 @@
         <p class="feature__text">{{ feature.text }}</p>
       </article>
       {% endfor %}
+    </div>
+
+    <h3 class="concept__subtitle reveal">{{ t('about.examples_title') }}</h3>
+    <dl class="regions">
+      {% for region in s.about.examples %}
+      <div class="region reveal" data-reveal-delay="{{ loop.index0 }}">
+        <dt class="region__title">{{ region.title }}</dt>
+        <dd class="region__text">{{ region.text }}</dd>
+      </div>
+      {% endfor %}
+    </dl>
+
+    {# Herkunft und Ausbildungsweg gehören dazu: Spiraldynamik ist ein
+       geschütztes Konzept, kein allgemeiner Begriff. #}
+    <div class="concept__origin reveal">
+      <h3 class="concept__origin-title">{{ t('about.origin_title') }}</h3>
+      <p class="concept__origin-text">{{ t('about.origin') }}</p>
     </div>
   </div>
 </section>

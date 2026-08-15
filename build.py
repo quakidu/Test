@@ -284,6 +284,18 @@ def write_llms_txt(site_url: str, base_path: str, strings: dict) -> None:
                   for fact in therapist.get("facts", [])]
         lines += [""] + [one_line(text) for text in therapist.get("text", [])]
 
+    about = strings.get("about", {})
+    if about:
+        lines += ["", f"## {about.get('title', '')}", "", about.get("lead", "")]
+        for paragraph in about.get("body", []):
+            lines += ["", one_line(paragraph)]
+        if about.get("examples"):
+            lines += ["", f"{about.get('examples_title', '')}:"]
+            lines += [f"- {item.get('title', '')}: {item.get('text', '')}"
+                      for item in about["examples"]]
+        if about.get("origin"):
+            lines += ["", one_line(about["origin"])]
+
     lines += ["", "## Angebot", ""]
     for item in strings.get("offer", {}).get("items", []):
         lines.append(f"- {item.get('title', '')}: {item.get('text', '')} ({item.get('meta', '')})")

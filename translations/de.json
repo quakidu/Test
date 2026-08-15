@@ -57,26 +57,51 @@
   },
   "about": {
     "eyebrow": "Das Konzept",
-    "title": "Spiraldynamik – die Anatomie in Bewegung verstehen",
-    "lead": "Spiraldynamik ist ein Bewegungs- und Therapiekonzept, das den menschlichen Körper als dreidimensionale Spirale begreift. Wer versteht, wie Fuß, Becken und Wirbelsäule zusammenspielen, kann Fehlbelastungen gezielt korrigieren – statt nur Symptome zu behandeln.",
+    "title": "Spiraldynamik – der Körper als verschraubte Konstruktion",
+    "lead": "Spiraldynamik ist eine anatomisch begründete Bewegungs- und Therapielehre. Ihr Ausgangspunkt: Der menschliche Körper ist nicht symmetrisch aus geraden Bauteilen zusammengesetzt, sondern spiralig verschraubt. Genau diese Verschraubung macht ihn gleichzeitig stabil und beweglich – und wenn sie verloren geht, entstehen Fehlbelastungen an immer denselben Stellen.",
+    "body": [
+      "Am deutlichsten lässt sich das am Fuß zeigen: Vorfuß und Ferse sind gegeneinander verdreht, wie zwei Enden eines Tuchs, das man auswringt. Erst diese Verschraubung spannt das Fußgewölbe auf. Lässt die Spannung nach, sinkt das Gewölbe ab – und die Belastung wandert über Knie und Becken bis in den Rücken weiter.",
+      "Dasselbe Bauprinzip findet sich in der ganzen Bewegungskette. Deshalb behandelt Spiraldynamik nicht nur die Stelle, die weh tut, sondern fragt, welches Glied der Kette seine Aufgabe abgegeben hat. Statt einer Übung gegen ein Symptom steht am Ende ein verändertes Bewegungsmuster, das im Alltag trägt."
+    ],
     "features": [
       {
         "title": "Ursache statt Symptom",
-        "text": "Wir suchen dort, wo der Schmerz entsteht: in Haltung, Gang und Gewohnheit. Die Behandlung setzt an der Bewegungsqualität an."
+        "text": "Der Ort des Schmerzes und der Ort der Ursache fallen selten zusammen. Wir untersuchen die gesamte Bewegungskette – Fuß, Knie, Becken, Wirbelsäule – und arbeiten dort, wo die Belastung entsteht."
+      },
+      {
+        "title": "Anatomie als Maßstab",
+        "text": "Grundlage ist der Bauplan des Körpers, nicht ein Übungskatalog. Was für ein Gelenk richtig ist, ergibt sich aus seiner Form: Ein Hüftgelenk ist für Drehung gebaut, ein Knie kaum."
       },
       {
         "title": "Verständlich erklärt",
-        "text": "Sie erfahren anhand von Modellen und Bildern, was in Ihrem Körper passiert. Verstehen ist der erste Schritt zur Veränderung."
+        "text": "Sie sehen an Modellen und am eigenen Bewegungsablauf, was in Ihrem Körper passiert. Wer den Zusammenhang begriffen hat, korrigiert sich auch dann, wenn niemand zuschaut."
       },
       {
-        "title": "Übungen für den Alltag",
-        "text": "Kurze, präzise Übungen, die sich in den Tag einbauen lassen – beim Gehen, Sitzen und Arbeiten."
-      },
-      {
-        "title": "Nachhaltig wirksam",
-        "text": "Ziel ist nicht die nächste Sitzung, sondern Ihre Selbstständigkeit. Sie sollen Ihre Bewegung dauerhaft selbst steuern können."
+        "title": "Übung statt Behandlungsserie",
+        "text": "Manuelle Techniken schaffen den Bewegungsspielraum, den Sie danach selbst nutzen. Ziel ist nicht der nächste Termin, sondern dass Sie ohne uns weiterkommen."
       }
-    ]
+    ],
+    "examples_title": "Wo das Prinzip ansetzt",
+    "examples": [
+      {
+        "title": "Fuß",
+        "text": "Verschraubung zwischen Vorfuß und Ferse, Abrollen über die Großzehe – Thema bei Senk- und Spreizfuß, Hallux valgus und Fersenschmerz."
+      },
+      {
+        "title": "Beinachse",
+        "text": "Hüfte, Knie und Fuß in einer Linie. Das Knie hat wenig eigene Drehung; die Rotation gehört in Hüfte und Fuß."
+      },
+      {
+        "title": "Becken & Wirbelsäule",
+        "text": "Die Doppel-S-Form trägt nur bei aufgerichtetem Becken. Aufrichtung entsteht aus Spannung, nicht aus Anstrengung."
+      },
+      {
+        "title": "Schulter & Nacken",
+        "text": "Das Schulterblatt braucht Halt am Brustkorb. Fehlt er, übernimmt der Nacken Arbeit, für die er nicht gebaut ist."
+      }
+    ],
+    "origin_title": "Woher das Konzept kommt",
+    "origin": "Spiraldynamik® wurde ab den 1980er-Jahren vom Arzt Christian Larsen und der französischen Bewegungspädagogin Yolande Deswarte entwickelt und wird von der Spiraldynamik® Akademie in Zürich weitergegeben. Die Anwendung in der Therapie setzt eine eigene, mehrstufige Zusatzausbildung voraus."
   },
   "offer": {
     "eyebrow": "Therapie",
