@@ -25,14 +25,6 @@
         <a class="btn btn--ghost" href="#courses">{{ t('hero.cta_secondary') }}</a>
       </div>
 
-      <dl class="stats reveal" data-reveal-delay="4">
-        {% for stat in s.hero.stats %}
-        <div class="stats__item">
-          <dt class="stats__value" data-count="{{ stat.value }}">{{ stat.value }}</dt>
-          <dd class="stats__label">{{ stat.label }}</dd>
-        </div>
-        {% endfor %}
-      </dl>
     </div>
 
     <aside class="hero__card reveal" data-reveal-delay="3" aria-label="{{ t('hero.card_title') }}">
@@ -295,6 +287,17 @@
         {% for paragraph in s.therapist.text %}
         <p class="therapist__text">{{ paragraph }}</p>
         {% endfor %}
+
+        {# Die Zahlen zählen beim Erscheinen hoch – das übernimmt
+           main.js anhand von data-count. #}
+        <dl class="stats">
+          {% for stat in s.therapist.stats %}
+          <div class="stats__item">
+            <dt class="stats__value" data-count="{{ stat.value }}">{{ stat.value }}</dt>
+            <dd class="stats__label">{{ stat.label }}</dd>
+          </div>
+          {% endfor %}
+        </dl>
 
         <h4 class="therapist__facts-title">{{ t('therapist.facts_label') }}</h4>
         <dl class="therapist__facts">

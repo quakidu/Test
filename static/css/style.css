@@ -487,29 +487,6 @@ button { font: inherit; color: inherit; }
   margin-top: 2.25rem;
 }
 
-.stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(1.5rem, 4vw, 3rem);
-  margin: 3rem 0 0;
-  padding-top: 2rem;
-  border-top: 1px solid var(--border);
-}
-.stats__item { min-width: 0; }
-.stats__value {
-  display: block;
-  font-family: var(--font-display);
-  font-size: clamp(1.7rem, 1.3rem + 1.4vw, 2.4rem);
-  font-weight: 600;
-  color: var(--accent-ink);
-  line-height: 1.1;
-}
-.stats__label {
-  margin: 0.25rem 0 0;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-
 /* Karte im Hero */
 .hero__card {
   position: relative;
@@ -1315,6 +1292,29 @@ html:not(.js) .slideshow__track::-webkit-scrollbar { display: block; }
   line-height: 1.5;
 }
 
+/* Kennzahlen im Abschnitt „Therapeut“ – die Werte zählen beim Erscheinen
+   hoch (siehe main.js). */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  margin: clamp(1.75rem, 3vw, 2.25rem) 0 0;
+}
+.stats__item { min-width: 0; }
+.stats__value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2.05rem);
+  font-weight: 600;
+  color: var(--accent-ink);
+  line-height: 1.1;
+}
+.stats__label {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
 .therapist .btn { margin-top: clamp(1.75rem, 3vw, 2.25rem); }
 
 @media (max-width: 860px) {
@@ -1640,7 +1640,13 @@ html:not(.js) .slideshow__track::-webkit-scrollbar { display: block; }
 @media (max-width: 560px) {
   .brand__logo { height: 27px; }
   .hero__actions .btn { width: 100%; }
-  .stats { gap: 1.25rem 2rem; }
+  /* Nebeneinander statt zwei oben, eine darunter – die Beschriftungen
+     dürfen dafür umbrechen. */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem 1rem;
+  }
   .footer__inner { grid-template-columns: 1fr 1fr; }
   .footer__brand { grid-column: 1 / -1; }
 }

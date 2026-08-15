@@ -35,20 +35,6 @@
       "Individueller Übungsplan",
       "Begleitung im Alltag"
     ],
-    "stats": [
-      {
-        "value": "15+",
-        "label": "Jahre Erfahrung"
-      },
-      {
-        "value": "3000+",
-        "label": "Behandlungen"
-      },
-      {
-        "value": "12",
-        "label": "Kurse pro Jahr"
-      }
-    ],
     "course_teaser": {
       "label": "Nächster Kurs",
       "text": "{title} – Start am {date}",
@@ -176,6 +162,20 @@
     "text": [
       "[Platzhalter] Seit [Jahr] arbeite ich als Physiotherapeut, seit [Jahr] ausschließlich nach dem Konzept der Spiraldynamik. Was mich daran überzeugt: Es erklärt Beschwerden aus der Bewegung heraus – und macht damit nachvollziehbar, warum etwas weh tut.",
       "[Platzhalter] Meine Schwerpunkte sind Fuß und Gangbild sowie Rücken- und Schulterbeschwerden. Wichtig ist mir, dass Sie nach der Behandlung selbst weiterarbeiten können. Deshalb erkläre ich viel und gebe Ihnen Übungen mit, die in Ihren Alltag passen."
+    ],
+    "stats": [
+      {
+        "value": "15+",
+        "label": "Jahre Erfahrung"
+      },
+      {
+        "value": "3000+",
+        "label": "Behandlungen"
+      },
+      {
+        "value": "12",
+        "label": "Kurse pro Jahr"
+      }
     ],
     "facts_label": "Ausbildung und Qualifikation",
     "facts": [

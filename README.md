@@ -432,6 +432,13 @@ Aktualisierung eine veraltete Fassung sehen.
   4. `therapist.name` sollte mit `seo.founder` übereinstimmen. Weichen die
      beiden voneinander ab, meldet der Build das.
 
+  **Kennzahlen:** Die drei Zahlen unter den Absätzen (Jahre Erfahrung,
+  Behandlungen, Kurse pro Jahr) stehen unter `therapist.stats` und zählen
+  beim Erscheinen hoch. Es sind **Platzhalterwerte** – bitte auf die
+  eigenen anpassen oder Einträge löschen, die Sie nicht belegen können.
+  Achten Sie darauf, dass „Jahre Erfahrung“ nicht dem Eintrag „Erfahrung“
+  in der Qualifikationsliste widerspricht.
+
   **Porträtfoto:** `static/img/therapeut.jpg` ist ein erkennbarer
   Platzhalter. Bitte durch ein echtes Foto ersetzen – Hochformat 3 : 4,
   etwa 900 × 1200 Pixel, JPEG unter 300 KB. Ein Stockfoto wirkt hier
@@ -718,7 +725,8 @@ Quartal.
 
 ## Hinweis
 
-Adresse, Telefonnummer, E-Mail, Kennzahlen sowie die Kurstermine, Preise
+Adresse, Telefonnummer, E-Mail, die Kennzahlen im Abschnitt „Therapeut“
+sowie die Kurstermine, Preise
 und freien Plätze sind Platzhalter und vor dem Veröffentlichen zu ersetzen.
 Weil abgelaufene Kurse und Bekanntmachungen automatisch herausfallen, sollte
 die Seite regelmäßig neu gebaut und hochgeladen werden – das Ausblenden

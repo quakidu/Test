@@ -35,20 +35,6 @@
       "Personal exercise plan",
       "Guidance in everyday life"
     ],
-    "stats": [
-      {
-        "value": "15+",
-        "label": "Years of experience"
-      },
-      {
-        "value": "3000+",
-        "label": "Treatments"
-      },
-      {
-        "value": "12",
-        "label": "Courses per year"
-      }
-    ],
     "course_teaser": {
       "label": "Next course",
       "text": "{title} – starting {date}",
@@ -176,6 +162,20 @@
     "text": [
       "[Placeholder] I have worked as a physiotherapist since [year], and exclusively with the Spiraldynamik concept since [year]. What convinces me: it explains complaints through movement – and makes it clear why something hurts.",
       "[Placeholder] My focus is on feet and gait as well as back and shoulder complaints. What matters to me is that you can carry on by yourself after the treatment. That is why I explain a great deal and give you exercises that fit into your day."
+    ],
+    "stats": [
+      {
+        "value": "15+",
+        "label": "Years of experience"
+      },
+      {
+        "value": "3000+",
+        "label": "Treatments"
+      },
+      {
+        "value": "12",
+        "label": "Courses per year"
+      }
     ],
     "facts_label": "Training and qualifications",
     "facts": [
