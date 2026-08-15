@@ -127,6 +127,45 @@ def upcoming_courses(strings: dict, today: date | None = None) -> list[dict]:
     return sorted(courses, key=sort_key)
 
 
+def is_valid_date(value: str) -> bool:
+    """Prüft ein Datum im Format JJJJ-MM-TT."""
+    try:
+        year, month, day = (int(part) for part in str(value).split("-"))
+        date(year, month, day)
+    except (ValueError, AttributeError):
+        return False
+    return True
+
+
+def current_news(strings: dict, today: date | None = None) -> list[dict]:
+    """Bekanntmachungen, die heute noch gelten.
+
+    Jeder Eintrag trägt unter ``hide_from`` den Tag, **ab** dem er nicht
+    mehr erscheint – der Tag selbst ist also schon der erste ohne den
+    Hinweis. Für „Praxis bis einschließlich 14. August geschlossen“ steht
+    dort demnach der 15. August.
+
+    Das Datum steuert nur die Anzeige und erscheint nirgends auf der
+    Seite. Ein Eintrag ohne ``hide_from`` bleibt stehen, bis er von Hand
+    entfernt wird.
+
+    Die Reihenfolge stammt aus der Sprachdatei und bleibt unverändert:
+    Was zuerst gelesen werden soll, steht oben. Ein unbrauchbares Datum
+    lässt den Eintrag stehen – ein übersehener Hinweis fällt auf, ein
+    stillschweigend verschwundener nicht. Der Build meldet solche Fälle.
+    """
+    today = today or date.today()
+    limit = today.isoformat()
+
+    items = []
+    for entry in strings.get("news", {}).get("items", []):
+        hide_from = entry.get("hide_from")
+        if hide_from and is_valid_date(hide_from) and str(hide_from) <= limit:
+            continue  # ab heute nicht mehr anzeigen
+        items.append(entry)
+    return items
+
+
 def practice_slides(strings: dict, fallback: dict) -> list[dict]:
     """Bilder der Diashow.
 

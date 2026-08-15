@@ -55,6 +55,22 @@
       "link": "Freie Plätze ansehen"
     }
   },
+  "news": {
+    "eyebrow": "Bekanntmachungen",
+    "title": "Aktuelles aus der Praxis",
+    "items": [
+      {
+        "title": "Sommerpause",
+        "text": "Die Praxis bleibt vom 17. bis einschließlich 30. August geschlossen. Termine in dieser Zeit verschieben wir vorab – melden Sie sich gern per E-Mail, wir finden einen Ersatztermin.",
+        "hide_from": "2026-08-31"
+      },
+      {
+        "title": "Neue Kursstaffel im Herbst",
+        "text": "Für „Gesunde Füße“ und „Rücken in Balance“ sind noch Plätze frei. Anmeldungen nehmen wir ab sofort entgegen.",
+        "hide_from": "2026-10-02"
+      }
+    ]
+  },
   "about": {
     "eyebrow": "Das Konzept",
     "title": "Spiraldynamik – der Körper als verschraubte Konstruktion",

@@ -60,6 +60,36 @@
 
 </section>
 
+<!-- ── Bekanntmachungen ───────────────────────────────────────────────── -->
+<!--
+  Steht bewusst direkt hinter dem Kopfbereich: Wer die Seite öffnet, soll
+  von einer Schließzeit erfahren, bevor er einen Termin anfragt.
+
+  Jeder Eintrag trägt in der Sprachdatei ein Datum, ab dem er nicht mehr
+  erscheint. Das Datum steuert nur die Anzeige und wird hier nicht
+  ausgegeben. Sind alle Hinweise abgelaufen, entfällt der ganze
+  Abschnitt – ein leerer Kasten wäre schlechter als keiner.
+-->
+{% if news %}
+<section class="section section--news" id="news">
+  <div class="container">
+    <header class="section__head">
+      <p class="eyebrow reveal">{{ t('news.eyebrow') }}</p>
+      <h2 class="section__title reveal" data-reveal-delay="1">{{ t('news.title') }}</h2>
+    </header>
+
+    <div class="notices">
+      {% for item in news %}
+      <article class="notice reveal" data-reveal-delay="{{ loop.index0 }}">
+        <h3 class="notice__title">{{ item.title }}</h3>
+        <p class="notice__text">{{ item.text }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
 <!-- ── Konzept ────────────────────────────────────────────────────────── -->
 <section class="section" id="concept">
   <div class="container">

@@ -266,6 +266,18 @@ def write_llms_txt(site_url: str, base_path: str, strings: dict) -> None:
         "",
         f"> {strings.get('meta', {}).get('description', '')}",
         "",
+    ]
+
+    # Bekanntmachungen zuerst: Eine Schließzeit ist die Antwort, die im
+    # Zweifel vor allen anderen zählt. Abgelaufene sind hier schon heraus.
+    news = content.current_news(strings)
+    if news:
+        lines += [f"## {strings.get('news', {}).get('title', '')}", ""]
+        lines += [f"- {item.get('title', '')}: {item.get('text', '')}"
+                  for item in news]
+        lines += [""]
+
+    lines += [
         "## Praxis",
         "",
         f"- Inhaber: {seo.get('founder', '')}, {seo.get('founder_role', '')}",
@@ -366,6 +378,19 @@ def check_seo(strings: dict, lang: str) -> list[str]:
         if image and not (BASE_DIR / "static" / "img" / image).exists():
             notes.append(f"[{lang}] static/img/{image} fehlt.")
 
+    # Ein unbrauchbares Datum lässt die Bekanntmachung dauerhaft stehen.
+    # Das fällt ohne Hinweis erst auf, wenn sie längst überholt ist.
+    for item in strings.get("news", {}).get("items", []):
+        hide_from = item.get("hide_from")
+        title = item.get("title", "")
+        if not hide_from:
+            notes.append(f"[{lang}] Bekanntmachung „{title}“ hat kein "
+                         f"hide_from – sie bleibt stehen, bis sie jemand löscht.")
+        elif not content.is_valid_date(hide_from):
+            notes.append(f"[{lang}] Bekanntmachung „{title}“: hide_from "
+                         f"„{hide_from}“ ist kein Datum im Format JJJJ-MM-TT – "
+                         f"der Hinweis wird weiter angezeigt.")
+
     title = strings.get("meta", {}).get("title", "")
     if len(title) > 60:
         notes.append(f"[{lang}] meta.title ist {len(title)} Zeichen lang – "
@@ -409,6 +434,7 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
             )),
             anchor_base="",  # auf der Startseite genügen reine Anker
             courses=courses,
+            news=content.current_news(strings),
             teaser=content.course_teaser(strings, courses),
             slides=content.practice_slides(strings, fallback),
             logos=content.funding_logos(strings, fallback),

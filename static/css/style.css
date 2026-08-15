@@ -602,6 +602,43 @@ button { font: inherit; color: inherit; }
 /* ── 7. Sektionen ─────────────────────────────────────────────────────── */
 
 /* Konzept */
+/* ── Bekanntmachungen ─────────────────────────────────────────────────
+ * Hinweise mit begrenzter Gültigkeit. Sie sollen auffallen, ohne wie eine
+ * Warnung zu wirken: heller Grund, farbige Kante links. Der Abschnitt ist
+ * kürzer als die übrigen – er unterbricht nur kurz.
+ */
+.section--news {
+  padding-top: clamp(2.5rem, 5vw, 4rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  background: var(--bg-tinted);
+}
+.section--news .section__head { margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem); }
+
+/* Begrenzte Breite: Ein einzelner Hinweis über die volle Seitenbreite
+   wäre zu drei Vierteln leer. */
+.notices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+  max-width: 58rem;
+}
+.notice {
+  padding: clamp(1.1rem, 2.5vw, 1.5rem) clamp(1.1rem, 2.5vw, 1.6rem);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-md);
+}
+.notice__title {
+  margin-bottom: 0.4rem;
+  font-size: 1.05rem;
+}
+.notice__text {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
 /* ── Konzept ──────────────────────────────────────────────────────────
  * Fließtext, Karten und Körperregionen in einem Abschnitt. Der Fließtext
  * bleibt schmal: lange Zeilen liest niemand gern.

@@ -55,6 +55,22 @@
       "link": "See available places"
     }
   },
+  "news": {
+    "eyebrow": "Announcements",
+    "title": "News from the practice",
+    "items": [
+      {
+        "title": "Summer break",
+        "text": "The practice is closed from 17 to 30 August inclusive. We will reschedule appointments in that period in advance – just send us an email and we will find another slot.",
+        "hide_from": "2026-08-31"
+      },
+      {
+        "title": "New course series this autumn",
+        "text": "Places are still available for “Healthy feet” and “A balanced back”. We are accepting registrations now.",
+        "hide_from": "2026-10-02"
+      }
+    ]
+  },
   "about": {
     "eyebrow": "The concept",
     "title": "Spiraldynamik – the body as a twisted structure",

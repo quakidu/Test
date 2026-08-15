@@ -253,6 +253,47 @@ Aktualisierung eine veraltete Fassung sehen.
 * **Therapien ergänzen:** einen weiteren Eintrag in `offer.items` anlegen
   (`title`, `text`, `meta`).
 
+* **Bekanntmachungen (Abschnitt „Aktuelles aus der Praxis“):** kurze
+  Hinweise mit begrenzter Gültigkeit – Schließzeiten, Vertretung, neue
+  Kurstermine. Sie stehen unter `news.items` und stehen direkt hinter dem
+  Kopfbereich, damit niemand einen Termin anfragt, ohne von der
+  Sommerpause gelesen zu haben.
+
+  Jeder Eintrag hat drei Felder:
+
+  | Feld        | Bedeutung                                              |
+  | ----------- | ------------------------------------------------------ |
+  | `title`     | Überschrift des Hinweises                              |
+  | `text`      | ein bis drei Sätze                                     |
+  | `hide_from` | Datum `JJJJ-MM-TT`, **ab** dem der Hinweis verschwindet |
+
+  **`hide_from` ist der erste Tag ohne den Hinweis**, nicht der letzte
+  mit ihm. Für „Praxis bis einschließlich 30. August geschlossen“ steht
+  dort also `2026-08-31`: Am 30. ist der Hinweis noch zu sehen, am 31.
+  nicht mehr.
+
+  **Das Datum erscheint nirgends auf der Seite.** Es steuert nur die
+  Anzeige und steht auch nicht im Quelltext der fertigen Seite.
+
+  Weiteres Verhalten:
+
+  1. Die Reihenfolge stammt aus der Sprachdatei – was oben steht,
+     erscheint zuerst.
+  2. Sind alle Hinweise abgelaufen, **entfällt der ganze Abschnitt**.
+     Ein leerer Kasten wäre schlechter als keiner.
+  3. Ein Eintrag ohne `hide_from` bleibt stehen, bis Sie ihn löschen. Der
+     Build weist darauf hin, ebenso auf ein unbrauchbares Datum – ein
+     falsch geschriebenes Datum lässt den Hinweis stehen, statt ihn
+     stillschweigend verschwinden zu lassen.
+  4. Aktuelle Bekanntmachungen stehen zusätzlich in `llms.txt`, und zwar
+     an erster Stelle: Eine Schließzeit ist die Antwort, die im Zweifel
+     vor allen anderen zählt.
+
+  **Wichtig:** Die Seite ist statisch. Das Ausblenden geschieht beim
+  Bauen, nicht im Browser des Besuchers. Ein abgelaufener Hinweis
+  verschwindet also erst, wenn die Seite neu gebaut und hochgeladen wird
+  – genau wie bei den Kursterminen.
+
 * **Abschnitt „Konzept“:** unter `about` und in mehrere Teile gegliedert,
   damit sich Umfang und Tiefe getrennt anpassen lassen:
 
@@ -585,7 +626,7 @@ Quartal.
 * Kurse in einem eigenen, farblich abgesetzten Abschnitt mit Startdatum,
   freien Plätzen und Preis; Hinweis auf den nächsten Kurs bereits im
   Kopfbereich – beides aus derselben Liste erzeugt
-* abgelaufene Kurstermine fallen automatisch heraus
+* abgelaufene Kurstermine und Bekanntmachungen fallen automatisch heraus
 * Abschnitt „Stimmen“ mit Rückmeldungen; Zuschriften erreichen die Praxis
   per E-Mail und werden von Hand veröffentlicht
 * Förderhinweis am Seitenende mit den Logos der Förderer in einer Zeile
@@ -605,9 +646,10 @@ Quartal.
 
 Adresse, Telefonnummer, E-Mail, Kennzahlen sowie die Kurstermine, Preise
 und freien Plätze sind Platzhalter und vor dem Veröffentlichen zu ersetzen.
-Weil abgelaufene Kurse automatisch herausfallen, sollte die Seite nach jeder
-Terminänderung neu gebaut und hochgeladen werden – sonst bleibt der Stand
-des letzten Builds stehen. Impressum und Datenschutz sind noch leere Links.
+Weil abgelaufene Kurse und Bekanntmachungen automatisch herausfallen, sollte
+die Seite regelmäßig neu gebaut und hochgeladen werden – das Ausblenden
+geschieht beim Bauen, nicht im Browser. Ohne neuen Build bleibt der Stand des
+letzten Builds stehen. Impressum und Datenschutz sind noch leere Links.
 
 Das gelieferte Logo ist 200 × 42 Pixel groß. Im Kopfbereich wird es 32 Pixel
 hoch dargestellt, was der Auflösung entspricht – auf Bildschirmen mit hoher
