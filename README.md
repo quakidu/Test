@@ -27,6 +27,7 @@ deploy.py               lädt dist/ per FTPS auf den Webspace
 deploy.ini.example      Vorlage für Domain und FTP-Zugang
 content.py              Kursauswahl, Datumsformate, strukturierte Daten
 requirements.txt        Abhängigkeiten
+Dockerfile              Bild für den täglichen Lauf im Container
 templates/
   base.html             Grundgerüst (Head, Meta, hreflang)
   index.html            Startseite
@@ -57,7 +58,8 @@ tools/
   png.py                PNG lesen und schreiben (Standardbibliothek)
   prepare-logo.py       leitet die Logo-Varianten aus logo.png ab
   make-og-image.py      erzeugt die Vorschaubilder für geteilte Links
-  deploy-taeglich.sh    für den Aufgabenplaner: täglich bauen und laden
+  deploy-taeglich.sh    täglich bauen und laden (Synology, Linux, Docker)
+  deploy-taeglich.cmd   dasselbe für die Aufgabenplanung von Windows
 ```
 
 ## Starten
@@ -168,6 +170,9 @@ Zeigt `deploy.ini` auf einen anderen Server oder ein anderes Verzeichnis,
 gilt der gemerkte Stand nicht mehr und es wird wieder alles übertragen.
 Dasselbe erzwingt `--all`, falls auf dem Server einmal etwas fehlt.
 
+Soll das täglich von allein passieren, steht die Schritt-für-Schritt-
+Anleitung weiter unten unter „Täglich automatisch veröffentlichen“.
+
 #### Das Passwort: abfragen lassen oder `DEPLOY_FTP_PASSWORD` setzen
 
 Im Normalfall ist nichts zu tun. Fehlt die Umgebungsvariable, fragt
@@ -261,72 +266,6 @@ steckt in der kanonischen Adresse, in den `hreflang`-Angaben, in
 geteilte Links. Steht dort die falsche Domain, zeigen alle diese Angaben
 auf die falsche Stelle – sichtbar ist davon zunächst nichts.
 
-### Täglich bauen und hochladen (Synology, cron)
-
-Abgelaufene Kurstermine und Bekanntmachungen verschwinden beim **Bauen**,
-nicht im Browser des Besuchers. Wer nicht daran denken möchte, lässt die
-Seite einmal täglich neu bauen und hochladen. Weil nur Geändertes
-übertragen wird, kostet das an den meisten Tagen nichts – es wird nicht
-einmal eine Verbindung aufgebaut.
-
-Mitgeliefert ist `tools/deploy-taeglich.sh`. Darin stehen oben vier
-Einstellungen, die anzupassen sind; danach läuft es unverändert.
-
-**Auf der DiskStation vorbereiten** (Menüpunkte nach DSM 7, Beispielpfade
-für eine DS720+; sinngemäß gilt es für jedes Modell mit Intel-Prozessor):
-
-1. **Python 3** im Paketzentrum installieren. Gebraucht wird nur Jinja2 –
-   Flask aus `requirements.txt` ist für die lokale Vorschau und wird auf
-   dem NAS nicht benötigt:
-
-   ```bash
-   python3 -m venv /volume1/web-praxis/venv
-   /volume1/web-praxis/venv/bin/pip install jinja2
-   ```
-
-2. **Projekt ablegen**, etwa unter `/volume1/web-praxis/site`. Entweder als
-   Kopie in einem freigegebenen Ordner – dann pflegen Sie die JSON-Dateien
-   direkt dort – oder als Git-Arbeitskopie; dafür im Skript `MIT_GIT=1`
-   setzen, dann holt es vor jedem Lauf den neuesten Stand.
-
-3. **Passwortdatei** anlegen, die nur das FTP-Passwort enthält:
-
-   ```bash
-   chmod 600 /volume1/web-praxis/ftp-passwort
-   ```
-
-   Das Passwort gehört nicht ins Skript und nicht in das Befehlsfeld des
-   Aufgabenplaners – dort wäre es für jeden Administrator im Klartext
-   lesbar.
-
-4. **Pfade im Skript anpassen** und einmal von Hand ausprobieren:
-
-   ```bash
-   sh /volume1/web-praxis/site/tools/deploy-taeglich.sh
-   ```
-
-**Aufgabenplaner einrichten:** Systemsteuerung → Aufgabenplaner →
-Erstellen → Geplante Aufgabe → Benutzerdefiniertes Skript.
-
-| Einstellung   | Empfehlung                                                |
-| ------------- | --------------------------------------------------------- |
-| Benutzer      | nicht `root`, sondern der Besitzer des Projektordners      |
-| Zeitplan      | täglich, z. B. 05:00 – vor den Öffnungszeiten              |
-| Befehl        | `sh /volume1/web-praxis/site/tools/deploy-taeglich.sh`     |
-| Benachrichtigung | E-Mail, **nur bei abnormalem Beenden**                  |
-
-Ohne die Einschränkung auf Fehler kommt jeden Morgen eine Mail, auch wenn
-nichts passiert ist – nach einer Woche liest sie niemand mehr.
-
-**Zwei Dinge, auf die es dabei ankommt:**
-
-* Die **Zeitzone des NAS** muss stimmen (Systemsteuerung → Regionale
-  Optionen). Verglichen wird mit dem Datum des Geräts; bei falscher
-  Zeitzone verschwindet ein Hinweis einen Tag zu früh oder zu spät.
-* `--delete` ist im Skript bewusst **nicht** gesetzt. Mit dem Schalter
-  räumt jeder Lauf auf dem Server auf – dann darf im Zielverzeichnis
-  nichts liegen, was nicht aus `dist/` stammt.
-
 ### Was mitgeliefert wird
 
 * `.htaccess` – leitet auf HTTPS um, setzt die Fehlerseite, schaltet
@@ -351,6 +290,344 @@ CSS, JavaScript und Bilder werden mit einem Versionsstempel verlinkt
 (`style.css?v=7392bb8c`), der sich bei jeder Änderung mitändert. Deshalb
 dürfen sie lange im Browser-Cache liegen, ohne dass Besucher nach einer
 Aktualisierung eine veraltete Fassung sehen.
+
+## Täglich automatisch veröffentlichen
+
+Abgelaufene Kurstermine und Bekanntmachungen verschwinden beim **Bauen**,
+nicht im Browser des Besuchers. Wer nicht daran denken möchte, lässt einen
+Rechner die Seite einmal täglich neu bauen und hochladen.
+
+Das kostet an den meisten Tagen nichts: `deploy.py` überträgt nur, was sich
+geändert hat, und baut ohne Änderung nicht einmal eine Verbindung auf.
+
+### Zwei Entscheidungen vorab
+
+**Erstens: Wo soll es laufen?**
+
+| Ort               | Passt, wenn …                                          |
+| ----------------- | ------------------------------------------------------ |
+| **NAS** (Synology)| das Gerät ohnehin durchläuft – dann klappt der tägliche Lauf zuverlässig |
+| **Desktop-PC**    | kein NAS da ist. Achtung: Ist der Rechner um 5 Uhr aus, passiert nichts |
+
+**Zweitens: Wie kommen die Texte auf diesen Rechner?**
+
+| Variante                | Vorgehen                                              |
+| ----------------------- | ----------------------------------------------------- |
+| **Freigegebener Ordner**| Das Projekt liegt einmal auf dem NAS. Sie öffnen die JSON-Dateien vom PC aus über die Netzwerkfreigabe und ändern sie dort. Kein Git nötig |
+| **Git**                 | Sie arbeiten wie bisher am PC, `git push`, und der Rechner holt sich vor jedem Lauf den neuen Stand |
+
+Für eine Person, die die Texte selbst pflegt, reicht der **freigegebene
+Ordner**. **Git** lohnt sich, sobald mehrere Leute etwas ändern oder Sie
+alte Stände zurückholen möchten. Beides funktioniert mit jedem der Wege
+unten – der Unterschied ist eine Zeile im Skript.
+
+### Was alle Wege brauchen
+
+1. Das Projekt (dieser Ordner) auf dem Rechner, der veröffentlicht.
+2. **Python 3** mit **Jinja2**. Flask aus `requirements.txt` wird *nicht*
+   gebraucht – das ist nur für die lokale Vorschau.
+3. Eine ausgefüllte `deploy.ini` (siehe „Einmalig einrichten“ oben).
+4. Eine Datei, die nur das FTP-Passwort enthält.
+5. Einen Zeitplaner: Aufgabenplaner (Synology), cron (Linux) oder
+   Aufgabenplanung (Windows).
+
+---
+
+### Weg A – Synology-NAS mit dem Skript
+
+Der einfachere der beiden NAS-Wege. Beispiel für eine DS720+ unter DSM 7;
+Menüpunkte heißen bei anderen Modellen genauso.
+
+**Schritt 1 – Ordner anlegen.** Systemsteuerung → *Freigegebener Ordner* →
+*Erstellen*. Name z. B. `web-praxis`. Er liegt danach unter
+`/volume1/web-praxis` und ist im Netzwerk als Laufwerk erreichbar.
+
+**Schritt 2 – SSH einschalten.** Systemsteuerung → *Terminal & SNMP* →
+*SSH-Dienst aktivieren*. Danach vom PC aus verbinden (Windows:
+`Eingabeaufforderung`, Linux: Terminal):
+
+```bash
+ssh IhrBenutzer@192.168.1.50      # IP des NAS
+```
+
+**Schritt 3 – Python installieren.** Paketzentrum → nach *Python* suchen →
+*Python 3* installieren. Dann in der SSH-Sitzung prüfen:
+
+```bash
+python3 --version
+```
+
+Kommt „command not found“, liegt es am Suchpfad; dann statt `python3`
+überall `/var/packages/Python3/target/bin/python3` schreiben.
+
+**Schritt 4 – Umgebung für Jinja2 anlegen.**
+
+```bash
+cd /volume1/web-praxis
+python3 -m venv venv
+venv/bin/pip install jinja2
+```
+
+**Schritt 5 – Projekt ablegen.** Entweder über die Netzwerkfreigabe in
+`web-praxis` hineinkopieren (Zielordner: `site`), oder per Git:
+
+```bash
+cd /volume1/web-praxis
+git clone <Adresse des Repositorys> site
+```
+
+Für Git braucht es das Paket *Git Server* aus dem Paketzentrum; es bringt
+den `git`-Befehl mit.
+
+**Schritt 6 – Zugangsdaten hinterlegen.**
+
+```bash
+cd /volume1/web-praxis/site
+cp deploy.ini.example deploy.ini
+vi deploy.ini                       # Domain, Host, Benutzer, remote_dir
+
+printf '%s' 'IhrFtpPasswort' > /volume1/web-praxis/ftp-passwort
+chmod 600 /volume1/web-praxis/ftp-passwort
+```
+
+`printf` statt `echo`, damit kein Zeilenumbruch im Passwort landet.
+
+**Schritt 7 – Skript anpassen und ausprobieren.** In
+`tools/deploy-taeglich.sh` stehen oben vier Einstellungen. Bei den obigen
+Pfaden passen sie bereits; nur `MIT_GIT=1` setzen, wenn Sie Schritt 5 mit
+Git gemacht haben. Dann ein Probelauf, der nichts überträgt:
+
+```bash
+sh tools/deploy-taeglich.sh --dry-run
+```
+
+Sieht das gut aus, einmal echt laufen lassen:
+
+```bash
+sh tools/deploy-taeglich.sh
+```
+
+**Schritt 8 – Aufgabenplaner einrichten.** Systemsteuerung →
+*Aufgabenplaner* → *Erstellen* → *Geplante Aufgabe* → *Benutzerdefiniertes
+Skript*.
+
+| Feld              | Eintrag                                                    |
+| ----------------- | ---------------------------------------------------------- |
+| Aufgabenname      | z. B. `Homepage veröffentlichen`                            |
+| Benutzer          | nicht `root`, sondern der Besitzer des Ordners              |
+| Zeitplan          | täglich, z. B. 05:00                                        |
+| Befehl            | `sh /volume1/web-praxis/site/tools/deploy-taeglich.sh`      |
+| Benachrichtigung  | E-Mail eintragen, **„Nur bei abnormalem Beenden“** anhaken  |
+
+Ohne die Einschränkung auf Fehler kommt jeden Morgen eine Mail, auch wenn
+nichts passiert ist – nach einer Woche liest sie niemand mehr.
+
+---
+
+### Weg B – Synology-NAS mit Docker
+
+Gleiches Ergebnis, aber ohne Python auf dem NAS: Alles Nötige steckt im
+Container. Der Zeitplan kommt weiterhin vom Aufgabenplaner – Docker
+bringt keinen eigenen mit.
+
+**Ehrlich gesagt:** Wenn Sie nicht ohnehin mit Containern arbeiten, ist
+Weg A einfacher. Der Vorteil hier ist, dass auf dem NAS nichts installiert
+wird außer Docker selbst.
+
+**Schritt 1 – Container Manager installieren.** Paketzentrum →
+*Container Manager* (bei älteren DSM-Versionen heißt das Paket *Docker*).
+
+**Schritt 2 bis 3 – Ordner, SSH, Projekt und Zugangsdaten** genau wie in
+Weg A, Schritte 1, 2, 5 und 6. Python und das venv entfallen.
+
+**Schritt 4 – Bild einmal bauen.** Im Projekt liegt ein `Dockerfile`. In
+der SSH-Sitzung:
+
+```bash
+cd /volume1/web-praxis/site
+sudo docker build -t praxis-deploy .
+```
+
+Das dauert beim ersten Mal ein paar Minuten. Wiederholen müssen Sie es
+nur, wenn sich das `Dockerfile` ändert – **nicht** bei Textänderungen: Das
+Projekt steckt nicht im Bild, sondern wird beim Start hineingereicht.
+
+**Schritt 5 – Probelauf.**
+
+```bash
+sudo docker run --rm \
+  -v /volume1/web-praxis/site:/app \
+  -v /volume1/web-praxis/ftp-passwort:/pw:ro \
+  praxis-deploy sh tools/deploy-taeglich.sh --dry-run
+```
+
+Was die Zeilen bedeuten:
+
+| Teil                          | Bedeutung                                    |
+| ----------------------------- | -------------------------------------------- |
+| `--rm`                        | Container nach dem Lauf wieder wegräumen      |
+| `-v …/site:/app`              | das Projekt in den Container reichen          |
+| `-v …/ftp-passwort:/pw:ro`    | die Passwortdatei, nur lesbar (`ro`)          |
+
+Ohne `--dry-run` läuft es echt. Für die Git-Variante zusätzlich
+`-e MIT_GIT=1` angeben – `git` ist im Bild enthalten.
+
+**Schritt 6 – Aufgabenplaner einrichten** wie in Weg A, Schritt 8, nur mit
+diesem Befehl (alles in einer Zeile):
+
+```bash
+docker run --rm -v /volume1/web-praxis/site:/app -v /volume1/web-praxis/ftp-passwort:/pw:ro praxis-deploy
+```
+
+Hier muss der Benutzer `root` sein oder der Docker-Gruppe angehören –
+anders lässt sich kein Container starten.
+
+---
+
+### Weg C – Linux-PC
+
+**Schritt 1 – Python und Jinja2.**
+
+```bash
+sudo apt install python3-venv git      # Debian/Ubuntu
+mkdir -p ~/praxis && cd ~/praxis
+python3 -m venv venv
+venv/bin/pip install jinja2
+```
+
+**Schritt 2 – Projekt ablegen**, entweder kopieren nach `~/praxis/site`
+oder:
+
+```bash
+git clone <Adresse des Repositorys> ~/praxis/site
+```
+
+**Schritt 3 – Zugangsdaten.**
+
+```bash
+cd ~/praxis/site
+cp deploy.ini.example deploy.ini && nano deploy.ini
+printf '%s' 'IhrFtpPasswort' > ~/praxis/ftp-passwort
+chmod 600 ~/praxis/ftp-passwort
+```
+
+**Schritt 4 – Skript anpassen.** In `tools/deploy-taeglich.sh` die vier
+Pfade auf `/home/IhrName/praxis/…` ändern (`~` versteht cron nicht
+zuverlässig – bitte ausschreiben). Probelauf:
+
+```bash
+sh tools/deploy-taeglich.sh --dry-run
+```
+
+**Schritt 5 – cron eintragen.**
+
+```bash
+crontab -e
+```
+
+und als Zeile einfügen:
+
+```
+0 5 * * * /home/IhrName/praxis/site/tools/deploy-taeglich.sh >> /home/IhrName/praxis/deploy.log 2>&1
+```
+
+`0 5 * * *` heißt „täglich um 05:00“. Die Umleitung schreibt Ausgabe und
+Fehler in eine Datei – ohne sie verschwindet beides ungesehen. Das Skript
+muss dafür ausführbar sein: `chmod +x tools/deploy-taeglich.sh`.
+
+---
+
+### Weg D – Windows-PC
+
+**Schritt 1 – Python installieren.** Von <https://www.python.org/downloads/>
+holen und im Installationsfenster **„Add python.exe to PATH“ ankreuzen** –
+sonst findet die Aufgabenplanung Python später nicht.
+
+**Schritt 2 – Ordner und Umgebung.** Eingabeaufforderung öffnen:
+
+```cmd
+mkdir C:\Praxis
+cd C:\Praxis
+py -3 -m venv venv
+venv\Scripts\pip install jinja2
+```
+
+**Schritt 3 – Projekt ablegen** nach `C:\Praxis\site` – kopieren oder,
+mit installiertem [Git für Windows](https://git-scm.com/download/win):
+
+```cmd
+git clone <Adresse des Repositorys> C:\Praxis\site
+```
+
+**Schritt 4 – Zugangsdaten.** `deploy.ini.example` nach `deploy.ini`
+kopieren und ausfüllen. Dann eine Textdatei `C:\Praxis\ftp-passwort.txt`
+anlegen, die **nur** das Passwort enthält – ohne Leerzeichen am
+Zeilenende, die zählten mit. Über Rechtsklick → *Eigenschaften* →
+*Sicherheit* die Zugriffsrechte auf Ihr Benutzerkonto beschränken.
+
+**Schritt 5 – Skript anpassen und testen.** In
+`tools\deploy-taeglich.cmd` stehen oben vier Einstellungen; bei den
+Pfaden oben passen sie bereits. Probelauf in der Eingabeaufforderung:
+
+```cmd
+C:\Praxis\site\tools\deploy-taeglich.cmd --dry-run
+```
+
+**Schritt 6 – Aufgabenplanung einrichten.** Startmenü → *Aufgabenplanung*
+→ rechts *Einfache Aufgabe erstellen*.
+
+| Schritt        | Eintrag                                               |
+| -------------- | ----------------------------------------------------- |
+| Name           | z. B. `Homepage veröffentlichen`                       |
+| Trigger        | *Täglich*, Uhrzeit z. B. 05:00                         |
+| Aktion         | *Programm starten*                                     |
+| Programm       | `C:\Praxis\site\tools\deploy-taeglich.cmd`             |
+| „Starten in“   | `C:\Praxis\site`                                       |
+
+Danach in den Eigenschaften der Aufgabe:
+
+* **„Unabhängig von der Benutzeranmeldung ausführen“** lässt die Aufgabe
+  auch laufen, wenn niemand angemeldet ist – Windows verlangt dafür Ihr
+  Windows-Kennwort.
+* **„Aufgabe so schnell wie möglich nach einem verpassten Start
+  ausführen“** anhaken. Sonst fällt der Lauf aus, wenn der Rechner um
+  5 Uhr aus war.
+
+---
+
+### Inhalte pflegen: Ordner oder Git
+
+**Freigegebener Ordner:** Sie öffnen `translations/de.json` über die
+Netzwerkfreigabe (bzw. direkt am PC), ändern den Text, speichern. Beim
+nächsten Lauf ist es online. `MIT_GIT=0` lassen.
+
+**Git:** Sie arbeiten wie gewohnt lokal, dann `git push`. Auf dem
+veröffentlichenden Rechner `MIT_GIT=1` setzen – das Skript holt vor jedem
+Lauf den neuen Stand. Wichtig: Auf diesem Rechner dürfen die Dateien
+**nicht** von Hand geändert werden, sonst scheitert `git pull --ff-only`.
+
+`deploy.ini`, die Passwortdatei und `.deploy-state.json` sind in
+`.gitignore` eingetragen und gehen nie ins Repository.
+
+### Wenn etwas nicht klappt
+
+| Meldung                                   | Ursache und Abhilfe                         |
+| ----------------------------------------- | ------------------------------------------- |
+| `deploy.ini fehlt`                        | Schritt „Zugangsdaten“ nachholen            |
+| `Passwortdatei nicht lesbar`              | Pfad im Skript stimmt nicht, oder die Rechte lassen den Aufgaben-Benutzer nicht lesen |
+| `Verzeichnis … nicht gefunden`            | `remote_dir` in `deploy.ini` prüfen (Kundenmenü → Domains) |
+| `530 Login incorrect`                     | Passwortdatei enthält einen Zeilenumbruch oder ein Leerzeichen zu viel |
+| Läuft von Hand, aber nicht im Zeitplan    | fast immer relative Pfade oder ein anderer Benutzer – im Skript alles ausschreiben |
+| Seite ändert sich nicht                   | `--all` erzwingt einmal die vollständige Übertragung |
+
+**Zeitzone prüfen.** Das Ausblenden vergleicht mit dem Datum des Geräts.
+Steht die Zeitzone falsch (Synology: Systemsteuerung → *Regionale
+Optionen*), verschwindet ein Hinweis einen Tag zu früh oder zu spät.
+
+**`--delete` ist bewusst nicht gesetzt.** Mit dem Schalter räumt jeder Lauf
+auf dem Server auf – dann darf im Zielverzeichnis nichts liegen, was nicht
+aus `dist/` stammt. Wenn dort ausschließlich diese Seite liegt, können Sie
+ihn im Skript an `deploy.py` anhängen.
 
 ## Inhalte anpassen
 
