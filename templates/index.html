@@ -25,16 +25,6 @@
         <a class="btn btn--ghost" href="#courses">{{ t('hero.cta_secondary') }}</a>
       </div>
 
-      {# Hinweis auf den nächsten Kurs – wird aus der Kursliste erzeugt und
-         entfällt, solange kein Termin ansteht. #}
-      {% if teaser %}
-      <a class="teaser reveal" data-reveal-delay="4" href="#courses">
-        <span class="teaser__label">{{ teaser.label }}</span>
-        <span class="teaser__text">{{ teaser.text }}</span>
-        <span class="teaser__link">{{ teaser.link }} <span aria-hidden="true">&rarr;</span></span>
-      </a>
-      {% endif %}
-
       <dl class="stats reveal" data-reveal-delay="4">
         {% for stat in s.hero.stats %}
         <div class="stats__item">
@@ -67,10 +57,11 @@
 
   Jeder Eintrag trägt in der Sprachdatei ein Datum, ab dem er nicht mehr
   erscheint. Das Datum steuert nur die Anzeige und wird hier nicht
-  ausgegeben. Sind alle Hinweise abgelaufen, entfällt der ganze
-  Abschnitt – ein leerer Kasten wäre schlechter als keiner.
+  ausgegeben. Sind alle Hinweise abgelaufen und steht auch kein Kurs an,
+  entfällt der ganze Abschnitt – ein leerer Kasten wäre schlechter als
+  keiner.
 -->
-{% if news %}
+{% if news or teaser %}
 <section class="section section--news" id="news">
   <div class="container">
     <header class="section__head">
@@ -85,6 +76,19 @@
         <p class="notice__text">{{ item.text }}</p>
       </article>
       {% endfor %}
+
+      {# Hinweis auf den nächsten Kurs – wird aus der Kursliste erzeugt und
+         entfällt, solange kein Termin ansteht. Er steht hinter den von Hand
+         gepflegten Hinweisen: Eine Schließzeit wiegt schwerer als ein
+         freier Kursplatz. #}
+      {% if teaser %}
+      <a class="notice notice--course reveal" href="#courses"
+         data-reveal-delay="{{ news | length }}">
+        <span class="notice__label">{{ teaser.label }}</span>
+        <span class="notice__text">{{ teaser.text }}</span>
+        <span class="notice__link">{{ teaser.link }} <span aria-hidden="true">&rarr;</span></span>
+      </a>
+      {% endif %}
     </div>
   </div>
 </section>

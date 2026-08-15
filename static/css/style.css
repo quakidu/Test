@@ -487,45 +487,6 @@ button { font: inherit; color: inherit; }
   margin-top: 2.25rem;
 }
 
-/* Kurshinweis im Hero – führt in den Kursbereich. */
-.teaser {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem 0.85rem;
-  margin-top: 1.75rem;
-  padding: 0.7rem 1.15rem;
-  background: color-mix(in srgb, var(--accent) 8%, var(--bg-elevated));
-  border: 1px solid var(--border);
-  border-radius: var(--radius-pill);
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease),
-              box-shadow 0.25s var(--ease);
-}
-.teaser:hover {
-  transform: translateY(-2px);
-  border-color: var(--accent);
-  box-shadow: var(--shadow-md);
-}
-.teaser__label {
-  padding: 0.2rem 0.6rem;
-  border-radius: var(--radius-pill);
-  background: var(--accent);
-  color: var(--on-accent);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.teaser__text { font-size: 0.95rem; font-weight: 600; }
-.teaser__link {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--accent-ink);
-  white-space: nowrap;
-}
-
 .stats {
   display: flex;
   flex-wrap: wrap;
@@ -637,6 +598,44 @@ button { font: inherit; color: inherit; }
   color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.6;
+}
+
+/* Der Kurshinweis wird aus der Kursliste erzeugt und führt dorthin. Als
+   einziger Hinweis ist er anklickbar – deshalb hebt er sich ab. */
+.notice--course {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg-elevated));
+  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease),
+              box-shadow 0.25s var(--ease);
+}
+.notice--course:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
+}
+.notice--course .notice__text {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.notice__label {
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.notice__link {
+  margin-top: auto;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent-ink);
 }
 
 /* ── Konzept ──────────────────────────────────────────────────────────

@@ -286,12 +286,14 @@ Aktualisierung eine veraltete Fassung sehen.
   * das **angezeigte Datum** in der jeweiligen Sprache („14. September“ /
     „14 September“); das Jahr erscheint nur, wenn der Termin nicht im
     laufenden Jahr liegt,
-  * der **Hinweis im Kopfbereich** der Seite.
+  * der **Hinweis auf den nächsten Kurs** im Abschnitt
+    „Aktuelles aus der Praxis“.
 
   **Abgelaufene Kurse verschwinden von selbst.** Ab dem Tag nach dem Start
-  fällt ein Kurs beim nächsten Bauen heraus und der Hinweis oben rückt auf
-  den folgenden Termin. Steht gar kein Kurs mehr an, entfällt der Hinweis
-  und im Kursbereich erscheint der Text aus `courses.empty`.
+  fällt ein Kurs beim nächsten Bauen heraus und der Hinweis unter den
+  Bekanntmachungen rückt auf den folgenden Termin. Steht gar kein Kurs mehr
+  an, entfällt der Hinweis und im Kursbereich erscheint der Text aus
+  `courses.empty`.
 
   Anzupassen sind also nur noch Datum, freie Plätze und Preis – danach
   `python3 deploy.py`. Die Formulierungen drumherum stehen in
@@ -320,9 +322,15 @@ Aktualisierung eine veraltete Fassung sehen.
 
 * **Bekanntmachungen (Abschnitt „Aktuelles aus der Praxis“):** kurze
   Hinweise mit begrenzter Gültigkeit – Schließzeiten, Vertretung, neue
-  Kurstermine. Sie stehen unter `news.items` und stehen direkt hinter dem
-  Kopfbereich, damit niemand einen Termin anfragt, ohne von der
+  Kurstermine. Sie stehen unter `news.items` und der Abschnitt folgt direkt
+  auf den Kopfbereich, damit niemand einen Termin anfragt, ohne von der
   Sommerpause gelesen zu haben.
+
+  Am Ende des Abschnitts steht zusätzlich der **Hinweis auf den nächsten
+  Kurs**. Er wird aus der Kursliste erzeugt, ist also nicht von Hand zu
+  pflegen, und führt in den Kursbereich. Er steht hinter den eigenen
+  Hinweisen: Eine Schließzeit wiegt schwerer als ein freier Kursplatz.
+  Seine Formulierung steht weiterhin unter `hero.course_teaser`.
 
   Jeder Eintrag hat drei Felder:
 
@@ -344,8 +352,9 @@ Aktualisierung eine veraltete Fassung sehen.
 
   1. Die Reihenfolge stammt aus der Sprachdatei – was oben steht,
      erscheint zuerst.
-  2. Sind alle Hinweise abgelaufen, **entfällt der ganze Abschnitt**.
-     Ein leerer Kasten wäre schlechter als keiner.
+  2. Sind alle Hinweise abgelaufen **und steht auch kein Kurs mehr an**,
+     entfällt der ganze Abschnitt. Ein leerer Kasten wäre schlechter als
+     keiner.
   3. Ein Eintrag ohne `hide_from` bleibt stehen, bis Sie ihn löschen. Der
      Build weist darauf hin, ebenso auf ein unbrauchbares Datum – ein
      falsch geschriebenes Datum lässt den Hinweis stehen, statt ihn
@@ -689,8 +698,8 @@ Quartal.
 * Responsiv ab ca. 320 px: Burger-Menü, gestapelte Raster, flexible Typografie
 * Sprachumschalter im Kopfbereich, `hreflang`-Verweise im `<head>`
 * Kurse in einem eigenen, farblich abgesetzten Abschnitt mit Startdatum,
-  freien Plätzen und Preis; Hinweis auf den nächsten Kurs bereits im
-  Kopfbereich – beides aus derselben Liste erzeugt
+  freien Plätzen und Preis; Hinweis auf den nächsten Kurs schon bei den
+  Bekanntmachungen – beides aus derselben Liste erzeugt
 * abgelaufene Kurstermine und Bekanntmachungen fallen automatisch heraus
 * Abschnitt „Stimmen“ mit Rückmeldungen; Zuschriften erreichen die Praxis
   per E-Mail und werden von Hand veröffentlicht
