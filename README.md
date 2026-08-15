@@ -126,7 +126,8 @@ Alfahosting:
 
 `deploy.ini` steht in `.gitignore` und landet nicht im Repository. Das
 Passwort gehört auch nicht in die Datei – es wird beim Hochladen abgefragt
-oder aus der Umgebungsvariable `DEPLOY_FTP_PASSWORD` gelesen.
+oder aus der Umgebungsvariable `DEPLOY_FTP_PASSWORD` gelesen. Wie sich die
+Variable setzen lässt, steht weiter unten unter „Das Passwort“.
 
 ### Hochladen
 
@@ -150,6 +151,70 @@ Datenverbindung, nicht nur die Anmeldung. Weitere Schalter:
 | `--no-build`  | lädt das vorhandene `dist/` hoch, ohne neu zu bauen         |
 | `--delete`    | entfernt auf dem Server Dateien, die es lokal nicht mehr gibt |
 | `--plain-ftp` | unverschlüsseltes FTP, nur falls FTPS nicht zustande kommt  |
+
+#### Das Passwort: abfragen lassen oder `DEPLOY_FTP_PASSWORD` setzen
+
+Im Normalfall ist nichts zu tun. Fehlt die Umgebungsvariable, fragt
+`deploy.py` das Passwort ab – es landet dann nirgends, weder in einer
+Datei noch in der Shell-History:
+
+```bash
+python3 deploy.py
+FTP-Passwort: ▮
+```
+
+Die Variable brauchen Sie nur, wenn niemand tippen kann – etwa bei einem
+automatischen Upload.
+
+**Nur für einen einzelnen Aufruf** (Linux, macOS):
+
+```bash
+ DEPLOY_FTP_PASSWORD='geheim' python3 deploy.py
+```
+
+Das Leerzeichen ganz am Anfang ist Absicht: In bash (mit
+`HISTCONTROL=ignorespace`) und in zsh (mit `setopt HIST_IGNORE_SPACE`)
+hält es die Zeile aus der History heraus. Ohne diese Einstellung steht
+das Passwort anschließend in `~/.bash_history`.
+
+**Für das aktuelle Fenster**, danach wieder entfernen:
+
+```bash
+# Linux, macOS
+export DEPLOY_FTP_PASSWORD='geheim'
+python3 deploy.py
+unset DEPLOY_FTP_PASSWORD
+```
+
+```powershell
+# Windows PowerShell
+$env:DEPLOY_FTP_PASSWORD = 'geheim'
+python deploy.py
+Remove-Item Env:DEPLOY_FTP_PASSWORD
+```
+
+```cmd
+:: Windows Eingabeaufforderung
+set DEPLOY_FTP_PASSWORD=geheim
+python deploy.py
+set DEPLOY_FTP_PASSWORD=
+```
+
+Bei Sonderzeichen im Passwort:
+
+* Linux und macOS: **einfache** Anführungszeichen nehmen. In doppelten
+  würden `$` und `` ` `` ausgewertet, in interaktiver bash auch `!`.
+* Windows `set`: **keine** Anführungszeichen – sie würden Teil des
+  Passworts. Ein Leerzeichen hinter dem Passwort zählt ebenfalls mit,
+  und ein `%` im Passwort liest cmd als Variablenanfang.
+* Ein leerer Wert wirkt wie „nicht gesetzt“ – dann wird wieder gefragt.
+
+**Dauerhaft setzen** (`~/.bashrc`, `~/.zshrc`, unter Windows
+„Umgebungsvariablen für dieses Konto bearbeiten“) ist möglich, aber dann
+liegt das Passwort im Klartext in einer Datei bzw. in der Registry, und
+jedes gestartete Programm kann es lesen. Für die Arbeit von Hand lieber
+abfragen lassen; für einen automatisch laufenden Upload ist es der
+praktikable Weg.
 
 #### Weg 2 – FTP-Programm wie FileZilla
 
