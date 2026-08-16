@@ -55,8 +55,42 @@
   --glow-1:        var(--blue-300);
   --glow-2:        var(--blue-200);
   --glow-3:        var(--blue-400);
+  --accent-fade:   var(--blue-300);
   --selection-bg:  var(--blue-200);
   --selection-text: var(--ink-900);
+
+  /*
+   * Der Kursabschnitt läuft bewusst gegen den Rest der Seite: dunkler
+   * Grund, helle Schrift. Diese Werte beschreiben ihn – sonst bliebe das
+   * Band blau, während die übrige Seite in anderen Farben erscheint.
+   *
+   * --invert-bg-1/2/3  Verlauf von oben links nach unten rechts
+   * --invert-glow      der aufgehellte Schleier in der oberen Ecke
+   * --invert-veil*     die Kurskarten auf dem Band: ruhend, überfahren,
+   *                    hervorgehoben (der nächste Kurs)
+   *
+   * Wer das Band lieber hell mag, setzt die drei Verlaufsstufen auf helle
+   * Werte und dreht Schrift, Ränder und Schleier entsprechend um.
+   */
+  --invert-bg-1:        var(--blue-800);
+  --invert-bg-2:        var(--blue-700);
+  --invert-bg-3:        var(--blue-600);
+  --invert-glow:        rgba(110, 142, 176, 0.35);
+  --invert-text:        var(--blue-50);
+  --invert-text-muted:  var(--blue-200);
+  --invert-border:        rgba(255, 255, 255, 0.16);
+  --invert-border-strong: rgba(255, 255, 255, 0.32);
+  --invert-accent:      #FFFFFF;
+  --invert-accent-soft: var(--blue-300);
+  --invert-accent-ink:  var(--blue-200);
+  --invert-on-accent:   var(--blue-800);
+  --invert-veil:          rgba(255, 255, 255, 0.07);
+  --invert-veil-hover:    rgba(255, 255, 255, 0.11);
+  --invert-veil-featured: rgba(255, 255, 255, 0.14);
+
+  /* Fremde Logos sind für weißen Grund gemacht. Die Fläche darunter
+     bleibt deshalb in jedem Thema weiß – eine bewusste Ausnahme. */
+  --logo-plate: #FFFFFF;
 
   --shadow-sm: 0 1px 2px rgba(25, 30, 40, 0.05);
   --shadow-md: 0 8px 24px -12px rgba(25, 30, 40, 0.22);
@@ -108,6 +142,7 @@
   --dunkel-shadow-md: 0 8px 24px -12px rgba(0, 0, 0, 0.7);
   --dunkel-shadow-lg: 0 28px 60px -30px rgba(0, 0, 0, 0.9);
 
+
 }
 
 
@@ -135,8 +170,15 @@
   --glow-1:        var(--blue-700);
   --glow-2:        var(--blue-800);
   --glow-3:        var(--blue-600);
+  --accent-fade:   var(--blue-200);
   --selection-bg:  var(--blue-600);
   --selection-text: #FFFFFF;
+  --logo-hell:     none;
+  --logo-dunkel:   block;
+  /* Die --invert-* Werte bleiben, wie sie in :root stehen: der Grund der
+     Seite ist hier dunkler als das Band, das dadurch als leicht erhobene,
+     blau getönte Fläche erscheint. Ein Thema in anderen Farben setzt sie
+     dagegen mit – sonst bliebe das Band blau. */
 }
 
 :root[data-theme="light"] { color-scheme: light; }
@@ -161,8 +203,11 @@
     --glow-1:        var(--blue-700);
     --glow-2:        var(--blue-800);
     --glow-3:        var(--blue-600);
+    --accent-fade:   var(--blue-200);
     --selection-bg:  var(--blue-600);
     --selection-text: #FFFFFF;
+    --logo-hell:     none;
+    --logo-dunkel:   block;
   }
 }
 
@@ -390,14 +435,11 @@ button { font: inherit; color: inherit; }
 
 /* Vom Logo liegen beide Fassungen im Quelltext; sichtbar ist die, die
    zum Thema passt. Über display:none statt Sichtbarkeit, damit die
-   verborgene auch von Screenreadern übersprungen wird. */
-.logo__img--dark { display: none; }
-:root[data-theme="dark"] .logo__img--light { display: none; }
-:root[data-theme="dark"] .logo__img--dark { display: block; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) .logo__img--light { display: none; }
-  :root:not([data-theme]) .logo__img--dark { display: block; }
-}
+   verborgene auch von Screenreadern übersprungen wird. Welche gilt,
+   entscheiden --logo-hell und --logo-dunkel: ein Thema auf dunklem
+   Grund dreht sie um. */
+.logo__img--light { display: var(--logo-hell, block); }
+.logo__img--dark  { display: var(--logo-dunkel, none); }
 
 .brand__logo {
   height: 32px;
@@ -610,7 +652,8 @@ button { font: inherit; color: inherit; }
 }
 .hero__title-line { display: block; }
 .hero__title-line--accent {
-  background: linear-gradient(100deg, var(--accent) 0%, var(--accent-soft) 60%, var(--blue-300) 100%);
+  background: linear-gradient(100deg, var(--accent) 0%, var(--accent-soft) 60%,
+                              var(--accent-fade) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -866,27 +909,29 @@ button { font: inherit; color: inherit; }
 
 /* ── Kurse ────────────────────────────────────────────────────────────
  * Der Abschnitt läuft bewusst gegen den Rest der Seite: dunkler Grund,
- * helle Schrift. Statt eigener Farbwerte werden die Tokens lokal
- * umdefiniert – dadurch passen sich Buttons, Ränder und Texte von selbst
- * an, und das gilt im hellen wie im dunklen Farbschema.
+ * helle Schrift. Innerhalb des Bandes werden die allgemeinen Tokens auf
+ * die --invert-* Werte des Themas umgebogen – dadurch passen sich
+ * Buttons, Ränder und Texte von selbst an, und ein Thema in anderen
+ * Farben nimmt das Band mit, statt ein blaues Feld stehen zu lassen.
  */
 .section--courses {
-  --text:          #F2F5F9;
-  --text-muted:    #C3D2E2;
-  --border:        rgba(255, 255, 255, 0.16);
-  --border-strong: rgba(255, 255, 255, 0.32);
-  --accent:        #FFFFFF;
-  --accent-soft:   var(--blue-300);
-  --accent-ink:    var(--blue-200);
-  --on-accent:     var(--blue-800);
+  --text:          var(--invert-text);
+  --text-muted:    var(--invert-text-muted);
+  --border:        var(--invert-border);
+  --border-strong: var(--invert-border-strong);
+  --accent:        var(--invert-accent);
+  --accent-soft:   var(--invert-accent-soft);
+  --accent-ink:    var(--invert-accent-ink);
+  --on-accent:     var(--invert-on-accent);
 
   position: relative;
   overflow: hidden;
   color: var(--text);
   background:
-    radial-gradient(70% 100% at 85% 0%, rgba(110, 142, 176, 0.35), transparent 65%),
-    linear-gradient(160deg, var(--blue-800) 0%, var(--blue-700) 55%, var(--blue-600) 100%);
-  background-color: var(--blue-700);
+    radial-gradient(70% 100% at 85% 0%, var(--invert-glow), transparent 65%),
+    linear-gradient(160deg, var(--invert-bg-1) 0%, var(--invert-bg-2) 55%,
+                    var(--invert-bg-3) 100%);
+  background-color: var(--invert-bg-2);
 }
 .section--courses .section__title,
 .section--courses .step__title { color: var(--text); }
@@ -927,7 +972,7 @@ button { font: inherit; color: inherit; }
   flex-direction: column;
   gap: 0.7rem;
   padding: clamp(1.5rem, 3vw, 2rem);
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--invert-veil);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   backdrop-filter: blur(6px);
@@ -937,13 +982,13 @@ button { font: inherit; color: inherit; }
 }
 .course:hover {
   transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.11);
+  background: var(--invert-veil-hover);
   border-color: var(--border-strong);
 }
 
 /* Der nächste Kurs wird zusätzlich hervorgehoben. */
 .course--featured {
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--invert-veil-featured);
   border-color: var(--accent-soft);
   box-shadow: 0 24px 50px -28px rgba(0, 0, 0, 0.85);
 }
@@ -960,7 +1005,7 @@ button { font: inherit; color: inherit; }
   align-self: flex-start;
   padding: 0.3rem 0.8rem;
   border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--invert-veil-featured);
 }
 .course__start-label {
   font-size: 0.7rem;
@@ -1620,7 +1665,7 @@ html:not(.js) .slideshow__track::-webkit-scrollbar { display: block; }
   justify-content: center;
   gap: clamp(1.5rem, 4vw, 3rem);
   padding: clamp(1.25rem, 3vw, 2rem) clamp(1.5rem, 4vw, 2.5rem);
-  background: #FFFFFF;
+  background: var(--logo-plate);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
 }
