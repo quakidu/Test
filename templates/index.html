@@ -3,6 +3,21 @@
 
 {% block content %}
 
+{#
+  Die Flächen der Abschnitte wechseln sich ab – schlicht, abgesetzt,
+  schlicht – vom Kopfbereich bis zum Fuß. Keiner trägt dafür eine
+  Klasse: Das Stylesheet zählt die Abschnitte (siehe „main > section“
+  im Abschnitt 3) und vergibt die Flächen nach der Stellung.
+
+  Das hat einen Grund. Die Bekanntmachungen entfallen, sobald alle
+  Hinweise abgelaufen sind und kein Kurs ansteht. Wäre die Fläche fest
+  vergeben, stünden von da an zwei gleiche nebeneinander. So rückt
+  alles eine Stelle vor und der Wechsel bleibt erhalten.
+
+  Abschnitte lassen sich deshalb einfügen, entfernen und umstellen,
+  ohne an den Farben etwas nachzuziehen.
+#}
+
 <!-- ── Hero ───────────────────────────────────────────────────────────── -->
 <section class="hero" id="hero">
   <div class="hero__glow" aria-hidden="true">
@@ -134,11 +149,11 @@
 
 <!-- ── Kurse ──────────────────────────────────────────────────────────── -->
 <!--
-  Ein Abschnitt wie die übrigen: abgesetzte Fläche, dieselben Karten.
-  Er reiht sich in den Wechsel von schlichten und abgesetzten
-  Abschnitten ein, statt sich farblich herauszuheben.
+  Ein Abschnitt wie die übrigen: dieselbe Fläche aus dem Wechsel,
+  dieselben Karten wie im Konzeptteil, statt sich farblich
+  herauszuheben.
 -->
-<section class="section section--tinted" id="courses">
+<section class="section" id="courses">
   <div class="container">
     <header class="section__head section__head--wide">
       <p class="eyebrow reveal">{{ t('courses.eyebrow') }}</p>
@@ -211,7 +226,7 @@
 </section>
 
 <!-- ── Therapie ───────────────────────────────────────────────────────── -->
-<section class="section section--tinted" id="offer">
+<section class="section" id="offer">
   <div class="container">
     <header class="section__head">
       <p class="eyebrow reveal">{{ t('offer.eyebrow') }}</p>
@@ -263,7 +278,7 @@
   Daten im Kopf der Seite nennen dieselbe Person als Gründer – was dort
   steht, muss hier sichtbar sein, sonst zählt es für Suchmaschinen nicht.
 -->
-<section class="section section--tinted" id="therapist">
+<section class="section" id="therapist">
   <div class="container">
     <header class="section__head">
       <p class="eyebrow reveal">{{ t('therapist.eyebrow') }}</p>
@@ -378,7 +393,7 @@
   gewünschten Namensnennung und der Zustimmung zur Veröffentlichung
   fragt – nichts erscheint automatisch auf der Seite.
 -->
-<section class="section section--tinted" id="testimonials">
+<section class="section" id="testimonials">
   <div class="container">
     <header class="section__head">
       <p class="eyebrow reveal">{{ t('testimonials.eyebrow') }}</p>

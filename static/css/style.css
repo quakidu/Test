@@ -266,13 +266,26 @@ button { font: inherit; color: inherit; }
 }
 
 .section { padding-block: var(--section-y); }
-.section--tinted { background: var(--bg-tinted); }
 
-/* Die Abschnitte wechseln sich in der Fläche ab. Wo zwei abgesetzte
-   aufeinandertreffen – Kurse und Angebot –, verschwämme die Grenze;
-   ein Haarstrich hält sie sichtbar. Die Regel greift von selbst nur
-   dort, wo dieser Fall auftritt. */
-.section--tinted + .section--tinted { border-top: 1px solid var(--border); }
+/*
+ * Die Abschnitte wechseln sich in der Fläche ab: schlicht, abgesetzt,
+ * schlicht … vom Kopfbereich bis zum Fuß.
+ *
+ * Der Wechsel ergibt sich aus der Stellung, nicht aus einer Klasse.
+ * Das ist wichtig, weil nicht jeder Abschnitt immer da ist: Sind alle
+ * Bekanntmachungen abgelaufen und steht kein Kurs an, entfällt jener
+ * Abschnitt. Alles rückt dann eine Stelle vor – und der Wechsel bleibt
+ * trotzdem erhalten. Wer einen Abschnitt einfügt oder verschiebt, muss
+ * an den Farben nichts nachziehen.
+ *
+ * --section-bg trägt die Fläche weiter nach innen. Bauteile, die mit
+ * dem Grund verschmelzen müssen – etwa der Punkt, der die Linie im
+ * Ablauf unterbricht –, fragen diesen Wert und stimmen dadurch von
+ * selbst, gleich auf welcher Seite des Wechsels sie gerade stehen.
+ */
+main > section:nth-of-type(odd)  { --section-bg: var(--bg); }
+main > section:nth-of-type(even) { --section-bg: var(--bg-tinted); }
+main > section { background: var(--section-bg); }
 
 .section__head {
   max-width: 62ch;
@@ -704,7 +717,6 @@ button { font: inherit; color: inherit; }
 .section--news {
   padding-top: clamp(2.5rem, 5vw, 4rem);
   padding-bottom: clamp(2.5rem, 5vw, 4rem);
-  background: var(--bg-tinted);
 }
 .section--news .section__head { margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem); }
 
@@ -1095,7 +1107,9 @@ button { font: inherit; color: inherit; }
   width: 13px;
   height: 13px;
   border-radius: 50%;
-  background: var(--bg);
+  /* Deckt die Verbindungslinie ab – muss deshalb genau die Fläche des
+     Abschnitts treffen, nicht irgendeine feste Farbe. */
+  background: var(--section-bg, var(--bg));
   border: 2px solid var(--accent);
 }
 .step__num {
@@ -1111,10 +1125,12 @@ button { font: inherit; color: inherit; }
 .step__text { color: var(--text-muted); font-size: 0.95rem; }
 
 /* Kontakt */
+/* Die Fläche kommt wie überall aus dem Wechsel; darüber liegt hier ein
+   sehr leichter Schleier in der Leitfarbe. */
 .section--contact {
   background:
     radial-gradient(80% 120% at 12% 0%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 60%),
-    var(--bg);
+    var(--section-bg);
 }
 .contact {
   display: grid;
@@ -1566,7 +1582,9 @@ html:not(.js) .slideshow__track::-webkit-scrollbar { display: block; }
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  background: var(--bg-tinted);
+  /* Wie die übrigen Karten: Der Kontaktbereich liegt selbst auf der
+     abgesetzten Fläche, dort wäre --bg-tinted nicht zu unterscheiden. */
+  background: var(--bg-elevated);
 }
 .map__frame iframe {
   display: block;

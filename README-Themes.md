@@ -332,9 +332,10 @@ unvollständiges Thema verrät:
 | Schriftzug oben links | Gut lesbar auf der Grundfläche (`--logo-hell`, `--logo-dunkel`) |
 | Kopfbereich | Die drei Farbschleier passen zum Thema, nicht mehr blau |
 | Titel im Kopfbereich | Der farbige Verlauf läuft im Thema aus (`--accent-fade`) |
+| Wechsel der Abschnitte | Von oben nach unten wechseln sich die Flächen ab – nirgends stoßen zwei gleiche aneinander |
 | Kurse | Die Karten heben sich von der Fläche ab (`--bg-elevated` gegen `--bg-tinted`) |
 | Nächster Kurs | Die erste Karte ist als hervorgehoben zu erkennen |
-| Kurse / Angebot | Der Haarstrich zwischen beiden Abschnitten ist zu sehen (`--border`) |
+| Ablauf | Die Punkte auf der Linie treffen die Fläche des Abschnitts genau |
 | Bekanntmachungen | Die farbige Kante links ist zu erkennen |
 | Schaltflächen | Schrift auf der Leitfarbe ist gut lesbar (`--on-accent`) |
 | Karte im Kontakt | Der Platzhalter vor dem Klick passt sich an |
@@ -372,7 +373,8 @@ nicht mehr gibt.
 | Der Kopfbereich bleibt blau | `--glow-1` bis `--glow-3` fehlen |
 | Der Schriftzug oben links ist kaum zu sehen | Dunkles Thema ohne `--logo-hell: none` und `--logo-dunkel: block` |
 | Karten und Fläche sehen gleich aus | `--bg-elevated` und `--bg-tinted` liegen zu dicht beieinander – einen der beiden deutlicher absetzen |
-| Kurse und Angebot verschwimmen ineinander | `--border` ist zu schwach: den Haarstrich zwischen den beiden abgesetzten Abschnitten sichtbarer machen |
+| Der Wechsel der Abschnitte ist nicht zu sehen | `--bg` und `--bg-tinted` unterscheiden sich zu wenig. Ein kleiner Abstand genügt, aber er muss vorhanden sein |
+| Ein Punkt im Ablauf hat einen hellen Rand | Das ist kein Themenfehler – dann fehlt einem Abschnitt `--section-bg`, siehe `style.css`, Abschnitt 3 |
 | Schrift auf Schaltflächen unlesbar | `--on-accent` fehlt oder passt nicht zur Leitfarbe |
 | Bildlaufleisten passen nicht | `color-scheme` fehlt oder steht auf dem falschen Wert |
 | Beim Laden blitzt kurz ein anderes Thema auf | Das darf nicht passieren – prüfen Sie, ob das Skript im `<head>` von `templates/base.html` noch vollständig ist |
