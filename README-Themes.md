@@ -79,34 +79,14 @@ setzt, hat nichts übersehen:
 > Wer das vergisst, hat einen dunklen Schriftzug auf dunkler Fläche –
 > gerade noch zu erahnen, aber nicht zu lesen.
 
-**Dazu kommt das Kursband.** Der Kursabschnitt läuft absichtlich gegen
-den Rest der Seite: dunkle Fläche, helle Schrift – ein Farbband quer über
-die Seite. Es hat einen eigenen Satz Token, denn innerhalb des Bandes
-gelten andere Verhältnisse als auf der übrigen Seite:
-
-| Token | Wofür |
-| --- | --- |
-| `--invert-bg-1`, `--invert-bg-2`, `--invert-bg-3` | der Verlauf des Bandes, von oben links nach unten rechts |
-| `--invert-glow` | der aufgehellte Schleier in der oberen rechten Ecke |
-| `--invert-text`, `--invert-text-muted` | Schrift und Nebentext **auf** dem Band |
-| `--invert-border`, `--invert-border-strong` | Ränder der Kurskarten, ruhend und überfahren |
-| `--invert-accent`, `--invert-accent-soft`, `--invert-accent-ink` | Leitfarben auf dem Band |
-| `--invert-on-accent` | Schrift auf der Leitfarbe – etwa im Datumsschild des nächsten Kurses |
-| `--invert-veil`, `--invert-veil-hover`, `--invert-veil-featured` | die Kurskarten selbst: ruhend, überfahren, hervorgehoben |
-
 Nicht jedes Thema muss alle setzen: Was fehlt, behält den Wert aus dem
 hellen Grundsatz. Für ein dunkles Thema wäre das aber fatal – dunkle
 Fläche mit dunkler Schrift. **Im Zweifel alle setzen.**
 
-Das gilt besonders für die `--invert-*`: Wer sie ausläßt, bekommt ein
-blaues Band mitten in einer sonst warm oder grün gehaltenen Seite. Das
-fällt sofort auf.
-
-> **Muss das Band dunkel sein?** Nein. Wer es lieber hell mag, setzt die
-> drei Verlaufsstufen auf helle Werte und dreht Schrift, Ränder und
-> Schleier entsprechend um – die Bauteile darin fragen nur die Token.
-> Achten Sie dann auf die drei `--invert-veil-*`: Weiß auf Weiß ergibt
-> keine sichtbaren Karten mehr.
+Mehr als diese Liste gibt es nicht. Kein Abschnitt der Seite hat eigene
+Farben: Die Abschnitte wechseln zwischen `--bg` und `--bg-tinted`, die
+Karten liegen alle auf `--bg-elevated`. Wer die Liste durchgeht, hat die
+ganze Seite umgefärbt.
 
 > **Eine Fläche bleibt immer weiß:** der Kasten mit den Förderlogos
 > (`--logo-plate`). Solche Logos sind für weißen Grund gemacht; auf
@@ -184,12 +164,6 @@ Für das Beispiel „sepia“:
 | Nebentext | `#6B5B45` |
 | Leitfarbe | `#8A5A2B` |
 | Schrift auf der Leitfarbe | `#FDF8EF` |
-| Kursband (dunkelste Stufe) | `#3B2A16` |
-| Kursband (hellste Stufe) | `#6B4A22` |
-
-Für das Kursband suchen Sie zwei Töne derselben Farbfamilie, deutlich
-dunkler als die Grundfläche: einen dunkelsten und einen hellsten. Die
-mittlere Stufe liegt dazwischen.
 
 ---
 
@@ -217,14 +191,6 @@ Ihre Werte:
   --sepia-accent-soft:   #B08243;
   --sepia-accent-ink:    #6A4420;
   --sepia-on-accent:     #FDF8EF;
-
-  /* Das Kursband des Themas „sepia“ */
-  --sepia-invert-bg-1:   #3B2A16;
-  --sepia-invert-bg-2:   #53381C;
-  --sepia-invert-bg-3:   #6B4A22;
-  --sepia-invert-glow:   rgba(196, 154, 96, 0.35);
-  --sepia-invert-text:   #FBF3E6;
-  --sepia-invert-muted:  #E2CFB0;
 }
 ```
 
@@ -265,42 +231,19 @@ Etwas weiter unten in derselben Datei steht der Block
   --accent-fade:   #C99A5E;
   --selection-bg:  #E3CFAE;
   --selection-text: var(--sepia-text);
-
-  /* Das Kursband */
-  --invert-bg-1:        var(--sepia-invert-bg-1);
-  --invert-bg-2:        var(--sepia-invert-bg-2);
-  --invert-bg-3:        var(--sepia-invert-bg-3);
-  --invert-glow:        var(--sepia-invert-glow);
-  --invert-text:        var(--sepia-invert-text);
-  --invert-text-muted:  var(--sepia-invert-muted);
-  --invert-border:        rgba(255, 245, 230, 0.16);
-  --invert-border-strong: rgba(255, 245, 230, 0.32);
-  --invert-accent:      #FBF3E6;
-  --invert-accent-soft: #C99A5E;
-  --invert-accent-ink:  #E2CFB0;
-  --invert-on-accent:   var(--sepia-invert-bg-1);
-  --invert-veil:          rgba(255, 245, 230, 0.07);
-  --invert-veil-hover:    rgba(255, 245, 230, 0.11);
-  --invert-veil-featured: rgba(255, 245, 230, 0.14);
 }
 ```
 
-Drei Stellen verdienen eine Erklärung:
+Zwei Zeilen verdienen eine Erklärung:
 
 * **`color-scheme`** sagt dem Browser, ob es sich um ein helles oder
   dunkles Thema handelt. Danach richtet er Bildlaufleisten und
   Formularfelder. `light` oder `dark` – etwas anderes gibt es nicht.
-  Maßgeblich ist die Grundfläche der Seite, nicht das Kursband: „sepia“
-  ist ein helles Thema, auch wenn das Band darin dunkel ist.
 * **`--shadow-md` und `--shadow-lg`** fehlen hier mit Absicht: Die
   Schatten des hellen Grundsatzes passen zu einem hellen Thema. Für ein
   **dunkles** Thema müssten Sie sie mitsetzen, sonst sind die Schatten
-  kaum zu sehen.
-* **Die `--invert-veil-*`** sind Weißtöne mit sehr wenig Deckkraft – die
-  Karten sind nichts weiter als ein Hauch Aufhellung über dem Band.
-  Nehmen Sie den hellsten Ton Ihres Themas mit 7, 11 und 14 % Deckkraft;
-  die drei Stufen bedeuten: ruhende Karte, Karte unter der Maus,
-  hervorgehobene Karte des nächsten Kurses.
+  kaum zu sehen. Ein dunkles Thema braucht außerdem `--logo-hell` und
+  `--logo-dunkel` aus Abschnitt 1.
 
 ---
 
@@ -389,9 +332,9 @@ unvollständiges Thema verrät:
 | Schriftzug oben links | Gut lesbar auf der Grundfläche (`--logo-hell`, `--logo-dunkel`) |
 | Kopfbereich | Die drei Farbschleier passen zum Thema, nicht mehr blau |
 | Titel im Kopfbereich | Der farbige Verlauf läuft im Thema aus (`--accent-fade`) |
-| Kursband | Die Fläche trägt die Farben des Themas – kein blaues Feld mehr |
-| Kurskarten | Die Karten heben sich vom Band ab (`--invert-veil`) |
-| Nächster Kurs | Das Datumsschild ist lesbar (`--invert-on-accent`) |
+| Kurse | Die Karten heben sich von der Fläche ab (`--bg-elevated` gegen `--bg-tinted`) |
+| Nächster Kurs | Die erste Karte ist als hervorgehoben zu erkennen |
+| Kurse / Angebot | Der Haarstrich zwischen beiden Abschnitten ist zu sehen (`--border`) |
 | Bekanntmachungen | Die farbige Kante links ist zu erkennen |
 | Schaltflächen | Schrift auf der Leitfarbe ist gut lesbar (`--on-accent`) |
 | Karte im Kontakt | Der Platzhalter vor dem Klick passt sich an |
@@ -428,8 +371,8 @@ nicht mehr gibt.
 | Nur ein Teil der Seite färbt sich um | Ein Token fehlt im Block. Die vollständige Liste steht in Abschnitt 1 |
 | Der Kopfbereich bleibt blau | `--glow-1` bis `--glow-3` fehlen |
 | Der Schriftzug oben links ist kaum zu sehen | Dunkles Thema ohne `--logo-hell: none` und `--logo-dunkel: block` |
-| Das Kursband bleibt blau | Die `--invert-*` fehlen – sie stehen in einer eigenen Tabelle in Abschnitt 1 |
-| Auf dem Kursband sind keine Karten zu erkennen | `--invert-veil*` passen nicht zur Fläche: auf hellem Band braucht es dunkle statt weißer Schleier |
+| Karten und Fläche sehen gleich aus | `--bg-elevated` und `--bg-tinted` liegen zu dicht beieinander – einen der beiden deutlicher absetzen |
+| Kurse und Angebot verschwimmen ineinander | `--border` ist zu schwach: den Haarstrich zwischen den beiden abgesetzten Abschnitten sichtbarer machen |
 | Schrift auf Schaltflächen unlesbar | `--on-accent` fehlt oder passt nicht zur Leitfarbe |
 | Bildlaufleisten passen nicht | `color-scheme` fehlt oder steht auf dem falschen Wert |
 | Beim Laden blitzt kurz ein anderes Thema auf | Das darf nicht passieren – prüfen Sie, ob das Skript im `<head>` von `templates/base.html` noch vollständig ist |

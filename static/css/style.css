@@ -59,35 +59,6 @@
   --selection-bg:  var(--blue-200);
   --selection-text: var(--ink-900);
 
-  /*
-   * Der Kursabschnitt läuft bewusst gegen den Rest der Seite: dunkler
-   * Grund, helle Schrift. Diese Werte beschreiben ihn – sonst bliebe das
-   * Band blau, während die übrige Seite in anderen Farben erscheint.
-   *
-   * --invert-bg-1/2/3  Verlauf von oben links nach unten rechts
-   * --invert-glow      der aufgehellte Schleier in der oberen Ecke
-   * --invert-veil*     die Kurskarten auf dem Band: ruhend, überfahren,
-   *                    hervorgehoben (der nächste Kurs)
-   *
-   * Wer das Band lieber hell mag, setzt die drei Verlaufsstufen auf helle
-   * Werte und dreht Schrift, Ränder und Schleier entsprechend um.
-   */
-  --invert-bg-1:        var(--blue-800);
-  --invert-bg-2:        var(--blue-700);
-  --invert-bg-3:        var(--blue-600);
-  --invert-glow:        rgba(110, 142, 176, 0.35);
-  --invert-text:        var(--blue-50);
-  --invert-text-muted:  var(--blue-200);
-  --invert-border:        rgba(255, 255, 255, 0.16);
-  --invert-border-strong: rgba(255, 255, 255, 0.32);
-  --invert-accent:      #FFFFFF;
-  --invert-accent-soft: var(--blue-300);
-  --invert-accent-ink:  var(--blue-200);
-  --invert-on-accent:   var(--blue-800);
-  --invert-veil:          rgba(255, 255, 255, 0.07);
-  --invert-veil-hover:    rgba(255, 255, 255, 0.11);
-  --invert-veil-featured: rgba(255, 255, 255, 0.14);
-
   /* Fremde Logos sind für weißen Grund gemacht. Die Fläche darunter
      bleibt deshalb in jedem Thema weiß – eine bewusste Ausnahme. */
   --logo-plate: #FFFFFF;
@@ -141,8 +112,6 @@
   --dunkel-on-accent:     #0D121A;
   --dunkel-shadow-md: 0 8px 24px -12px rgba(0, 0, 0, 0.7);
   --dunkel-shadow-lg: 0 28px 60px -30px rgba(0, 0, 0, 0.9);
-
-
 }
 
 
@@ -175,10 +144,6 @@
   --selection-text: #FFFFFF;
   --logo-hell:     none;
   --logo-dunkel:   block;
-  /* Die --invert-* Werte bleiben, wie sie in :root stehen: der Grund der
-     Seite ist hier dunkler als das Band, das dadurch als leicht erhobene,
-     blau getönte Fläche erscheint. Ein Thema in anderen Farben setzt sie
-     dagegen mit – sonst bliebe das Band blau. */
 }
 
 :root[data-theme="light"] { color-scheme: light; }
@@ -302,6 +267,12 @@ button { font: inherit; color: inherit; }
 
 .section { padding-block: var(--section-y); }
 .section--tinted { background: var(--bg-tinted); }
+
+/* Die Abschnitte wechseln sich in der Fläche ab. Wo zwei abgesetzte
+   aufeinandertreffen – Kurse und Angebot –, verschwämme die Grenze;
+   ein Haarstrich hält sie sichtbar. Die Regel greift von selbst nur
+   dort, wo dieser Fall auftritt. */
+.section--tinted + .section--tinted { border-top: 1px solid var(--border); }
 
 .section__head {
   max-width: 62ch;
@@ -908,33 +879,11 @@ button { font: inherit; color: inherit; }
 .feature__text { color: var(--text-muted); font-size: 0.95rem; }
 
 /* ── Kurse ────────────────────────────────────────────────────────────
- * Der Abschnitt läuft bewusst gegen den Rest der Seite: dunkler Grund,
- * helle Schrift. Innerhalb des Bandes werden die allgemeinen Tokens auf
- * die --invert-* Werte des Themas umgebogen – dadurch passen sich
- * Buttons, Ränder und Texte von selbst an, und ein Thema in anderen
- * Farben nimmt das Band mit, statt ein blaues Feld stehen zu lassen.
+ * Ein Abschnitt wie jeder andere: abgesetzter Grund wie beim Angebot,
+ * dieselbe Schrift, dieselben Karten wie im Konzeptteil. Die Kurse
+ * tragen sich durch ihren Inhalt – dafür muss der Abschnitt nicht aus
+ * der Seite herausfallen.
  */
-.section--courses {
-  --text:          var(--invert-text);
-  --text-muted:    var(--invert-text-muted);
-  --border:        var(--invert-border);
-  --border-strong: var(--invert-border-strong);
-  --accent:        var(--invert-accent);
-  --accent-soft:   var(--invert-accent-soft);
-  --accent-ink:    var(--invert-accent-ink);
-  --on-accent:     var(--invert-on-accent);
-
-  position: relative;
-  overflow: hidden;
-  color: var(--text);
-  background:
-    radial-gradient(70% 100% at 85% 0%, var(--invert-glow), transparent 65%),
-    linear-gradient(160deg, var(--invert-bg-1) 0%, var(--invert-bg-2) 55%,
-                    var(--invert-bg-3) 100%);
-  background-color: var(--invert-bg-2);
-}
-.section--courses .section__title,
-.section--courses .step__title { color: var(--text); }
 .section__head--wide { max-width: 68ch; }
 
 /* Was für einen Kurs spricht – kurze Aufzählung über den Karten. */
@@ -967,30 +916,30 @@ button { font: inherit; color: inherit; }
   /* Kein align-items: die Karten sollen auf gleiche Höhe wachsen. */
 }
 
+/* Dieselbe Karte wie im Konzeptteil – gleicher Grund, gleicher Rand,
+   gleiches Verhalten unter der Maus. */
 .course {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
   padding: clamp(1.5rem, 3vw, 2rem);
-  background: var(--invert-veil);
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  transition: transform 0.3s var(--ease), background-color 0.3s var(--ease),
-              border-color 0.3s var(--ease);
+  transition: transform 0.3s var(--ease), border-color 0.3s var(--ease),
+              box-shadow 0.3s var(--ease);
 }
 .course:hover {
-  transform: translateY(-5px);
-  background: var(--invert-veil-hover);
+  transform: translateY(-4px);
   border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
 }
 
-/* Der nächste Kurs wird zusätzlich hervorgehoben. */
+/* Der nächste Kurs bleibt hervorgehoben – jetzt über die Leitfarbe
+   statt über eine aufgehellte Fläche. */
 .course--featured {
-  background: var(--invert-veil-featured);
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg-elevated));
   border-color: var(--accent-soft);
-  box-shadow: 0 24px 50px -28px rgba(0, 0, 0, 0.85);
 }
 .course--featured .course__start {
   background: var(--accent);
@@ -1005,7 +954,7 @@ button { font: inherit; color: inherit; }
   align-self: flex-start;
   padding: 0.3rem 0.8rem;
   border-radius: var(--radius-pill);
-  background: var(--invert-veil-featured);
+  background: var(--bg-tinted);
 }
 .course__start-label {
   font-size: 0.7rem;
