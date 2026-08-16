@@ -15,6 +15,10 @@ Schritt für Schritt und ohne Vorkenntnisse:**
 | **[README-Proxmox-Deploy.md](README-Proxmox-Deploy.md)** | ein Server mit Proxmox, in einem eigenen LXC-Container |
 | **[README-Unraid-Deploy.md](README-Unraid-Deploy.md)** | ein NAS mit Unraid, über Docker und „User Scripts“ |
 
+Kein Zeitplan, sondern nur ein Blick auf das Ergebnis? Wie sich die Seite
+auf einem Android-Gerät ansehen lässt, steht in
+**[README-Android-Test.md](README-Android-Test.md)**.
+
 Was `deploy.py` überhaupt tut und wie `deploy.ini` ausgefüllt wird, steht
 in der [README](README.md) unter „Veröffentlichen bei Alfahosting“.
 

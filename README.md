@@ -34,6 +34,8 @@ README-Windows-Deploy.md    … auf einem Windows-PC
 README-Linux-Deploy.md      … auf einem Linux-PC
 README-Proxmox-Deploy.md    … in einem Proxmox-Container
 README-Unraid-Deploy.md     … auf einem Unraid-Server
+README-Android-Test.md    Seite auf einem Android-Gerät ansehen
+README-Android-Git.md     Git auf Android einrichten
 templates/
   base.html             Grundgerüst (Head, Meta, hreflang)
   index.html            Startseite
@@ -110,6 +112,25 @@ einzelnen Lauf lässt sie sich auch direkt angeben:
 ```bash
 python3 build.py --site-url https://www.ihre-domain.de
 ```
+
+### Am Telefon ansehen
+
+Die meisten Besucher kommen mit dem Telefon. Wie sich die gebaute Seite
+auf einem Android-Gerät ansehen lässt – im WLAN vom Rechner aus, ganz
+ohne Rechner über Termux oder mit den Entwicklerwerkzeugen über USB –,
+steht in **[README-Android-Test.md](README-Android-Test.md)**. Der
+Kurzweg:
+
+```bash
+python3 build.py --serve --host 0.0.0.0
+```
+
+`--host 0.0.0.0` macht die Vorschau im heimischen Netzwerk erreichbar;
+die Ausgabe nennt die Adresse zum Eintippen. Ohne diesen Zusatz hört der
+Server nur auf den eigenen Rechner.
+
+Wie Git auf einem Android-Gerät eingerichtet wird, steht in
+**[README-Android-Git.md](README-Android-Git.md)**.
 
 ## Veröffentlichen bei Alfahosting
 

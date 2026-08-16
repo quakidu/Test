@@ -17,6 +17,7 @@ Benötigt nur Jinja2.
 
     python3 build.py                       # nach dist/ bauen
     python3 build.py --serve               # bauen und lokal ausliefern
+    python3 build.py --serve --host 0.0.0.0  # auch fürs Telefon im WLAN
     python3 build.py --site-url https://…  # absolute URLs setzen
 """
 
@@ -615,13 +616,39 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
     return DIST_DIR
 
 
-def serve(directory: Path, port: int = 8000) -> None:
+def local_addresses() -> list[str]:
+    """Adressen, unter denen dieser Rechner im Netzwerk erreichbar ist.
+
+    Gedacht für ``--host 0.0.0.0``: Dann steht in der Ausgabe gleich die
+    Adresse, die man am Telefon eintippen kann.
+    """
+    import socket
+
+    found = []
+    try:
+        # Verbindet nichts, ermittelt aber die Adresse der Schnittstelle,
+        # über die es hinausginge.
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as probe:
+            probe.connect(("192.0.2.1", 80))  # reservierte Test-Adresse
+            found.append(probe.getsockname()[0])
+    except OSError:
+        pass
+    return found
+
+
+def serve(directory: Path, port: int = 8000, host: str = "127.0.0.1") -> None:
     import functools
     from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
     handler = functools.partial(SimpleHTTPRequestHandler, directory=str(directory))
-    with ThreadingHTTPServer(("127.0.0.1", port), handler) as httpd:
+    with ThreadingHTTPServer((host, port), handler) as httpd:
         print(f"\nhttp://127.0.0.1:{port}/  (Strg+C beendet den Server)")
+        if host not in ("127.0.0.1", "localhost"):
+            for address in local_addresses():
+                print(f"http://{address}:{port}/  aus dem gleichen Netzwerk, "
+                      f"etwa vom Telefon")
+            print("\nDer Server ist damit im ganzen Netzwerk erreichbar – "
+                  "nur zum Ausprobieren gedacht.")
         httpd.serve_forever()
 
 
@@ -631,6 +658,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Statischen Build der Startseite erzeugen.")
     parser.add_argument("--serve", action="store_true", help="nach dem Build lokal ausliefern")
     parser.add_argument("--port", type=int, default=8000, help="Port für --serve")
+    parser.add_argument("--host", default="127.0.0.1",
+                        help="Adresse für --serve; 0.0.0.0 macht die Vorschau "
+                             "im ganzen Netzwerk erreichbar, etwa fürs Telefon")
     parser.add_argument("--site-url", default=config_url, help="Domain der Seite, z. B. https://www.praxis.de")
     parser.add_argument("--base-path", default=config_base, help="Unterverzeichnis auf dem Webspace, Standard /")
     args = parser.parse_args()
@@ -640,7 +670,7 @@ def main() -> None:
     print(f"Fertig: {out}")
 
     if args.serve:
-        serve(out, args.port)
+        serve(out, args.port, args.host)
 
 
 if __name__ == "__main__":
