@@ -28,9 +28,12 @@ deploy.ini.example      Vorlage für Domain und FTP-Zugang
 content.py              Kursauswahl, Datumsformate, strukturierte Daten
 requirements.txt        Abhängigkeiten
 Dockerfile              Bild für den täglichen Lauf im Container
-README-Deploy.md          täglich veröffentlichen: Synology, Linux, Windows
-README-Proxmox-Deploy.md  dasselbe in einem Proxmox-Container
-README-Unraid-Deploy.md   dasselbe auf einem Unraid-Server
+README-Deploy.md          täglich veröffentlichen: Grundlagen, Übersicht
+README-Synology-Deploy.md   … Schritt für Schritt auf einem Synology-NAS
+README-Windows-Deploy.md    … auf einem Windows-PC
+README-Linux-Deploy.md      … auf einem Linux-PC
+README-Proxmox-Deploy.md    … in einem Proxmox-Container
+README-Unraid-Deploy.md     … auf einem Unraid-Server
 templates/
   base.html             Grundgerüst (Head, Meta, hreflang)
   index.html            Startseite
@@ -347,9 +350,12 @@ Schritt für Schritt beschrieben – jeweils von vorn, ohne Vorkenntnisse:
 
 | Anleitung | Für wen |
 | --- | --- |
-| **[README-Deploy.md](README-Deploy.md)** | Synology-NAS (mit und ohne Docker), Linux-PC, Windows-PC. Enthält auch die Grundlagen, die für alle Geräte gelten |
-| **[README-Proxmox-Deploy.md](README-Proxmox-Deploy.md)** | ein Server mit Proxmox – Einrichtung in einem eigenen LXC-Container |
-| **[README-Unraid-Deploy.md](README-Unraid-Deploy.md)** | ein NAS mit Unraid – über Docker und das Plugin „User Scripts“ |
+| **[README-Deploy.md](README-Deploy.md)** | **Hier anfangen.** Grundlagen für alle Geräte: was gebraucht wird, wie die Texte gepflegt werden |
+| [README-Synology-Deploy.md](README-Synology-Deploy.md) | ein Synology-NAS, wahlweise mit Python oder mit Docker |
+| [README-Windows-Deploy.md](README-Windows-Deploy.md) | ein Windows-PC, über die Aufgabenplanung |
+| [README-Linux-Deploy.md](README-Linux-Deploy.md) | ein Linux-PC, über cron oder einen systemd-Timer |
+| [README-Proxmox-Deploy.md](README-Proxmox-Deploy.md) | ein Server mit Proxmox, in einem eigenen LXC-Container |
+| [README-Unraid-Deploy.md](README-Unraid-Deploy.md) | ein NAS mit Unraid, über Docker und „User Scripts“ |
 
 Wer nur gelegentlich von Hand veröffentlicht, braucht davon nichts: Dafür
 genügt `python3 deploy.py` wie oben beschrieben.

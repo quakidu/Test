@@ -7,11 +7,12 @@ Geschrieben für Leute, die Proxmox zwar installiert haben, aber noch nie
 einen Container von Hand eingerichtet haben. Jeder Befehl steht
 vollständig da und lässt sich abtippen oder kopieren.
 
-Was `deploy.py` überhaupt tut und wie `deploy.ini` ausgefüllt wird, steht
-in der [README](README.md) unter „Veröffentlichen bei Alfahosting“.
-Anleitungen für andere Geräte: [README-Deploy.md](README-Deploy.md)
-(Synology, Linux, Windows) und
-[README-Unraid-Deploy.md](README-Unraid-Deploy.md).
+Die Grundlagen – warum überhaupt täglich, was alle Wege brauchen, wie die
+Texte gepflegt werden – stehen in
+**[README-Deploy.md](README-Deploy.md)**; dort steht auch die Übersicht
+über die Anleitungen für andere Geräte. Was `deploy.py` tut und wie
+`deploy.ini` ausgefüllt wird, steht in der [README](README.md) unter
+„Veröffentlichen bei Alfahosting“.
 
 ---
 
