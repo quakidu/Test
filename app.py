@@ -1,8 +1,9 @@
 """Körper im Einklang – Webserver.
 
-Kleiner Flask-Server, der die Startseite ausliefert und die
-Internationalisierung (Deutsch als Standard, Englisch zur Auswahl)
-aus JSON-Dateien im Ordner ``translations/`` bereitstellt.
+Kleiner Flask-Server, der die Startseite ausliefert und die Texte aus
+JSON-Dateien im Ordner ``translations/`` bereitstellt. Zurzeit gibt es nur
+Deutsch; weitere Sprachen brauchen nur eine weitere JSON-Datei und einen
+Eintrag in ``LANGUAGES``.
 """
 
 from __future__ import annotations
@@ -35,9 +36,11 @@ LEGAL_PAGES = {
 }
 
 DEFAULT_LANGUAGE = "de"
+
+# Sprachen der Seite – dieselbe Liste wie in build.py. Ein Eintrag genügt;
+# wie eine weitere Sprache hinzukommt, steht dort im Kommentar.
 LANGUAGES = {
-    "de": {"label": "Deutsch", "short": "DE"},
-    "en": {"label": "English", "short": "EN"},
+    "de": {"label": "Deutsch", "short": "DE", "locale": "de_DE"},
 }
 LANGUAGE_COOKIE = "lang"
 LANGUAGE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365  # ein Jahr

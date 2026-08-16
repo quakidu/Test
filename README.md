@@ -1,8 +1,9 @@
 # Körper im Einklang – Homepage
 
 Startseite der Praxis für ganzheitliche Therapie: Therapieangebot und Kurse
-nach dem Konzept der Spiraldynamik, zweisprachig (Deutsch als Standard,
-Englisch zur Auswahl), optimiert für Desktop und mobile Geräte.
+nach dem Konzept der Spiraldynamik, auf Deutsch, optimiert für Desktop und
+mobile Geräte. Weitere Sprachen lassen sich jederzeit ergänzen – die
+Mehrsprachigkeit ist vollständig angelegt.
 
 ## Technik
 
@@ -12,11 +13,10 @@ Englisch zur Auswahl), optimiert für Desktop und mobile Geräte.
 | HTML          | Jinja2-Templates in `templates/`                                    |
 | CSS           | `static/css/style.css` – eigene Design-Tokens, Grid/Flexbox         |
 | JavaScript    | `static/js/main.js` – ohne Framework, keine externen Abhängigkeiten |
-| JSON          | `translations/de.json`, `translations/en.json` – alle Texte         |
+| JSON          | `translations/de.json` – alle Texte, je Sprache eine Datei          |
 
 Alle Inhalte liegen in den JSON-Dateien. Templates, CSS und JS enthalten
-keinen fest verdrahteten Text – neue Sprachen brauchen nur eine weitere
-JSON-Datei plus einen Eintrag in `LANGUAGES`.
+keinen fest verdrahteten Text – siehe „Eine weitere Sprache hinzufügen“.
 
 ## Projektstruktur
 
@@ -42,8 +42,8 @@ templates/
   partials/header.html  Kopfbereich mit Logo links oben
   partials/footer.html  Fußbereich
 content/
-  impressum.de.html     Impressum, deutsch  (dazu .en.html)
-  datenschutz.de.html   Datenschutz, deutsch (dazu .en.html)
+  impressum.de.html     Impressum; je Sprache eine Datei
+  datenschutz.de.html   Datenschutz; je Sprache eine Datei
 static/
   css/style.css
   js/main.js
@@ -55,9 +55,8 @@ static/
   img/therapeut.jpg     Platzhalter für das Porträt, bitte ersetzen
   img/foerderer-1.png … Platzhalter für die Förderlogos, bitte ersetzen
   img/og-bild.png       Vorschaubild für geteilte Links (erzeugt)
-  img/og-bild-en.png    dasselbe für die englische Fassung
 translations/
-  de.json  en.json
+  de.json               alle Texte; je Sprache eine solche Datei
 webroot/
   .htaccess             Apache-Konfiguration, kommt unverändert nach dist/
 tools/
@@ -86,12 +85,13 @@ Routen:
 | Route                        | Bedeutung                                  |
 | ---------------------------- | ------------------------------------------ |
 | `/`                          | Startseite, Standardsprache Deutsch        |
-| `/en`                        | Startseite auf Englisch                    |
-| `/api/translations/de.json`  | Übersetzungen als JSON                     |
+| `/<code>`                    | Startseite in einer weiteren Sprache        |
+| `/api/translations/de.json`  | Texte als JSON                             |
 
 Die zuletzt gewählte Sprache wird in einem Cookie (`lang`) gespeichert.
 Soll beim ersten Besuch zusätzlich die Browsersprache ausgewertet werden,
-in `app.py` `AUTO_DETECT_BROWSER_LANGUAGE = True` setzen.
+in `app.py` `AUTO_DETECT_BROWSER_LANGUAGE = True` setzen. Beides wirkt sich
+erst aus, sobald es mehr als eine Sprache gibt.
 
 ### Variante 2 – statischer Build (das, was veröffentlicht wird)
 
@@ -176,19 +176,18 @@ nichts passiert ist, baut das Skript gar keine Verbindung auf und fragt
 auch kein Passwort ab:
 
 ```
-27 Dateien in dist/, davon 0 geändert
+23 Dateien in dist/, davon 0 geändert
 Nichts zu tun – der Server hat bereits diesen Stand.
 ```
 
 Am Tag danach, an dem ein Kurs herausfällt:
 
 ```
-27 Dateien in dist/, davon 4 geändert
+23 Dateien in dist/, davon 3 geändert
   geladen  index.html
   geladen  llms.txt
   geladen  sitemap.xml
-  geladen  en/index.html
-Fertig: 4 Dateien übertragen, 23 unverändert
+Fertig: 3 Dateien übertragen, 20 unverändert
 ```
 
 Damit das verlässlich funktioniert, trägt die `sitemap.xml` je Adresse das
@@ -328,7 +327,7 @@ auf die falsche Stelle – sichtbar ist davon zunächst nichts.
    `.htaccess` setzt es voraus.
 2. Führt eine erfundene Adresse wie `ihre-domain.de/gibtsnicht` zur
    eigenen Fehlerseite?
-3. Erscheint die englische Fassung unter `ihre-domain.de/en/`?
+3. Sind Impressum und Datenschutzerklärung erreichbar?
 4. Sind `/robots.txt`, `/sitemap.xml` und `/llms.txt` erreichbar, und
    steht darin die richtige Domain?
 
@@ -360,11 +359,67 @@ Schritt für Schritt beschrieben – jeweils von vorn, ohne Vorkenntnisse:
 Wer nur gelegentlich von Hand veröffentlicht, braucht davon nichts: Dafür
 genügt `python3 deploy.py` wie oben beschrieben.
 
+## Eine weitere Sprache hinzufügen
+
+Die Seite erscheint zurzeit nur auf Deutsch. Die Mehrsprachigkeit ist
+aber vollständig angelegt: Sprachumschalter, Sprachordner,
+`hreflang`-Verweise und der Rückfall auf die deutschen Texte sind da und
+schalten sich ein, sobald eine zweite Sprache eingetragen ist.
+
+Vier Schritte, am Beispiel Englisch:
+
+1. **Textdatei anlegen** – am einfachsten als Kopie:
+
+   ```bash
+   cp translations/de.json translations/en.json
+   ```
+
+   Dann in `en.json` die Werte übersetzen. Die Struktur muss gleich
+   bleiben; die Schlüssel links vom Doppelpunkt werden **nicht** übersetzt.
+   Was fehlt, füllt automatisch der deutsche Text – Sie können also
+   abschnittsweise vorgehen.
+
+2. **Sprache eintragen**, in `build.py` *und* in `app.py` jeweils bei
+   `LANGUAGES`:
+
+   ```python
+   LANGUAGES = {
+       "de": {"label": "Deutsch", "short": "DE", "locale": "de_DE"},
+       "en": {"label": "English", "short": "EN", "locale": "en_GB"},
+   }
+   ```
+
+   | Feld | Wofür |
+   | --- | --- |
+   | `label` | vollständiger Name, erscheint als Tooltip |
+   | `short` | Kürzel im Umschalter |
+   | `locale` | für `og:locale` im Kopf der Seite |
+
+3. **Rechtstexte** (optional): `content/impressum.en.html` und
+   `content/datenschutz.en.html` anlegen. Fehlen sie, erscheint der
+   deutsche Text – eine Seite ohne Impressum gibt es also nie.
+
+4. **Vorschaubild** (optional): In `en.json` unter `seo.og_image` einen
+   eigenen Dateinamen eintragen, dann
+
+   ```bash
+   python3 tools/make-og-image.py
+   ```
+
+Danach `python3 build.py` – fertig. Der Build legt `dist/en/` an, der
+Umschalter erscheint im Kopfbereich, `hreflang` und `x-default` stehen im
+`<head>`, `llms.txt` nennt die zusätzliche Fassung, und die Sitemap führt
+beide Sprachen.
+
+**Zum Entfernen** genügt es, den Eintrag aus beiden `LANGUAGES` zu
+löschen. Die Textdatei kann liegen bleiben; gebaut wird nur, was dort
+steht.
+
 ## Inhalte anpassen
 
 * **Texte, Adresse, Angebote:** `translations/de.json` und
-  `translations/en.json`. Beide Dateien haben dieselbe Struktur; fehlt ein
-  Schlüssel im Englischen, greift automatisch der deutsche Text.
+  Kommt eine weitere Sprache dazu, bekommt sie eine eigene Datei mit
+  derselben Struktur; fehlt dort ein Schlüssel, greift der deutsche Text.
 * **Kurse pflegen:** `courses.items` in beiden Sprachdateien – das ist die
   einzige Stelle. Jeder Eintrag hat `title`, `text`, `start_date`, `scope`,
   `spots` und `price`. Das Startdatum steht als `JJJJ-MM-TT` dort, alles
@@ -589,7 +644,7 @@ genügt `python3 deploy.py` wie oben beschrieben.
   `contact.map` in beiden Sprachdateien. Am einfachsten: bei Google Maps den
   Standort suchen, „Teilen → Karte einbetten“ wählen und die Adresse aus dem
   `src`-Attribut nach `embed_url` kopieren; `link_url` ist der Verweis
-  „Route planen“. Beide Werte müssen in `de.json` und `en.json`
+  „Route planen“. Beide Werte müssen in `de.json`
   übereinstimmen – eine Adresse ist nicht sprachabhängig.
 
   **Die Karte lädt erst auf Klick.** Vorher geht keine Anfrage an Google.
@@ -627,7 +682,7 @@ Drei Wege führen heute zur Praxis, und alle drei brauchen dieselbe Grundlage:
   Claude). Die lesen kein Layout, sondern Text und maschinenlesbare Angaben.
 
 Alles, was diese drei brauchen, steht an **einer** Stelle: im Block `seo` in
-`translations/de.json` und `translations/en.json`. Daraus baut der Build den
+`translations/de.json`. Daraus baut der Build den
 Kopf der Seite, die strukturierten Daten, `llms.txt` und die Vorschaubilder.
 
 ### Welche Informationen müssen hinterlegt werden?
@@ -701,8 +756,9 @@ Kartenpunkt – alles andere funktioniert.
 
   Das Bild entsteht aus Logo, Ort und Namen – nach einer Änderung an diesen
   Angaben einmal neu erzeugen. Gebraucht wird dafür Chromium oder Chrome.
-* **Kanonische Adresse**, `hreflang` für Deutsch/Englisch und `x-default`,
-  Open Graph und Twitter-Card. Die Fehlerseite trägt `noindex`.
+* **Kanonische Adresse**, Open Graph und Twitter-Card. Die Fehlerseite
+  trägt `noindex`. `hreflang`-Verweise kommen automatisch dazu, sobald es
+  eine zweite Sprache gibt.
 
 ### Was der Code nicht leisten kann
 
@@ -718,10 +774,10 @@ Ist das Profil angelegt, gehört seine Adresse zusätzlich in `seo.same_as`.
 Beide Seiten liegen als **Vorlage mit Platzhaltern** bereit, erreichbar über
 den Fußbereich:
 
-| Seite       | Deutsch              | Englisch                |
-| ----------- | -------------------- | ----------------------- |
-| Impressum   | `/impressum.html`    | `/en/impressum.html`    |
-| Datenschutz | `/datenschutz.html`  | `/en/datenschutz.html`  |
+| Seite       | Adresse              |
+| ----------- | -------------------- |
+| Impressum   | `/impressum.html`    |
+| Datenschutz | `/datenschutz.html`  |
 
 Die Texte stehen als HTML-Bausteine in `content/` – nicht in den
 JSON-Dateien, weil sich längere Fließtexte dort schlecht bearbeiten lassen.
@@ -736,8 +792,9 @@ Anwältin, Ihres Anwalts oder eines Generators ersetzen.
    jeweiligen Datei löschen.
 3. Die Texte rechtlich prüfen lassen.
 
-Die englischen Fassungen sind als Übersetzung gekennzeichnet; verbindlich
-ist die deutsche.
+Kommt später eine weitere Sprache dazu, sollte deren Fassung als
+Übersetzung gekennzeichnet und die deutsche für verbindlich erklärt
+werden.
 
 ### Wichtig für die Datenschutzerklärung
 
@@ -793,7 +850,8 @@ Quartal.
 * Logo links oben, mit der Startseite verlinkt
 * Leitfarbe aus dem Logo abgeleitet, helles und dunkles Farbschema
 * Responsiv ab ca. 320 px: Burger-Menü, gestapelte Raster, flexible Typografie
-* Sprachumschalter im Kopfbereich, `hreflang`-Verweise im `<head>`
+* Mehrsprachigkeit angelegt: Sprachumschalter und `hreflang`-Verweise
+  erscheinen automatisch ab der zweiten Sprache
 * Kurse in einem eigenen, farblich abgesetzten Abschnitt mit Startdatum,
   freien Plätzen und Preis; Hinweis auf den nächsten Kurs schon bei den
   Bekanntmachungen – beides aus derselben Liste erzeugt

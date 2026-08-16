@@ -19,6 +19,9 @@
       </ul>
 
       <div class="nav__actions">
+        {# Der Umschalter erscheint erst, wenn es etwas umzuschalten gibt.
+           Eine zweite Sprache in LANGUAGES lässt ihn wieder auftauchen. #}
+        {% if languages | length > 1 %}
         <div class="langswitch" role="group" aria-label="{{ t('nav.language') }}">
           {% for code, meta in languages.items() %}
           <a class="langswitch__item {{ 'is-active' if code == lang }}"
@@ -29,6 +32,7 @@
              {{ 'aria-current=true' if code == lang }}>{{ meta.short }}</a>
           {% endfor %}
         </div>
+        {% endif %}
         <a class="btn btn--primary btn--sm" href="{{ anchor_base }}#contact">{{ t('nav.cta') }}</a>
       </div>
     </nav>

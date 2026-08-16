@@ -395,7 +395,7 @@ Beim ersten Mal werden alle Dateien übertragen. **Rufen Sie den Befehl
 gleich ein zweites Mal auf** – dann muss dort stehen:
 
 ```
-27 Dateien in dist/, davon 0 geändert
+23 Dateien in dist/, davon 0 geändert
 Nichts zu tun – der Server hat bereits diesen Stand.
 ```
 

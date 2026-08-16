@@ -258,7 +258,7 @@ werden alle Dateien übertragen.
 stehen:
 
 ```
-27 Dateien in dist/, davon 0 geändert
+23 Dateien in dist/, davon 0 geändert
 Nichts zu tun – der Server hat bereits diesen Stand.
 ```
 

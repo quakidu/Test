@@ -11,12 +11,15 @@
      Die Fehlerseite hat keine eigene Adresse und überschreibt diesen Block. #}
   {% block indexing %}
   <link rel="canonical" href="{{ page_url(lang, true) }}">
+  {# hreflang lohnt sich erst, wenn es die Seite in mehreren Sprachen gibt. #}
+  {% if languages | length > 1 %}
   {% for code in languages %}
   <link rel="alternate" hreflang="{{ code }}"
         href="{{ page_url(code, true) }}">
   {% endfor %}
   <link rel="alternate" hreflang="x-default"
         href="{{ page_url(default_language, true) }}">
+  {% endif %}
   {% endblock %}
 
   <meta property="og:type" content="website">
@@ -24,7 +27,7 @@
   <meta property="og:title" content="{{ t('meta.title') }}">
   <meta property="og:description" content="{{ t('meta.description') }}">
   <meta property="og:url" content="{{ page_url(lang, true) }}">
-  <meta property="og:locale" content="{{ 'de_DE' if lang == 'de' else 'en_GB' }}">
+  <meta property="og:locale" content="{{ languages[lang].locale }}">
   {% set og_image = t('seo.og_image', '') %}
   {% if og_image %}
   <meta property="og:image" content="{{ url_for('static', filename='img/' ~ og_image, _external=true) }}">

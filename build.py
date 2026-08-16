@@ -2,8 +2,8 @@
 
 Rendert die Jinja-Templates in den Ordner ``dist/``:
 
-    dist/index.html      → Deutsch (Standard)
-    dist/en/index.html   → Englisch
+    dist/index.html      → Startseite in der Standardsprache
+    dist/<code>/…        → weitere Sprachen, sobald welche eingetragen sind
     dist/404.html        → Fehlerseite
     dist/static/…        → CSS, JavaScript, Bilder
     dist/robots.txt      → Suchmaschinen-Hinweise
@@ -41,9 +41,21 @@ WEBROOT_DIR = BASE_DIR / "webroot"
 CONFIG_FILE = BASE_DIR / "deploy.ini"
 
 DEFAULT_LANGUAGE = "de"
+
+# Sprachen der Seite. Ein Eintrag genügt – Sprachumschalter, hreflang-
+# Verweise und die Sprachordner erscheinen erst ab der zweiten Sprache.
+#
+# Eine Sprache hinzufügen:
+#   1. translations/<code>.json anlegen (am einfachsten als Kopie von de.json)
+#   2. hier einen Eintrag ergänzen, z. B.
+#        "en": {"label": "English", "short": "EN", "locale": "en_GB"},
+#   3. dieselbe Zeile in app.py ergänzen
+#   4. optional content/impressum.<code>.html und datenschutz.<code>.html
+#      anlegen; fehlen sie, erscheint der deutsche Text
+#
+# ``locale`` steht im Kopf der Seite unter og:locale.
 LANGUAGES = {
-    "de": {"label": "Deutsch", "short": "DE"},
-    "en": {"label": "English", "short": "EN"},
+    "de": {"label": "Deutsch", "short": "DE", "locale": "de_DE"},
 }
 DEFAULT_SITE_URL = "https://www.beispiel-domain.de"
 DEFAULT_BASE_PATH = "/"
@@ -370,7 +382,14 @@ def write_llms_txt(site_url: str, base_path: str, strings: dict) -> None:
         "## Seiten",
         "",
         f"- [Startseite]({root}): Angebot, Kurse, Ablauf und Kontakt",
-        f"- [English version]({root}en/): the same information in English",
+    ]
+    # Weitere Sprachen erscheinen hier automatisch, sobald es sie gibt.
+    lines += [
+        f"- [{meta['label']}]({root}{code}/): dieselben Angaben auf "
+        f"{meta['label']}"
+        for code, meta in LANGUAGES.items() if code != DEFAULT_LANGUAGE
+    ]
+    lines += [
         f"- [Impressum]({root}impressum.html): Anbieterkennzeichnung",
         f"- [Datenschutz]({root}datenschutz.html): Umgang mit Daten",
         "",
