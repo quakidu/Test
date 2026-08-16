@@ -318,6 +318,69 @@
     });
   }
 
+  /* ── Themenwahl ───────────────────────────────────────────────────────
+   * Das Skript im Kopf der Seite hat das Thema bereits gesetzt; hier
+   * kommen nur die Knöpfe dazu.
+   *
+   * Unterschieden werden zwei Dinge:
+   *   data-theme-choice  was gewählt wurde – auch „auto“
+   *   data-theme         was daraus folgt – immer „light“ oder „dark“
+   *
+   * Deshalb muss das Stylesheet „auto“ nicht kennen, und ein weiteres
+   * Thema braucht dort nur einen eigenen Block.
+   */
+  function initTheme() {
+    var gruppe = document.querySelector('.themeswitch');
+    if (!gruppe) return;
+
+    var root = document.documentElement;
+    var knoepfe = Array.prototype.slice.call(
+      gruppe.querySelectorAll('[data-theme-choice]')
+    );
+    var erlaubt = knoepfe.map(function (knopf) {
+      return knopf.getAttribute('data-theme-choice');
+    });
+    var standard = gruppe.getAttribute('data-default-theme') || 'auto';
+    var system = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function anwenden(wahl, merken) {
+      if (erlaubt.indexOf(wahl) === -1) wahl = standard;
+      root.dataset.themeChoice = wahl;
+      root.dataset.theme = wahl === 'auto'
+        ? (system.matches ? 'dark' : 'light')
+        : wahl;
+
+      knoepfe.forEach(function (knopf) {
+        var aktiv = knopf.getAttribute('data-theme-choice') === wahl;
+        knopf.setAttribute('aria-pressed', aktiv ? 'true' : 'false');
+      });
+
+      // Die Browserleiste auf dem Telefon soll mitgehen.
+      var farbe = getComputedStyle(root).getPropertyValue('--bg').trim();
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta && farbe) meta.setAttribute('content', farbe);
+
+      if (merken) {
+        try { localStorage.setItem('theme', wahl); } catch (e) { /* nicht schlimm */ }
+      }
+    }
+
+    knoepfe.forEach(function (knopf) {
+      knopf.addEventListener('click', function () {
+        anwenden(knopf.getAttribute('data-theme-choice'), true);
+      });
+    });
+
+    // Wechselt das Gerät zwischen hell und dunkel, geht „auto“ mit.
+    var beobachten = function () {
+      if (root.dataset.themeChoice === 'auto') anwenden('auto', false);
+    };
+    if (system.addEventListener) system.addEventListener('change', beobachten);
+    else if (system.addListener) system.addListener(beobachten);
+
+    anwenden(root.dataset.themeChoice || standard, false);
+  }
+
   /* ── Kleinkram ────────────────────────────────────────────────────── */
   function initMisc() {
     var year = document.getElementById('year');
@@ -332,6 +395,7 @@
     initCounters();
     initSlideshow();
     initMap();
+    initTheme();
     initMisc();
   }
 

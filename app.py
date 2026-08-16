@@ -42,6 +42,22 @@ DEFAULT_LANGUAGE = "de"
 LANGUAGES = {
     "de": {"label": "Deutsch", "short": "DE", "locale": "de_DE"},
 }
+# Themen der Seite. Der Schlüssel steht als ``data-theme`` am
+# <html>-Element und wählt damit den passenden Block in style.css;
+# ``auto`` ist kein eigener Block, sondern wird beim Laden zur
+# Systemvorgabe aufgelöst. ``icon`` benennt das Symbol in
+# templates/partials/theme-icons.html, die Beschriftung steht unter
+# ``theme.options`` in den Sprachdateien.
+#
+# Ein Thema hinzufügen: Wertesatz und Block in style.css anlegen, hier
+# eintragen, Symbol ergänzen, Beschriftung in jede Sprachdatei.
+THEMES = {
+    "auto": {"icon": "auto"},
+    "light": {"icon": "sun"},
+    "dark": {"icon": "moon"},
+}
+DEFAULT_THEME = "auto"
+
 LANGUAGE_COOKIE = "lang"
 LANGUAGE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365  # ein Jahr
 
@@ -116,6 +132,8 @@ def render_home(lang: str):
             s=strings,
             languages=LANGUAGES,
             default_language=DEFAULT_LANGUAGE,
+            themes=THEMES,
+            default_theme=DEFAULT_THEME,
             anchor_base="",
             page_url=lambda code, external=False: (
                 url_for("home", _external=external) if code == DEFAULT_LANGUAGE
@@ -183,6 +201,8 @@ def render_legal(lang: str, page: str):
             s=strings,
             languages=LANGUAGES,
             default_language=DEFAULT_LANGUAGE,
+            themes=THEMES,
+            default_theme=DEFAULT_THEME,
             anchor_base=url_for("home"),
             page_url=page_url,
             # Ohne Kurse: die gehören auf die Startseite, nicht hierher.

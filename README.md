@@ -41,6 +41,7 @@ templates/
   404.html              Fehlerseite
   partials/header.html  Kopfbereich mit Logo links oben
   partials/footer.html  Fußbereich
+  partials/theme-icons.html  Symbole der Themenwahl
 content/
   impressum.de.html     Impressum; je Sprache eine Datei
   datenschutz.de.html   Datenschutz; je Sprache eine Datei
@@ -414,6 +415,85 @@ beide Sprachen.
 **Zum Entfernen** genügt es, den Eintrag aus beiden `LANGUAGES` zu
 löschen. Die Textdatei kann liegen bleiben; gebaut wird nur, was dort
 steht.
+
+## Darstellung: helles und dunkles Thema
+
+Im Kopfbereich steht rechts eine Wahl mit drei Knöpfen:
+
+| Knopf | Bedeutung |
+| --- | --- |
+| ◐ | **Wie das Gerät** – folgt der Einstellung von Betriebssystem oder Browser (Standard) |
+| ☀ | **Hell** |
+| ☾ | **Dunkel** |
+
+Die Wahl bleibt im Browser gespeichert und gilt beim nächsten Besuch
+weiter. „Wie das Gerät“ reagiert auch während des Besuchs, wenn das
+Betriebssystem etwa abends auf Dunkel umstellt.
+
+Wie das zusammenspielt:
+
+* Das Thema hängt am Attribut `data-theme` des `<html>`-Elements. Gesetzt
+  wird es von einem kleinen Skript **im Kopf der Seite**, also bevor
+  etwas gezeichnet ist – sonst blitzte beim Laden kurz das falsche Thema
+  auf.
+* `data-theme-choice` merkt sich, was gewählt wurde – auch `auto`.
+  `data-theme` enthält dagegen immer ein konkretes Thema. Deshalb muss
+  das Stylesheet `auto` gar nicht kennen.
+* **Ohne JavaScript** erscheint die Wahl nicht, und es gilt wie bisher
+  die Vorgabe des Betriebssystems. Ein Knopf, der nichts bewirkt, wäre
+  schlechter als keiner.
+* Das Logo liegt in beiden Fassungen im Quelltext; sichtbar ist die
+  passende. Vorher entschied das die Media Query – seit es die Wahl gibt,
+  kann das gewählte Thema von der Gerätevorgabe abweichen.
+
+### Ein weiteres Thema hinzufügen
+
+Am Beispiel eines warmen Themas „sepia“:
+
+1. **Farbwerte in `static/css/style.css`** anlegen, im Abschnitt
+   „1b. Themen“ – nach dem Muster der `--dunkel-*`-Werte:
+
+   ```css
+   :root {
+     --sepia-bg:          #F6EFE3;
+     --sepia-bg-elevated: #FFFAF2;
+     /* … */
+   }
+   ```
+
+2. **Themenblock ergänzen**, der die Tokens darauf abbildet:
+
+   ```css
+   :root[data-theme="sepia"] {
+     color-scheme: light;
+     --bg:          var(--sepia-bg);
+     --bg-elevated: var(--sepia-bg-elevated);
+     /* … alle Tokens wie im dunklen Block */
+   }
+   ```
+
+3. **Schlüssel eintragen**, in `build.py` *und* in `app.py` bei `THEMES`:
+
+   ```python
+   THEMES = {
+       "auto":  {"icon": "auto"},
+       "light": {"icon": "sun"},
+       "dark":  {"icon": "moon"},
+       "sepia": {"icon": "sepia"},
+   }
+   ```
+
+4. **Symbol** in `templates/partials/theme-icons.html` als weiteren Zweig
+   ergänzen. Fehlt es, erscheint ein schlichter Kreis – der Knopf
+   funktioniert trotzdem.
+
+5. **Beschriftung** unter `theme.options.sepia` in `translations/de.json`
+   ergänzen, und in jeder weiteren Sprachdatei.
+
+Themenwahl und Sprachwahl sind voneinander unabhängig: Beide stehen
+nebeneinander im Kopfbereich, beide erscheinen ab zwei Einträgen, und der
+Umbruchpunkt zum Burger-Menü (1200 px) ist so gewählt, dass **beide
+zusammen** in eine Zeile passen.
 
 ## Inhalte anpassen
 
@@ -852,6 +932,8 @@ Quartal.
 * Responsiv ab ca. 320 px: Burger-Menü, gestapelte Raster, flexible Typografie
 * Mehrsprachigkeit angelegt: Sprachumschalter und `hreflang`-Verweise
   erscheinen automatisch ab der zweiten Sprache
+* Wahl der Darstellung (Gerätevorgabe, hell, dunkel), gespeichert im
+  Browser und ohne Aufblitzen beim Laden
 * Kurse in einem eigenen, farblich abgesetzten Abschnitt mit Startdatum,
   freien Plätzen und Preis; Hinweis auf den nächsten Kurs schon bei den
   Bekanntmachungen – beides aus derselben Liste erzeugt

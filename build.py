@@ -57,6 +57,22 @@ DEFAULT_LANGUAGE = "de"
 LANGUAGES = {
     "de": {"label": "Deutsch", "short": "DE", "locale": "de_DE"},
 }
+# Themen der Seite. Der Schlüssel steht als ``data-theme`` am
+# <html>-Element und wählt damit den passenden Block in style.css;
+# ``auto`` ist kein eigener Block, sondern wird beim Laden zur
+# Systemvorgabe aufgelöst. ``icon`` benennt das Symbol in
+# templates/partials/theme-icons.html, die Beschriftung steht unter
+# ``theme.options`` in den Sprachdateien.
+#
+# Ein Thema hinzufügen: Wertesatz und Block in style.css anlegen, hier
+# eintragen, Symbol ergänzen, Beschriftung in jede Sprachdatei.
+THEMES = {
+    "auto": {"icon": "auto"},
+    "light": {"icon": "sun"},
+    "dark": {"icon": "moon"},
+}
+DEFAULT_THEME = "auto"
+
 DEFAULT_SITE_URL = "https://www.beispiel-domain.de"
 DEFAULT_BASE_PATH = "/"
 
@@ -488,6 +504,8 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
             s=strings,
             languages=LANGUAGES,
             default_language=DEFAULT_LANGUAGE,
+            themes=THEMES,
+            default_theme=DEFAULT_THEME,
             url_for=make_url_for(lang, site_url, base_path),
             page_url=make_page_url(lang, INDEX_FILE, site_url, base_path),
             json_ld=content.json_ld(content.structured_data(
@@ -522,6 +540,8 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
                 s=strings,
                 languages=LANGUAGES,
                 default_language=DEFAULT_LANGUAGE,
+                themes=THEMES,
+                default_theme=DEFAULT_THEME,
                 url_for=url_for,
                 page_url=make_page_url(lang, page["file"], site_url, base_path),
                 # Ohne Kurse: die gehören auf die Startseite, nicht hierher.
@@ -550,6 +570,8 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
         s=strings,
         languages=LANGUAGES,
         default_language=DEFAULT_LANGUAGE,
+        themes=THEMES,
+        default_theme=DEFAULT_THEME,
         url_for=make_url_for(DEFAULT_LANGUAGE, site_url, base_path, root_relative=True),
         page_url=make_page_url(DEFAULT_LANGUAGE, INDEX_FILE, site_url, base_path,
                                root_relative=True),

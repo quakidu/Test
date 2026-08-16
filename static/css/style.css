@@ -69,25 +69,80 @@
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-/* Dunkles Farbschema – gleiche Tokens, andere Werte */
+/* ── 1b. Themen ────────────────────────────────────────────────────────
+ * Ein Thema ist ein Satz von Farbwerten. Die Werte stehen genau einmal –
+ * als ``--dunkel-*``-Variablen oben bzw. als Standard in :root. Die
+ * Themenblöcke darunter bilden sie nur auf die Tokens ab, die der Rest
+ * des Stylesheets verwendet.
+ *
+ * Gewählt wird über ``data-theme`` am <html>-Element. Das setzt ein
+ * kleines Skript im Kopf der Seite, bevor etwas gezeichnet wird – so
+ * blitzt beim Laden nicht kurz das falsche Thema auf.
+ *
+ * Ein weiteres Thema hinzufügen:
+ *   1. hier einen Wertesatz anlegen (wie --dunkel-* unten)
+ *   2. einen Block :root[data-theme="…"] ergänzen, der die Tokens setzt
+ *   3. den Schlüssel in THEMES eintragen – in build.py und in app.py
+ *   4. die Beschriftung unter theme.options in translations/de.json
+ *      ergänzen (und in jeder weiteren Sprachdatei)
+ */
+:root {
+  /* Werte des dunklen Themas – hier stehen sie ein einziges Mal. */
+  --dunkel-bg:            #0E131A;
+  --dunkel-bg-elevated:   #151C25;
+  --dunkel-bg-tinted:     #121821;
+  --dunkel-text:          #E7ECF3;
+  --dunkel-text-muted:    #A0AABA;
+  --dunkel-border:        rgba(199, 215, 235, 0.14);
+  --dunkel-border-strong: rgba(199, 215, 235, 0.26);
+  --dunkel-on-accent:     #0D121A;
+  --dunkel-shadow-md: 0 8px 24px -12px rgba(0, 0, 0, 0.7);
+  --dunkel-shadow-lg: 0 28px 60px -30px rgba(0, 0, 0, 0.9);
+}
+
+/*
+ * Die Zuweisung steht zweimal: einmal für die ausdrückliche Wahl, einmal
+ * für die Systemvorgabe, solange keine getroffen wurde. CSS kann einen
+ * Wertesatz nicht in eine Media Query hineinreichen – die Farbwerte
+ * selbst stehen deshalb oben, hier nur die Zuordnung.
+ */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg:            var(--dunkel-bg);
+  --bg-elevated:   var(--dunkel-bg-elevated);
+  --bg-tinted:     var(--dunkel-bg-tinted);
+  --text:          var(--dunkel-text);
+  --text-muted:    var(--dunkel-text-muted);
+  --border:        var(--dunkel-border);
+  --border-strong: var(--dunkel-border-strong);
+  --accent:        var(--blue-400);
+  --accent-soft:   var(--blue-300);
+  --accent-ink:    var(--blue-200);
+  --on-accent:     var(--dunkel-on-accent);
+  --shadow-md:     var(--dunkel-shadow-md);
+  --shadow-lg:     var(--dunkel-shadow-lg);
+}
+
+:root[data-theme="light"] { color-scheme: light; }
+
+/* Ohne getroffene Wahl – und ohne JavaScript – entscheidet das System. */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg:            #0E131A;
-    --bg-elevated:   #151C25;
-    --bg-tinted:     #121821;
-    --text:          #E7ECF3;
-    --text-muted:    #A0AABA;
-    --border:        rgba(199, 215, 235, 0.14);
-    --border-strong: rgba(199, 215, 235, 0.26);
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --bg:            var(--dunkel-bg);
+    --bg-elevated:   var(--dunkel-bg-elevated);
+    --bg-tinted:     var(--dunkel-bg-tinted);
+    --text:          var(--dunkel-text);
+    --text-muted:    var(--dunkel-text-muted);
+    --border:        var(--dunkel-border);
+    --border-strong: var(--dunkel-border-strong);
     --accent:        var(--blue-400);
     --accent-soft:   var(--blue-300);
     --accent-ink:    var(--blue-200);
-    --on-accent:     #0D121A;
-
-    --shadow-md: 0 8px 24px -12px rgba(0, 0, 0, 0.7);
-    --shadow-lg: 0 28px 60px -30px rgba(0, 0, 0, 0.9);
+    --on-accent:     var(--dunkel-on-accent);
+    --shadow-md:     var(--dunkel-shadow-md);
+    --shadow-lg:     var(--dunkel-shadow-lg);
   }
-
 }
 
 /* ── 2. Reset & Basis ─────────────────────────────────────────────────── */
@@ -142,6 +197,19 @@ button { font: inherit; color: inherit; }
 ::selection {
   background: var(--blue-200);
   color: var(--ink-900);
+}
+
+/* Für Screenreader lesbar, für Augen unsichtbar. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 .skip-link {
@@ -299,6 +367,17 @@ button { font: inherit; color: inherit; }
  */
 .logo { display: block; line-height: 0; }
 
+/* Vom Logo liegen beide Fassungen im Quelltext; sichtbar ist die, die
+   zum Thema passt. Über display:none statt Sichtbarkeit, damit die
+   verborgene auch von Screenreadern übersprungen wird. */
+.logo__img--dark { display: none; }
+:root[data-theme="dark"] .logo__img--light { display: none; }
+:root[data-theme="dark"] .logo__img--dark { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .logo__img--light { display: none; }
+  :root:not([data-theme]) .logo__img--dark { display: block; }
+}
+
 .brand__logo {
   height: 32px;
   width: auto;
@@ -311,13 +390,13 @@ button { font: inherit; color: inherit; }
 .nav {
   display: flex;
   align-items: center;
-  gap: clamp(1rem, 3vw, 2.5rem);
+  gap: clamp(1rem, 2.5vw, 2rem);
 }
 
 .nav__list {
   display: flex;
   align-items: center;
-  gap: clamp(0.75rem, 2vw, 1.75rem);
+  gap: clamp(0.7rem, 1.6vw, 1.4rem);
 }
 
 .nav__link {
@@ -372,6 +451,48 @@ button { font: inherit; color: inherit; }
   background: var(--bg-elevated);
   color: var(--accent-ink);
   box-shadow: var(--shadow-sm);
+}
+
+/* Themenwahl – bewusst wie der Sprachumschalter gebaut, damit beide
+   nebeneinander stehen können, ohne dass eines heraussticht. */
+.themeswitch {
+  display: inline-flex;
+  padding: 3px;
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+  border-radius: var(--radius-pill);
+}
+/* Ohne JavaScript ließe sich nichts umschalten – dann bleibt die Wahl
+   beim Betriebssystem, und der Knopf wäre eine leere Zusage. */
+.themeswitch { display: none; }
+.js .themeswitch { display: inline-flex; }
+
+.themeswitch__item {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 28px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-pill);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+.themeswitch__item:hover { color: var(--text); }
+.themeswitch__item[aria-pressed="true"] {
+  background: var(--bg-elevated);
+  color: var(--accent-ink);
+  box-shadow: var(--shadow-sm);
+}
+.themeswitch__icon {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* Burger-Menü (mobil) */
@@ -1585,7 +1706,17 @@ html:not(.js) .slideshow__track::-webkit-scrollbar { display: block; }
   .hero__card { max-width: 460px; }
 }
 
-@media (max-width: 860px) {
+/*
+ * Ab hier klappt die Navigation ins Burger-Menü.
+ *
+ * Die Grenze ist bewusst großzügig: In der Leiste stehen sieben
+ * Menüpunkte, die Themenwahl, die Schaltfläche – und sobald eine zweite
+ * Sprache hinzukommt, auch der Sprachumschalter. Bei 1200 px passt diese
+ * größte Zusammenstellung noch in eine Zeile. Wäre die Grenze enger,
+ * liefe die Schaltfläche rechts aus dem Bild, und die Themenwahl schlösse
+ * eine spätere Sprachwahl faktisch aus.
+ */
+@media (max-width: 1200px) {
   :root { --header-h: 68px; }
 
   .burger { display: flex; }
@@ -1630,6 +1761,10 @@ html:not(.js) .slideshow__track::-webkit-scrollbar { display: block; }
   }
   .langswitch { justify-content: center; }
   .langswitch__item { flex: 1; text-align: center; }
+  /* Im ausgeklappten Menü ist Platz – dort dürfen beide Gruppen die
+     volle Breite nehmen und liegen untereinander. */
+  .themeswitch { justify-content: center; }
+  .themeswitch__item { flex: 1; height: 36px; }
   .nav__actions .btn { width: 100%; }
 
   body.nav-open { overflow: hidden; }

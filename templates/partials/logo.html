@@ -4,22 +4,31 @@
   variant='full'  vollständiges Logo mit Schriftzug (Kopfbereich, Footer, Hero)
   variant='mark'  nur das Signet, quadratisch (Favicon)
 
-  Zu jeder Datei gibt es eine aufgehellte Fassung für das dunkle Farbschema;
-  die Auswahl trifft der Browser. Erzeugt werden sie mit
-  tools/prepare-logo.py aus static/img/logo.png.
+  Zu jeder Datei gibt es eine aufgehellte Fassung für dunkle Themen;
+  erzeugt werden sie mit tools/prepare-logo.py aus static/img/logo.png.
+
+  Beide Fassungen stehen im Quelltext, das Stylesheet blendet die
+  passende ein. Ein <picture> mit media="(prefers-color-scheme: dark)"
+  ginge nicht mehr: Seit es die Themenwahl gibt, kann das gewählte Thema
+  von der Vorgabe des Geräts abweichen, und der Schriftzug wäre dann auf
+  dunklem Grund kaum zu sehen.
+
+  Die Beschreibung steht auf beiden Bildern. Das versteckte ist per
+  display:none aus dem Zugänglichkeitsbaum genommen, gelesen wird also
+  immer nur eines.
 #}
 {% macro logo(variant='full', css_class='brand__logo', alt='') -%}
 {%- set base = 'logo' if variant == 'full' else 'logo-mark' -%}
 {%- set width = 200 if variant == 'full' else 44 -%}
 {%- set height = 42 if variant == 'full' else 44 -%}
-<picture class="logo">
-  <source srcset="{{ url_for('static', filename='img/' ~ base ~ '-dark.png') }}"
-          media="(prefers-color-scheme: dark)" type="image/png">
-  <img class="{{ css_class }}"
-       src="{{ url_for('static', filename='img/' ~ base ~ '.png') }}"
+<span class="logo">
+  {% for tone in ['light', 'dark'] %}
+  <img class="{{ css_class }} logo__img logo__img--{{ tone }}"
+       src="{{ url_for('static', filename='img/' ~ base ~ ('-dark' if tone == 'dark' else '') ~ '.png') }}"
        alt="{{ alt }}"
        width="{{ width }}" height="{{ height }}"
        {% if not alt %}aria-hidden="true"{% endif %}
        decoding="async">
-</picture>
+  {% endfor %}
+</span>
 {%- endmacro %}

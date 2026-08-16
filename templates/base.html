@@ -50,8 +50,30 @@
   {# Als Favicon dient das Signet – der breite Schriftzug wäre nicht lesbar. #}
   <link rel="icon" href="{{ url_for('static', filename='img/logo-mark.png') }}" type="image/png">
   <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/logo-mark.png') }}">
-  <!-- Ohne JavaScript bleiben die Reveal-Animationen aus und alle Inhalte sichtbar. -->
-  <script>document.documentElement.classList.add('js');</script>
+  <!--
+    Läuft vor dem Stylesheet und damit vor dem ersten Bild auf dem Schirm:
+
+    * `js` schaltet die Reveal-Animationen frei – ohne JavaScript bleiben
+      alle Inhalte einfach sichtbar.
+    * `data-theme` setzt das gewählte Thema, bevor gezeichnet wird. Sonst
+      blitzte beim Laden kurz das falsche auf.
+
+    Bewusst klein gehalten und nicht ausgelagert: Eine zweite Datei würde
+    an dieser Stelle den Aufbau der Seite verzögern.
+  -->
+  <script>
+    (function () {
+      var root = document.documentElement;
+      root.classList.add('js');
+      var wahl = null;
+      try { wahl = localStorage.getItem('theme'); } catch (e) { /* z. B. privater Modus */ }
+      if (wahl !== 'light' && wahl !== 'dark') wahl = 'auto';
+      root.dataset.themeChoice = wahl;
+      root.dataset.theme = wahl === 'auto'
+        ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        : wahl;
+    })();
+  </script>
   <link rel="preload" as="style" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>

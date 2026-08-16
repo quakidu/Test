@@ -1,4 +1,5 @@
 {% from 'partials/logo.html' import logo with context %}
+{% from 'partials/theme-icons.html' import theme_icon %}
 <header class="site-header" id="site-header">
   <div class="container header__inner">
 
@@ -33,6 +34,23 @@
           {% endfor %}
         </div>
         {% endif %}
+
+        {# Themenwahl. Steht neben dem Sprachumschalter, nicht an seiner
+           Stelle – beide sind eigenständig und kommen sich nicht ins
+           Gehege. Ohne JavaScript blendet das Stylesheet die Gruppe aus;
+           dann gilt weiterhin die Vorgabe des Betriebssystems. #}
+        <div class="themeswitch" role="group" aria-label="{{ t('theme.label') }}"
+             data-default-theme="{{ default_theme }}">
+          {% for key, meta in themes.items() %}
+          <button class="themeswitch__item" type="button"
+                  data-theme-choice="{{ key }}"
+                  aria-pressed="{{ 'true' if key == default_theme else 'false' }}"
+                  title="{{ t('theme.options.' ~ key, key) }}">
+            {{ theme_icon(meta.icon) }}
+            <span class="visually-hidden">{{ t('theme.options.' ~ key, key) }}</span>
+          </button>
+          {% endfor %}
+        </div>
         <a class="btn btn--primary btn--sm" href="{{ anchor_base }}#contact">{{ t('nav.cta') }}</a>
       </div>
     </nav>

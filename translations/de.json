@@ -22,6 +22,14 @@
     "language": "Sprache wählen",
     "therapist": "Therapeut"
   },
+  "theme": {
+    "label": "Darstellung",
+    "options": {
+      "auto": "Wie das Gerät",
+      "light": "Hell",
+      "dark": "Dunkel"
+    }
+  },
   "hero": {
     "eyebrow": "Spiraldynamik in Musterstadt",
     "title_line1": "Bewegung,",

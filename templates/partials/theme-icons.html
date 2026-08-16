@@ -1,0 +1,25 @@
+{#
+  Symbole der Themenwahl. Jedes Thema in THEMES nennt unter ``icon`` einen
+  der Namen hier. Ein neues Thema braucht also einen weiteren Zweig –
+  fehlt er, erscheint der Punkt aus dem letzten Zweig als Rückfall, und
+  der Knopf bleibt trotzdem bedienbar.
+
+  Gezeichnet als Strichzeichnung in currentColor; Größe und Farbe kommen
+  aus dem Stylesheet.
+#}
+{% macro theme_icon(name) -%}
+<svg class="themeswitch__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+  {%- if name == 'sun' -%}
+    <circle cx="12" cy="12" r="4.2"/>
+    <path d="M12 2.5v2.2M12 19.3v2.2M4.2 12H2M22 12h-2.2M6.3 6.3 4.8 4.8M19.2 19.2l-1.5-1.5M17.7 6.3l1.5-1.5M4.8 19.2l1.5-1.5"/>
+  {%- elif name == 'moon' -%}
+    <path d="M20 13.4A8.2 8.2 0 1 1 10.6 4a6.6 6.6 0 0 0 9.4 9.4z"/>
+  {%- elif name == 'auto' -%}
+    {# Halb hell, halb dunkel – steht für „wie das Gerät es vorgibt“. #}
+    <circle cx="12" cy="12" r="8.2"/>
+    <path d="M12 3.8a8.2 8.2 0 0 0 0 16.4z" fill="currentColor" stroke="none"/>
+  {%- else -%}
+    <circle cx="12" cy="12" r="7"/>
+  {%- endif -%}
+</svg>
+{%- endmacro %}
