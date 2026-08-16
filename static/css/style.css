@@ -49,6 +49,15 @@
   --accent-ink:    var(--blue-700);
   --on-accent:     #FFFFFF;
 
+  /* Die drei Farbschleier im Kopfbereich und die Textmarkierung. Auch sie
+     gehören zum Thema – sonst bliebe der Kopfbereich blau, wenn jemand ein
+     Thema in anderen Farben anlegt. */
+  --glow-1:        var(--blue-300);
+  --glow-2:        var(--blue-200);
+  --glow-3:        var(--blue-400);
+  --selection-bg:  var(--blue-200);
+  --selection-text: var(--ink-900);
+
   --shadow-sm: 0 1px 2px rgba(25, 30, 40, 0.05);
   --shadow-md: 0 8px 24px -12px rgba(25, 30, 40, 0.22);
   --shadow-lg: 0 28px 60px -30px rgba(25, 30, 40, 0.35);
@@ -98,7 +107,9 @@
   --dunkel-on-accent:     #0D121A;
   --dunkel-shadow-md: 0 8px 24px -12px rgba(0, 0, 0, 0.7);
   --dunkel-shadow-lg: 0 28px 60px -30px rgba(0, 0, 0, 0.9);
+
 }
+
 
 /*
  * Die Zuweisung steht zweimal: einmal für die ausdrückliche Wahl, einmal
@@ -121,6 +132,11 @@
   --on-accent:     var(--dunkel-on-accent);
   --shadow-md:     var(--dunkel-shadow-md);
   --shadow-lg:     var(--dunkel-shadow-lg);
+  --glow-1:        var(--blue-700);
+  --glow-2:        var(--blue-800);
+  --glow-3:        var(--blue-600);
+  --selection-bg:  var(--blue-600);
+  --selection-text: #FFFFFF;
 }
 
 :root[data-theme="light"] { color-scheme: light; }
@@ -142,6 +158,11 @@
     --on-accent:     var(--dunkel-on-accent);
     --shadow-md:     var(--dunkel-shadow-md);
     --shadow-lg:     var(--dunkel-shadow-lg);
+    --glow-1:        var(--blue-700);
+    --glow-2:        var(--blue-800);
+    --glow-3:        var(--blue-600);
+    --selection-bg:  var(--blue-600);
+    --selection-text: #FFFFFF;
   }
 }
 
@@ -195,8 +216,8 @@ button { font: inherit; color: inherit; }
 }
 
 ::selection {
-  background: var(--blue-200);
-  color: var(--ink-900);
+  background: var(--selection-bg);
+  color: var(--selection-text);
 }
 
 /* Für Screenreader lesbar, für Augen unsichtbar. */
@@ -559,19 +580,19 @@ button { font: inherit; color: inherit; }
 .blob--1 {
   width: 46vw; height: 46vw; max-width: 620px; max-height: 620px;
   top: -8%; right: -6%;
-  background: radial-gradient(circle at 30% 30%, var(--blue-300), transparent 70%);
+  background: radial-gradient(circle at 30% 30%, var(--glow-1), transparent 70%);
   animation: drift 22s var(--ease) infinite alternate;
 }
 .blob--2 {
   width: 34vw; height: 34vw; max-width: 460px; max-height: 460px;
   top: 34%; left: -8%;
-  background: radial-gradient(circle at 60% 40%, var(--blue-200), transparent 70%);
+  background: radial-gradient(circle at 60% 40%, var(--glow-2), transparent 70%);
   animation: drift 28s var(--ease) infinite alternate-reverse;
 }
 .blob--3 {
   width: 26vw; height: 26vw; max-width: 360px; max-height: 360px;
   bottom: 2%; left: 42%;
-  background: radial-gradient(circle at 50% 50%, var(--blue-400), transparent 72%);
+  background: radial-gradient(circle at 50% 50%, var(--glow-3), transparent 72%);
   opacity: 0.28;
   animation: drift 34s var(--ease) infinite alternate;
 }

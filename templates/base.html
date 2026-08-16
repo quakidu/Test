@@ -65,9 +65,12 @@
     (function () {
       var root = document.documentElement;
       root.classList.add('js');
+      // Die Liste kommt aus THEMES – ein neues Thema wird hier von selbst
+      // gültig, ohne dass jemand dieses Skript anfassen muss.
+      var erlaubt = {{ themes.keys() | list | tojson }};
       var wahl = null;
       try { wahl = localStorage.getItem('theme'); } catch (e) { /* z. B. privater Modus */ }
-      if (wahl !== 'light' && wahl !== 'dark') wahl = 'auto';
+      if (erlaubt.indexOf(wahl) === -1) wahl = {{ default_theme | tojson }};
       root.dataset.themeChoice = wahl;
       root.dataset.theme = wahl === 'auto'
         ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')

@@ -36,6 +36,7 @@ README-Proxmox-Deploy.md    … in einem Proxmox-Container
 README-Unraid-Deploy.md     … auf einem Unraid-Server
 README-Android-Test.md    Seite auf einem Android-Gerät ansehen
 README-Android-Git.md     Git auf Android einrichten
+README-Themes.md          ein weiteres Thema (Darstellung) hinzufügen
 templates/
   base.html             Grundgerüst (Head, Meta, hreflang)
   index.html            Startseite
@@ -449,67 +450,14 @@ Im Kopfbereich steht rechts eine Wahl mit drei Knöpfen:
 
 Die Wahl bleibt im Browser gespeichert und gilt beim nächsten Besuch
 weiter. „Wie das Gerät“ reagiert auch während des Besuchs, wenn das
-Betriebssystem etwa abends auf Dunkel umstellt.
+Betriebssystem etwa abends auf Dunkel umstellt. Ohne JavaScript
+erscheint die Wahl nicht; dann gilt die Vorgabe des Betriebssystems.
 
-Wie das zusammenspielt:
-
-* Das Thema hängt am Attribut `data-theme` des `<html>`-Elements. Gesetzt
-  wird es von einem kleinen Skript **im Kopf der Seite**, also bevor
-  etwas gezeichnet ist – sonst blitzte beim Laden kurz das falsche Thema
-  auf.
-* `data-theme-choice` merkt sich, was gewählt wurde – auch `auto`.
-  `data-theme` enthält dagegen immer ein konkretes Thema. Deshalb muss
-  das Stylesheet `auto` gar nicht kennen.
-* **Ohne JavaScript** erscheint die Wahl nicht, und es gilt wie bisher
-  die Vorgabe des Betriebssystems. Ein Knopf, der nichts bewirkt, wäre
-  schlechter als keiner.
-* Das Logo liegt in beiden Fassungen im Quelltext; sichtbar ist die
-  passende. Vorher entschied das die Media Query – seit es die Wahl gibt,
-  kann das gewählte Thema von der Gerätevorgabe abweichen.
-
-### Ein weiteres Thema hinzufügen
-
-Am Beispiel eines warmen Themas „sepia“:
-
-1. **Farbwerte in `static/css/style.css`** anlegen, im Abschnitt
-   „1b. Themen“ – nach dem Muster der `--dunkel-*`-Werte:
-
-   ```css
-   :root {
-     --sepia-bg:          #F6EFE3;
-     --sepia-bg-elevated: #FFFAF2;
-     /* … */
-   }
-   ```
-
-2. **Themenblock ergänzen**, der die Tokens darauf abbildet:
-
-   ```css
-   :root[data-theme="sepia"] {
-     color-scheme: light;
-     --bg:          var(--sepia-bg);
-     --bg-elevated: var(--sepia-bg-elevated);
-     /* … alle Tokens wie im dunklen Block */
-   }
-   ```
-
-3. **Schlüssel eintragen**, in `build.py` *und* in `app.py` bei `THEMES`:
-
-   ```python
-   THEMES = {
-       "auto":  {"icon": "auto"},
-       "light": {"icon": "sun"},
-       "dark":  {"icon": "moon"},
-       "sepia": {"icon": "sepia"},
-   }
-   ```
-
-4. **Symbol** in `templates/partials/theme-icons.html` als weiteren Zweig
-   ergänzen. Fehlt es, erscheint ein schlichter Kreis – der Knopf
-   funktioniert trotzdem.
-
-5. **Beschriftung** unter `theme.options.sepia` in `translations/de.json`
-   ergänzen, und in jeder weiteren Sprachdatei.
+**Ein weiteres Thema hinzufügen** – etwa ein warmes, augenschonendes:
+Die Schritt-für-Schritt-Anleitung steht in
+**[README-Themes.md](README-Themes.md)**. Sie beschreibt, welche
+Farbwerte ein Thema bestimmt, wo sie eingetragen werden und wie das
+Thema in der Wahl erscheint.
 
 Themenwahl und Sprachwahl sind voneinander unabhängig: Beide stehen
 nebeneinander im Kopfbereich, beide erscheinen ab zwei Einträgen, und der

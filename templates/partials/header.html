@@ -43,7 +43,7 @@
              data-default-theme="{{ default_theme }}">
           {% for key, meta in themes.items() %}
           <button class="themeswitch__item" type="button"
-                  data-theme-choice="{{ key }}"
+                  data-set-theme="{{ key }}"
                   aria-pressed="{{ 'true' if key == default_theme else 'false' }}"
                   title="{{ t('theme.options.' ~ key, key) }}">
             {{ theme_icon(meta.icon) }}

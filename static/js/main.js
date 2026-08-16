@@ -335,10 +335,10 @@
 
     var root = document.documentElement;
     var knoepfe = Array.prototype.slice.call(
-      gruppe.querySelectorAll('[data-theme-choice]')
+      gruppe.querySelectorAll('[data-set-theme]')
     );
     var erlaubt = knoepfe.map(function (knopf) {
-      return knopf.getAttribute('data-theme-choice');
+      return knopf.getAttribute('data-set-theme');
     });
     var standard = gruppe.getAttribute('data-default-theme') || 'auto';
     var system = window.matchMedia('(prefers-color-scheme: dark)');
@@ -351,7 +351,7 @@
         : wahl;
 
       knoepfe.forEach(function (knopf) {
-        var aktiv = knopf.getAttribute('data-theme-choice') === wahl;
+        var aktiv = knopf.getAttribute('data-set-theme') === wahl;
         knopf.setAttribute('aria-pressed', aktiv ? 'true' : 'false');
       });
 
@@ -367,7 +367,7 @@
 
     knoepfe.forEach(function (knopf) {
       knopf.addEventListener('click', function () {
-        anwenden(knopf.getAttribute('data-theme-choice'), true);
+        anwenden(knopf.getAttribute('data-set-theme'), true);
       });
     });
 
