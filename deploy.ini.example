@@ -33,3 +33,13 @@ remote_dir = /
 
 ; Passiver Modus funktioniert hinter fast allen Routern und Firewalls.
 passive = yes
+
+[deploy]
+; Normalerweise überträgt deploy.py nur, was sich seit dem letzten Lauf
+; geändert hat – verglichen werden die gebauten Dateien in dist/. Ein
+; abgelaufener Kurstermin ändert die gebaute Seite und wird dadurch
+; hochgeladen, auch ohne dass jemand einen Text bearbeitet hat.
+;
+; Auf yes gesetzt, wird bei jedem Lauf alles übertragen. Das kostet nur
+; Übertragungszeit und ist als Sicherheitsnetz gedacht.
+always_upload = no

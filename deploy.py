@@ -7,10 +7,16 @@ konfigurierte Verzeichnis auf dem Server spiegeln.
     python3 deploy.py --dry-run         # zeigt nur, was passieren würde
     python3 deploy.py                   # lädt hoch
 
-Übertragen wird nur, was sich seit dem letzten Lauf geändert hat. Wie der
-zuletzt hochgeladene Stand aussah, merkt sich ``.deploy-state.json`` –
-eine Liste von Prüfsummen. Ändert sich nichts, geht das Skript gar nicht
-erst online. ``--all`` überträgt wieder alles.
+Übertragen wird nur, was sich seit dem letzten Lauf geändert hat.
+Verglichen werden die **gebauten** Dateien in ``dist/``, nicht die
+Textdateien: Rutscht ein Kurstermin in die Vergangenheit, sieht die
+gebaute Seite anders aus und wird hochgeladen – auch wenn niemand etwas
+bearbeitet hat.
+
+Wie der zuletzt hochgeladene Stand aussah, merkt sich
+``.deploy-state.json`` als Liste von Prüfsummen. Ändert sich nichts, geht
+das Skript gar nicht erst online. ``--all`` überträgt wieder alles;
+dauerhaft geht das über ``always_upload`` in ``deploy.ini``.
 
 Das Passwort steht bewusst nicht in der Konfiguration. Es kommt aus der
 Umgebungsvariable ``DEPLOY_FTP_PASSWORD`` oder wird abgefragt.
@@ -280,7 +286,14 @@ def main() -> None:
     files = local_files()
     hashes = {path.as_posix(): file_hash(DIST_DIR / path) for path in files}
 
-    previous = {} if args.all else load_state(host, remote_dir)
+    # Wer dem Vergleich nicht traut, schaltet ihn in deploy.ini ab:
+    #   [deploy]
+    #   always_upload = yes
+    always = config.getboolean("deploy", "always_upload", fallback=False)
+    if always:
+        print("\n[deploy] always_upload steht auf yes – es wird alles übertragen.")
+
+    previous = {} if (args.all or always) else load_state(host, remote_dir)
     pending = [path for path in files if hashes[path.as_posix()]
                != previous.get(path.as_posix())]
 

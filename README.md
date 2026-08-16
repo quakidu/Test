@@ -159,19 +159,58 @@ Datenverbindung, nicht nur die Anmeldung. Weitere Schalter:
 | `--plain-ftp` | unverschlüsseltes FTP, nur falls FTPS nicht zustande kommt  |
 | `--all`       | alle Dateien übertragen, auch unveränderte                  |
 
-**Übertragen wird nur, was sich geändert hat.** Welche Dateien zuletzt
-oben lagen, merkt sich `.deploy-state.json` als Liste von Prüfsummen
-(lokal, gitignoriert). Hat sich nichts geändert, baut das Skript gar keine
-Verbindung auf und fragt auch kein Passwort ab:
+#### Übertragen wird nur, was sich geändert hat
+
+Verglichen werden die **gebauten** Dateien in `dist/`, nicht die
+Textdateien. Das ist der wichtige Unterschied: Ein Kurs, der über Nacht in
+die Vergangenheit rutscht, verschwindet beim Bauen aus `index.html` – die
+gebaute Seite sieht anders aus, obwohl niemand etwas bearbeitet hat, und
+wird deshalb hochgeladen.
+
+Welche Dateien zuletzt oben lagen, merkt sich `.deploy-state.json` als
+Liste von Prüfsummen (lokal, gitignoriert). An einem Tag, an dem wirklich
+nichts passiert ist, baut das Skript gar keine Verbindung auf und fragt
+auch kein Passwort ab:
 
 ```
 27 Dateien in dist/, davon 0 geändert
 Nichts zu tun – der Server hat bereits diesen Stand.
 ```
 
+Am Tag danach, an dem ein Kurs herausfällt:
+
+```
+27 Dateien in dist/, davon 4 geändert
+  geladen  index.html
+  geladen  llms.txt
+  geladen  sitemap.xml
+  geladen  en/index.html
+Fertig: 4 Dateien übertragen, 23 unverändert
+```
+
+Damit das verlässlich funktioniert, trägt die `sitemap.xml` je Adresse das
+Datum der letzten **inhaltlichen** Änderung, nicht das Baudatum. Sonst
+wäre sie jeden Tag eine geänderte Datei – und die Angabe gegenüber
+Suchmaschinen wäre unwahr. Gemerkt wird das in `.build-state.json`
+(ebenfalls lokal und gitignoriert).
+
+Nach jedem Build steht außerdem da, wann sich die Seite das nächste Mal
+von allein ändert:
+
+```
+Nächste Änderung durch Zeitablauf: 31.08.2026 (in 15 Tagen) –
+Bekanntmachung „Sommerpause“ endet
+```
+
 Zeigt `deploy.ini` auf einen anderen Server oder ein anderes Verzeichnis,
 gilt der gemerkte Stand nicht mehr und es wird wieder alles übertragen.
-Dasselbe erzwingt `--all`, falls auf dem Server einmal etwas fehlt.
+Dasselbe erzwingt `--all`, falls auf dem Server einmal etwas fehlt. Wer
+den Vergleich dauerhaft nicht möchte, schaltet ihn in `deploy.ini` ab:
+
+```ini
+[deploy]
+always_upload = yes
+```
 
 Soll das täglich von allein passieren, führen eigene Dateien Schritt für
 Schritt durch die Einrichtung – siehe „Täglich automatisch
@@ -752,7 +791,8 @@ Quartal.
 * Kurse in einem eigenen, farblich abgesetzten Abschnitt mit Startdatum,
   freien Plätzen und Preis; Hinweis auf den nächsten Kurs schon bei den
   Bekanntmachungen – beides aus derselben Liste erzeugt
-* abgelaufene Kurstermine und Bekanntmachungen fallen automatisch heraus
+* abgelaufene Kurstermine und Bekanntmachungen fallen automatisch heraus;
+  der Upload erkennt das, weil er die gebauten Dateien vergleicht
 * Abschnitt „Stimmen“ mit Rückmeldungen; Zuschriften erreichen die Praxis
   per E-Mail und werden von Hand veröffentlicht
 * Förderhinweis am Seitenende mit den Logos der Förderer in einer Zeile

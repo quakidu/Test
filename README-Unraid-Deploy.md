@@ -46,6 +46,10 @@ Ein Unraid-Server läuft in aller Regel durch und ist damit ein guter Ort
 für diese kleine tägliche Aufgabe. Sie kostet fast nichts: An den meisten
 Tagen überträgt `deploy.py` gar nichts, weil sich nichts geändert hat.
 
+Verglichen werden dabei die **gebauten** Seiten, nicht die Textdateien. Läuft ein Kurs oder eine Bekanntmachung ab, sieht die
+gebaute Seite anders aus als am Vortag und wird hochgeladen, auch wenn
+niemand einen Text bearbeitet hat.
+
 **Was am Ende jeden Morgen um fünf passiert:**
 
 1. (optional) den neuesten Stand der Texte per Git holen,

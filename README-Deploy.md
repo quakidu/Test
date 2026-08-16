@@ -40,6 +40,12 @@ Rechner die Seite einmal täglich neu bauen und hochladen.
 Das kostet an den meisten Tagen nichts: `deploy.py` überträgt nur, was sich
 geändert hat, und baut ohne Änderung nicht einmal eine Verbindung auf.
 
+> **Und wenn sich keine Datei ändert, aber ein Kurs abläuft?** Dann wird
+> trotzdem hochgeladen. Verglichen werden nicht die Textdateien, sondern
+> die **gebauten** Seiten: Fällt ein Kurs heraus, sieht `index.html`
+> anders aus als gestern, und genau das erkennt `deploy.py`. Nach jedem
+> Build steht außerdem da, wann die nächste solche Änderung ansteht.
+
 ## Zwei Entscheidungen vorab
 
 **Erstens: Wo soll es laufen?**

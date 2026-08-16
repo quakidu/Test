@@ -6,3 +6,4 @@ venv/
 .DS_Store
 deploy.ini
 .deploy-state.json
+.build-state.json

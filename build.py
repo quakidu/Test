@@ -184,26 +184,68 @@ def page_url(site_url: str, base_path: str, lang: str) -> str:
     return root if lang == DEFAULT_LANGUAGE else root + f"{lang}/"
 
 
+# ``lastmod`` in der Sitemap soll sagen, wann sich die Seite zuletzt
+# geändert hat – nicht, wann zuletzt gebaut wurde. Stünde dort das
+# Baudatum, meldete ein täglicher Lauf jeden Tag eine Änderung: gegenüber
+# Suchmaschinen unwahr, und die Sitemap selbst wäre täglich eine geänderte
+# Datei, die hochgeladen werden müsste.
+#
+# Deshalb merkt sich ``.build-state.json`` je Adresse eine Prüfsumme der
+# gebauten Seite und das Datum, an dem sie zuletzt anders aussah. Fehlt die
+# Datei – etwa nach einem frischen Klon –, gilt für alle Seiten das heutige
+# Datum. Das ist nicht falsch: Dort steht die Seite gerade zum ersten Mal.
+BUILD_STATE_FILE = BASE_DIR / ".build-state.json"
+
+
+def load_build_state() -> dict:
+    if not BUILD_STATE_FILE.exists():
+        return {}
+    try:
+        data = json.loads(BUILD_STATE_FILE.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
 def write_sitemap(site_url: str, base_path: str) -> None:
     today = date.today().isoformat()
-    locations = []
-    for lang in LANGUAGES:
-        root = page_url(site_url, base_path, lang)
-        locations.append(root)
-        locations.extend(root + page["file"] for page in LEGAL_PAGES.values())
+    previous = load_build_state()
+    state: dict[str, dict] = {}
 
-    entries = "\n".join(
-        f"  <url>\n"
-        f"    <loc>{loc}</loc>\n"
-        f"    <lastmod>{today}</lastmod>\n"
-        f"  </url>"
-        for loc in locations
-    )
+    # Adresse und zugehörige Datei im Build – aus derselben Quelle, damit
+    # die Sitemap nichts aufführt, was es nicht gibt.
+    pages: list[tuple[str, Path]] = []
+    for lang in LANGUAGES:
+        folder = DIST_DIR if lang == DEFAULT_LANGUAGE else DIST_DIR / lang
+        root = page_url(site_url, base_path, lang)
+        pages.append((root, folder / INDEX_FILE))
+        for page in LEGAL_PAGES.values():
+            pages.append((root + page["file"], folder / page["file"]))
+
+    entries = []
+    for loc, path in pages:
+        if not path.exists():
+            continue
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        before = previous.get(loc, {})
+        lastmod = before.get("lastmod", today) if before.get("hash") == digest else today
+        state[loc] = {"hash": digest, "lastmod": lastmod}
+        entries.append(
+            f"  <url>\n"
+            f"    <loc>{loc}</loc>\n"
+            f"    <lastmod>{lastmod}</lastmod>\n"
+            f"  </url>"
+        )
+
     (DIST_DIR / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-        f"{entries}\n"
+        + "\n".join(entries) + "\n"
         "</urlset>\n",
+        encoding="utf-8",
+    )
+    BUILD_STATE_FILE.write_text(
+        json.dumps(state, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
 
@@ -509,6 +551,17 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
             if item.is_file():
                 shutil.copy2(item, DIST_DIR / item.name)
                 print(f"  ✓ dist/{item.name}")
+
+    # Wann ändert sich die Seite das nächste Mal von allein? Das beantwortet
+    # die Frage, ob ein täglicher Lauf demnächst etwas zu tun bekommt.
+    upcoming = content.next_scheduled_change(fallback)
+    if upcoming:
+        tage = "morgen" if upcoming["days"] == 1 else f"in {upcoming['days']} Tagen"
+        print(f"\nNächste Änderung durch Zeitablauf: {upcoming['date'].strftime('%d.%m.%Y')} "
+              f"({tage}) – {upcoming['text']}")
+    else:
+        print("\nKeine zeitgesteuerte Änderung mehr offen: Alle Kurse und "
+              "Bekanntmachungen sind ohne Enddatum oder bereits abgelaufen.")
 
     notes = []
     for lang in LANGUAGES:

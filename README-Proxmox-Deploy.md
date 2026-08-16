@@ -47,6 +47,11 @@ für diese kleine tägliche Aufgabe: Der Container braucht nur wenige
 Minuten Rechenzeit im Monat und an den meisten Tagen überträgt er gar
 nichts, weil sich nichts geändert hat.
 
+Übertragen wird dabei nur, was sich geändert hat – verglichen werden die
+**gebauten** Seiten. Läuft ein Kurs oder eine Bekanntmachung ab, sieht die
+gebaute Seite anders aus als am Vortag und wird hochgeladen, auch wenn
+niemand einen Text bearbeitet hat.
+
 **Was der Container am Ende tut**, jeden Morgen um fünf:
 
 1. (optional) den neuesten Stand der Texte per Git holen,

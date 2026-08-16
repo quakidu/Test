@@ -20,7 +20,7 @@ from __future__ import annotations
 
 import json
 import re
-from datetime import date
+from datetime import date, timedelta
 from urllib.parse import quote
 
 
@@ -127,14 +127,18 @@ def upcoming_courses(strings: dict, today: date | None = None) -> list[dict]:
     return sorted(courses, key=sort_key)
 
 
-def is_valid_date(value: str) -> bool:
-    """Prüft ein Datum im Format JJJJ-MM-TT."""
+def parse_date(value: str) -> date | None:
+    """Wandelt ein ISO-Datum um; gibt ``None`` zurück, wenn es unbrauchbar ist."""
     try:
         year, month, day = (int(part) for part in str(value).split("-"))
-        date(year, month, day)
+        return date(year, month, day)
     except (ValueError, AttributeError):
-        return False
-    return True
+        return None
+
+
+def is_valid_date(value: str) -> bool:
+    """Prüft ein Datum im Format JJJJ-MM-TT."""
+    return parse_date(value) is not None
 
 
 def current_news(strings: dict, today: date | None = None) -> list[dict]:
@@ -164,6 +168,39 @@ def current_news(strings: dict, today: date | None = None) -> list[dict]:
             continue  # ab heute nicht mehr anzeigen
         items.append(entry)
     return items
+
+
+def next_scheduled_change(strings: dict, today: date | None = None) -> dict | None:
+    """Der nächste Tag, an dem sich die Seite von allein ändert.
+
+    Kurse fallen am Tag **nach** ihrem Start heraus, Bekanntmachungen am
+    Tag, der unter ``hide_from`` steht. Beides passiert ohne Zutun, sobald
+    die Seite an diesem Tag neu gebaut wird.
+
+    Der Build gibt das Ergebnis aus – damit ist nachvollziehbar, wann der
+    nächste automatische Lauf wirklich etwas verändern wird.
+    """
+    today = today or date.today()
+    candidates: list[tuple[date, str]] = []
+
+    for course in strings.get("courses", {}).get("items", []):
+        start = parse_date(course.get("start_date", ""))
+        if start:
+            # Der Starttag zählt noch als kommend, der Tag danach nicht mehr.
+            candidates.append((start + timedelta(days=1),
+                               f"Kurs „{course.get('title', '')}“ fällt heraus"))
+
+    for item in strings.get("news", {}).get("items", []):
+        hide_from = parse_date(item.get("hide_from", ""))
+        if hide_from:
+            candidates.append((hide_from,
+                               f"Bekanntmachung „{item.get('title', '')}“ endet"))
+
+    future = sorted((day, text) for day, text in candidates if day > today)
+    if not future:
+        return None
+    day, text = future[0]
+    return {"date": day, "text": text, "days": (day - today).days}
 
 
 def practice_slides(strings: dict, fallback: dict) -> list[dict]:
