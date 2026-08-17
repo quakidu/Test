@@ -204,7 +204,14 @@ h1, h2, h3 {
   line-height: 1.15;
   letter-spacing: -0.015em;
   margin: 0;
-  text-wrap: balance;
+  /*
+   * ``pretty`` füllt die Zeile aus und bricht erst, wenn es sein muss –
+   * die Überschrift läuft dadurch in die Länge. ``balance`` würde die
+   * Zeilen statt dessen gleich lang machen: hübsch, aber die Überschrift
+   * stünde dann schmal in einer breiten Fläche. Vor einzelnen Wörtern am
+   * Ende schützt ``pretty`` weiterhin.
+   */
+  text-wrap: pretty;
 }
 
 p { margin: 0; }
@@ -287,8 +294,18 @@ main > section:nth-of-type(odd)  { --section-bg: var(--bg); }
 main > section:nth-of-type(even) { --section-bg: var(--bg-tinted); }
 main > section { background: var(--section-bg); }
 
+/*
+ * Überschrift und Fließtext vertragen nicht dieselbe Breite. Eine
+ * Überschrift darf über die ganze Seite laufen – sie wird überflogen,
+ * nicht Zeile für Zeile gelesen, und jeder Umbruch zerreißt sie. Der
+ * Vorspann darunter bleibt schmal: Zeilen über die volle Seitenbreite
+ * ermüden beim Lesen, weil das Auge den Anfang der nächsten Zeile
+ * schlechter findet.
+ *
+ * Deshalb steht die Begrenzung nicht mehr am Kopf des Abschnitts,
+ * sondern nur noch am Vorspann.
+ */
 .section__head {
-  max-width: 62ch;
   margin-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
@@ -298,6 +315,7 @@ main > section { background: var(--section-bg); }
 }
 
 .section__lead {
+  max-width: 62ch;
   color: var(--text-muted);
   font-size: clamp(1.02rem, 0.98rem + 0.3vw, 1.15rem);
 }
@@ -896,7 +914,9 @@ main > section { background: var(--section-bg); }
  * tragen sich durch ihren Inhalt – dafür muss der Abschnitt nicht aus
  * der Seite herausfallen.
  */
-.section__head--wide { max-width: 68ch; }
+/* Etwas mehr Luft für den Vorspann – der bei den Kursen länger ist als
+   sonst. Die Überschrift selbst ist ohnehin nicht begrenzt. */
+.section__head--wide .section__lead { max-width: 68ch; }
 
 /* Was für einen Kurs spricht – kurze Aufzählung über den Karten. */
 .benefits {
