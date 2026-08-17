@@ -39,6 +39,7 @@ README-Android-Git.md     Git auf Android einrichten
 README-Sprachen.md        eine weitere Sprache hinzufügen
 README-Farben.md          die Seite umfärben (Leitfarbe, Logo, Vorschaubild)
 README-Themes.md          ein weiteres Thema (Darstellung) hinzufügen
+README-Abschnitt-loeschen.md  einen Abschnitt von der Startseite entfernen
 templates/
   base.html             Grundgerüst (Head, Meta, hreflang)
   index.html            Startseite
@@ -443,6 +444,12 @@ Umbruchpunkt zum Burger-Menü (1200 px) ist so gewählt, dass **beide
 zusammen** in eine Zeile passen.
 
 ## Inhalte anpassen
+
+**Einen ganzen Abschnitt loswerden?** Dafür gibt es eine eigene
+Anleitung: **[README-Abschnitt-loeschen.md](README-Abschnitt-loeschen.md)**.
+Sie beschreibt drei Wege – Inhalte leeren, vorübergehend ausblenden oder
+endgültig löschen – und nennt die Stellen, an denen sonst ein toter
+Menüpunkt zurückbleibt.
 
 * **Texte, Adresse, Angebote:** `translations/de.json` und
   Kommt eine weitere Sprache dazu, bekommt sie eine eigene Datei mit
