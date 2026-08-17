@@ -39,6 +39,7 @@ README-Android-Git.md     Git auf Android einrichten
 README-Sprachen.md        eine weitere Sprache hinzufügen
 README-Farben.md          die Seite umfärben (Leitfarbe, Logo, Vorschaubild)
 README-Themes.md          ein weiteres Thema (Darstellung) hinzufügen
+README-Abschnitt-einfuegen.md einen Abschnitt zur Startseite hinzufügen
 README-Abschnitt-loeschen.md  einen Abschnitt von der Startseite entfernen
 templates/
   base.html             Grundgerüst (Head, Meta, hreflang)
@@ -445,11 +446,14 @@ zusammen** in eine Zeile passen.
 
 ## Inhalte anpassen
 
-**Einen ganzen Abschnitt loswerden?** Dafür gibt es eine eigene
-Anleitung: **[README-Abschnitt-loeschen.md](README-Abschnitt-loeschen.md)**.
-Sie beschreibt drei Wege – Inhalte leeren, vorübergehend ausblenden oder
-endgültig löschen – und nennt die Stellen, an denen sonst ein toter
-Menüpunkt zurückbleibt.
+**Einen ganzen Abschnitt hinzufügen oder loswerden?** Dafür gibt es zwei
+eigene Anleitungen:
+
+* **[README-Abschnitt-einfuegen.md](README-Abschnitt-einfuegen.md)** –
+  mit fertigen Bausteinen zum Kopieren, sodass der neue Abschnitt ohne
+  eine Zeile CSS aussieht wie der Rest der Seite.
+* **[README-Abschnitt-loeschen.md](README-Abschnitt-loeschen.md)** – drei
+  Wege: Inhalte leeren, vorübergehend ausblenden oder endgültig löschen.
 
 * **Texte, Adresse, Angebote:** `translations/de.json` und
   Kommt eine weitere Sprache dazu, bekommt sie eine eigene Datei mit

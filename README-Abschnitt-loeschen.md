@@ -7,6 +7,9 @@ den Förderhinweis nach Ablauf der Förderung.
 Geschrieben für Leute ohne Vorkenntnisse: Jeder Handgriff steht
 vollständig da, jeder Codeblock lässt sich kopieren.
 
+> **Das Gegenstück** – einen Abschnitt hinzufügen – steht in
+> [README-Abschnitt-einfuegen.md](README-Abschnitt-einfuegen.md).
+
 > **Lesen Sie zuerst Abschnitt 2.** Für einige Abschnitte müssen Sie gar
 > nichts löschen – es genügt, ihre Inhalte zu leeren. Das ist der
 > sicherere Weg und jederzeit umkehrbar.
