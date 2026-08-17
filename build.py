@@ -55,6 +55,7 @@ DEFAULT_LANGUAGE = "de"
 #      anlegen; fehlen sie, erscheint der deutsche Text
 #
 # ``locale`` steht im Kopf der Seite unter og:locale.
+# Schritt für Schritt, mit den Stellen, die Mühe machen: README-Sprachen.md
 LANGUAGES = {
     "de": {"label": "Deutsch", "short": "DE", "locale": "de_DE"},
 }
@@ -480,12 +481,74 @@ def check_seo(strings: dict, lang: str) -> list[str]:
     return notes
 
 
+# Blöcke, welche die Vorlagen unmittelbar durchlaufen (``s.hero`` und so
+# fort). Für einzelne Texte gibt es den Rückfall auf die Standardsprache;
+# eine Schleife über einen fehlenden Block lässt sich damit aber nicht
+# retten – deshalb müssen diese Blöcke in jeder Sprachdatei stehen.
+TEMPLATE_BLOCKS = ("hero", "about", "offer", "approach", "therapist",
+                   "practice", "courses", "testimonials", "contact")
+
+
+def check_translations(strings: dict, fallback: dict, lang: str) -> tuple[list[str], list[str]]:
+    """Vergleicht eine Sprachdatei mit der Standardsprache.
+
+    Gibt zwei Listen zurück: Fehler, die den Build anhalten, und Hinweise,
+    die ihn nur begleiten. Die Trennung folgt der Technik – was die
+    Vorlage durchläuft, muss da sein; alles Übrige holt der Rückfall.
+    """
+    if lang == DEFAULT_LANGUAGE:
+        return [], []
+
+    fehler = [
+        f"[{lang}] Der Block „{block}“ fehlt in translations/{lang}.json – "
+        f"die Vorlage durchläuft ihn und kann ihn nicht ersetzen."
+        for block in TEMPLATE_BLOCKS
+        if block in fallback and not isinstance(strings.get(block), dict)
+    ]
+
+    hinweise = [
+        f"[{lang}] Der Block „{block}“ fehlt – dort erscheinen vorerst die "
+        f"Texte der Standardsprache."
+        for block in fallback
+        if block not in TEMPLATE_BLOCKS and block not in strings
+    ]
+
+    # Kurse und Bekanntmachungen liest der Build unmittelbar aus der
+    # aktiven Sprache; ein Rückfall findet hier bewusst nicht statt, damit
+    # niemand versehentlich deutsche Termine in einer anderen Sprache
+    # ausliefert. Ein leerer Abschnitt soll aber auffallen.
+    for block in ("courses", "news"):
+        if (block in strings and not strings.get(block, {}).get("items")
+                and fallback.get(block, {}).get("items")):
+            hinweise.append(
+                f"[{lang}] „{block}.items“ ist leer – in dieser Sprache "
+                f"erscheint der Abschnitt ohne Einträge."
+            )
+    return fehler, hinweise
+
+
 def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) -> Path:
     env = Environment(
         loader=FileSystemLoader(BASE_DIR / "templates"),
         autoescape=select_autoescape(["html"]),
     )
     fallback = load_translations(DEFAULT_LANGUAGE)
+
+    # Vor dem ersten Rendern prüfen: Eine unvollständige Sprachdatei soll
+    # eine verständliche Meldung geben, keinen Python-Fehlerbericht.
+    fehler, sprachhinweise = [], []
+    for lang in LANGUAGES:
+        a, b = check_translations(load_translations(lang), fallback, lang)
+        fehler.extend(a)
+        sprachhinweise.extend(b)
+    if fehler:
+        print("Die Sprachdateien sind unvollständig:")
+        for eintrag in fehler:
+            print(f"  · {eintrag}")
+        print("\nAm einfachsten ist es, die Datei als Kopie von "
+              f"translations/{DEFAULT_LANGUAGE}.json anzulegen und darin zu "
+              "übersetzen.\nSchritt für Schritt: README-Sprachen.md")
+        raise SystemExit(1)
 
     if DIST_DIR.exists():
         shutil.rmtree(DIST_DIR)
@@ -604,6 +667,11 @@ def build(site_url: str = DEFAULT_SITE_URL, base_path: str = DEFAULT_BASE_PATH) 
     else:
         print("\nKeine zeitgesteuerte Änderung mehr offen: Alle Kurse und "
               "Bekanntmachungen sind ohne Enddatum oder bereits abgelaufen.")
+
+    if sprachhinweise:
+        print("\nHinweise zu den Sprachdateien:")
+        for note in sprachhinweise:
+            print(f"  · {note}")
 
     notes = []
     for lang in LANGUAGES:

@@ -38,7 +38,8 @@ LEGAL_PAGES = {
 DEFAULT_LANGUAGE = "de"
 
 # Sprachen der Seite – dieselbe Liste wie in build.py. Ein Eintrag genügt;
-# wie eine weitere Sprache hinzukommt, steht dort im Kommentar.
+# wie eine weitere Sprache hinzukommt, steht dort im Kommentar und
+# Schritt für Schritt in README-Sprachen.md.
 LANGUAGES = {
     "de": {"label": "Deutsch", "short": "DE", "locale": "de_DE"},
 }

@@ -36,6 +36,7 @@ README-Proxmox-Deploy.md    … in einem Proxmox-Container
 README-Unraid-Deploy.md     … auf einem Unraid-Server
 README-Android-Test.md    Seite auf einem Android-Gerät ansehen
 README-Android-Git.md     Git auf Android einrichten
+README-Sprachen.md        eine weitere Sprache hinzufügen
 README-Farben.md          die Seite umfärben (Leitfarbe, Logo, Vorschaubild)
 README-Themes.md          ein weiteres Thema (Darstellung) hinzufügen
 templates/
@@ -390,54 +391,25 @@ aber vollständig angelegt: Sprachumschalter, Sprachordner,
 `hreflang`-Verweise und der Rückfall auf die deutschen Texte sind da und
 schalten sich ein, sobald eine zweite Sprache eingetragen ist.
 
-Vier Schritte, am Beispiel Englisch:
+Im Kern sind es vier Handgriffe, am Beispiel Englisch:
 
-1. **Textdatei anlegen** – am einfachsten als Kopie:
-
-   ```bash
-   cp translations/de.json translations/en.json
-   ```
-
-   Dann in `en.json` die Werte übersetzen. Die Struktur muss gleich
-   bleiben; die Schlüssel links vom Doppelpunkt werden **nicht** übersetzt.
-   Was fehlt, füllt automatisch der deutsche Text – Sie können also
-   abschnittsweise vorgehen.
-
-2. **Sprache eintragen**, in `build.py` *und* in `app.py` jeweils bei
-   `LANGUAGES`:
-
-   ```python
-   LANGUAGES = {
-       "de": {"label": "Deutsch", "short": "DE", "locale": "de_DE"},
-       "en": {"label": "English", "short": "EN", "locale": "en_GB"},
-   }
-   ```
-
-   | Feld | Wofür |
-   | --- | --- |
-   | `label` | vollständiger Name, erscheint als Tooltip |
-   | `short` | Kürzel im Umschalter |
-   | `locale` | für `og:locale` im Kopf der Seite |
-
-3. **Rechtstexte** (optional): `content/impressum.en.html` und
-   `content/datenschutz.en.html` anlegen. Fehlen sie, erscheint der
-   deutsche Text – eine Seite ohne Impressum gibt es also nie.
-
-4. **Vorschaubild** (optional): In `en.json` unter `seo.og_image` einen
-   eigenen Dateinamen eintragen, dann
-
-   ```bash
-   python3 tools/make-og-image.py
-   ```
+1. `translations/de.json` nach `translations/en.json` **kopieren** und
+   darin die Werte übersetzen.
+2. Die Sprache in `build.py` **und** `app.py` bei `LANGUAGES` eintragen.
+3. Rechtstexte als `content/impressum.en.html` anlegen (freiwillig).
+4. Eigenes Vorschaubild über `seo.og_image` (freiwillig).
 
 Danach `python3 build.py` – fertig. Der Build legt `dist/en/` an, der
 Umschalter erscheint im Kopfbereich, `hreflang` und `x-default` stehen im
 `<head>`, `llms.txt` nennt die zusätzliche Fassung, und die Sitemap führt
 beide Sprachen.
 
-**Zum Entfernen** genügt es, den Eintrag aus beiden `LANGUAGES` zu
-löschen. Die Textdatei kann liegen bleiben; gebaut wird nur, was dort
-steht.
+**Die ausführliche Schritt-für-Schritt-Anleitung für Anfänger steht in
+[README-Sprachen.md](README-Sprachen.md).** Sie erklärt jeden Handgriff
+vollständig und geht auf die Stellen ein, die erfahrungsgemäß Mühe
+machen: welche Werte nicht übersetzt werden dürfen, wie Monatsnamen und
+Datumsreihenfolge umgestellt werden, warum Kurse in jeder Sprachdatei
+gepflegt werden müssen und wie eine Sprache wieder verschwindet.
 
 ## Darstellung: helles und dunkles Thema
 
