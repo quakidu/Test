@@ -7,6 +7,13 @@ Geschrieben für Leute ohne Vorkenntnisse: Jeder Handgriff steht
 vollständig da, jeder Codeblock lässt sich kopieren. Die Anleitung
 beschreibt den Weg an einem durchgehenden Beispiel namens **„sepia“**.
 
+> **Sie möchten die Seite nur umfärben?** Dann sind Sie hier falsch.
+> Wenn die Praxis schlicht ein Grün statt des Blaus tragen soll und es
+> weiterhin nur Hell und Dunkel gibt, ist
+> **[README-Farben.md](README-Farben.md)** die richtige Anleitung – und
+> die deutlich kürzere. Diese hier legt eine **zusätzliche** Darstellung
+> an, die die Besucher rechts oben auswählen können.
+
 ---
 
 ## Inhalt

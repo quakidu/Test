@@ -36,6 +36,7 @@ README-Proxmox-Deploy.md    … in einem Proxmox-Container
 README-Unraid-Deploy.md     … auf einem Unraid-Server
 README-Android-Test.md    Seite auf einem Android-Gerät ansehen
 README-Android-Git.md     Git auf Android einrichten
+README-Farben.md          die Seite umfärben (Leitfarbe, Logo, Vorschaubild)
 README-Themes.md          ein weiteres Thema (Darstellung) hinzufügen
 templates/
   base.html             Grundgerüst (Head, Meta, hreflang)
@@ -453,11 +454,16 @@ weiter. „Wie das Gerät“ reagiert auch während des Besuchs, wenn das
 Betriebssystem etwa abends auf Dunkel umstellt. Ohne JavaScript
 erscheint die Wahl nicht; dann gilt die Vorgabe des Betriebssystems.
 
-**Ein weiteres Thema hinzufügen** – etwa ein warmes, augenschonendes:
-Die Schritt-für-Schritt-Anleitung steht in
-**[README-Themes.md](README-Themes.md)**. Sie beschreibt, welche
-Farbwerte ein Thema bestimmt, wo sie eingetragen werden und wie das
-Thema in der Wahl erscheint.
+Zwei Anleitungen, die leicht verwechselt werden:
+
+| Sie möchten … | Anleitung |
+| --- | --- |
+| die Seite **umfärben** – neue Leitfarbe für Hell und Dunkel | **[README-Farben.md](README-Farben.md)** |
+| eine **weitere Darstellung** anbieten, etwa ein warmes Thema neben Hell und Dunkel | **[README-Themes.md](README-Themes.md)** |
+
+Der Unterschied: Beim Umfärben ändert sich die Seite für alle. Ein
+weiteres Thema kommt als vierter Knopf hinzu, und jeder Besucher wählt
+selbst.
 
 Themenwahl und Sprachwahl sind voneinander unabhängig: Beide stehen
 nebeneinander im Kopfbereich, beide erscheinen ab zwei Einträgen, und der
@@ -707,6 +713,12 @@ zusammen** in eine Zeile passen.
   Unterzeile des Logos, `--ink-900` die Schriftfarbe des Logos; die übrigen
   Stufen sind daraus abgeleitet. Das dunkle Farbschema nutzt dieselben Tokens.
   Alle Text-Hintergrund-Kombinationen liegen über dem Kontrastwert 4.5:1.
+
+  Die Seite ganz umfärben – neue Leitfarbe, Logo, Vorschaubild? Die
+  Schritt-für-Schritt-Anleitung steht in
+  **[README-Farben.md](README-Farben.md)**. Sie nennt auch die
+  Farbangaben, die außerhalb des Stylesheets liegen – im Logo, in der
+  Browserleiste und im Vorschaubild – und sonst leicht übersehen werden.
 * **Logo:** `static/img/logo.png` austauschen (PNG mit transparentem
   Hintergrund) und danach einmal
 

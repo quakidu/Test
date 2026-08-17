@@ -38,6 +38,22 @@ LOGO = IMG_DIR / "logo.png"
 # Facebook, LinkedIn, WhatsApp und X erwarten dieses Seitenverhältnis.
 WIDTH, HEIGHT = 1200, 630
 
+# Die Farben des Vorschaubildes. Ein Bild kann keine Design-Tokens lesen –
+# die Werte stehen deshalb hier noch einmal und entsprechen denen aus
+# static/css/style.css. Wer die Seite umfärbt, zieht sie mit; wie das
+# zusammenhängt, steht in README-Farben.md.
+FARBE_SCHRIFT = "#191E28"  # entspricht --ink-900
+FARBE_LEIT    = "#314F6F"  # entspricht --blue-600, die Leitfarbe
+FARBE_NEBEN   = "#47536A"  # Nebentext, zwischen --ink-500 und --ink-700
+
+# Die Fläche des Bildes: ein Verlauf von oben links nach unten rechts,
+# darüber ein Schleier in der Leitfarbe. FARBE_SCHLEIER braucht die
+# Schreibweise rgba(), weil sie durchscheinen muss.
+FARBE_FLAECHE_HELL  = "#FFFFFF"
+FARBE_FLAECHE_MITTE = "#F3F6F9"  # in der Nähe von --blue-50
+FARBE_FLAECHE_TIEF  = "#E5EBF1"  # in der Nähe von --blue-100
+FARBE_SCHLEIER      = "rgba(60, 98, 136, .42)"
+
 BROWSERS = ["chromium", "chromium-browser", "google-chrome", "google-chrome-stable"]
 
 # Ordner, in denen manche Umgebungen einen mitgelieferten Chromium ablegen.
@@ -60,22 +76,22 @@ TEMPLATE = """<!DOCTYPE html>
     display: flex; flex-direction: column; justify-content: space-between;
     padding: 64px 76px;
     background:
-      radial-gradient(110% 85% at 100% 0%, rgba(60,98,136,.42) 0%, rgba(60,98,136,0) 62%),
-      linear-gradient(160deg, #FFFFFF 0%, #F3F6F9 55%, #E5EBF1 100%);
+      radial-gradient(110% 85% at 100% 0%, {schleier} 0%, transparent 62%),
+      linear-gradient(160deg, {flaeche_hell} 0%, {flaeche_mitte} 55%, {flaeche_tief} 100%);
     font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-    color: #191E28;
+    color: {farbe_schrift};
   }}
   /* Ohne align-self zöge die Flex-Box das Bild in die Breite. Die Höhe
      bleibt nah an der Originalgröße des Logos, sonst wird es unscharf. */
   .logo {{ align-self: flex-start; height: 60px; width: auto; }}
   .eyebrow {{
     font-size: 26px; letter-spacing: .16em; text-transform: uppercase;
-    color: #314F6F; font-weight: 600; margin-bottom: 18px;
+    color: {farbe_leit}; font-weight: 600; margin-bottom: 18px;
   }}
   h1 {{ font-size: 68px; line-height: 1.08; font-weight: 700; max-width: 16ch; }}
-  .lead {{ font-size: 30px; line-height: 1.35; color: #47536A; margin-top: 20px; max-width: 30ch; }}
-  .foot {{ display: flex; align-items: center; gap: 24px; font-size: 25px; color: #47536A; }}
-  .rule {{ flex: 1; height: 3px; background: #314F6F; opacity: .25; border-radius: 3px; }}
+  .lead {{ font-size: 30px; line-height: 1.35; color: {farbe_neben}; margin-top: 20px; max-width: 30ch; }}
+  .foot {{ display: flex; align-items: center; gap: 24px; font-size: 25px; color: {farbe_neben}; }}
+  .rule {{ flex: 1; height: 3px; background: {farbe_leit}; opacity: .25; border-radius: 3px; }}
 </style>
 <body>
   <div class="card">
@@ -160,6 +176,13 @@ def render(lang: str, browser: str) -> None:
         width=WIDTH,
         height=HEIGHT,
         logo=base64.b64encode(LOGO.read_bytes()).decode("ascii"),
+        farbe_schrift=FARBE_SCHRIFT,
+        farbe_leit=FARBE_LEIT,
+        farbe_neben=FARBE_NEBEN,
+        schleier=FARBE_SCHLEIER,
+        flaeche_hell=FARBE_FLAECHE_HELL,
+        flaeche_mitte=FARBE_FLAECHE_MITTE,
+        flaeche_tief=FARBE_FLAECHE_TIEF,
         # Der Schriftzug steht schon im Logo; die große Zeile nennt deshalb
         # das Thema und den Ort – danach wird gesucht.
         eyebrow=escape(brand.get("tagline", "")),

@@ -5,7 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{{ t('meta.title') }}{% endblock %}</title>
   <meta name="description" content="{{ t('meta.description') }}">
-  <meta name="theme-color" content="#314F6F">
+  {# Färbt die Leiste des Browsers auf dem Telefon. Der Wert entspricht
+     --bg des hellen Themas; sobald JavaScript läuft, trägt main.js die
+     Fläche des gewählten Themas nach. Beim Umfärben mitziehen –
+     siehe README-Farben.md. #}
+  <meta name="theme-color" content="#FAFBFC">
 
   {# Eine Seite, eine Adresse: sagt Suchmaschinen, welche Fassung zählt.
      Die Fehlerseite hat keine eigene Adresse und überschreibt diesen Block. #}
